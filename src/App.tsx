@@ -1,7 +1,11 @@
+import { Outlet } from "react-router-dom";
+import Nav from "./components/Nav";
+
 const App = () => {
     return (
         <div>
-          <h1> This is from App </h1> 
+          <Nav />
+          <Outlet/>
         </div>
     );
 };
