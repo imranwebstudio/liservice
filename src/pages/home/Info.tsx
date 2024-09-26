@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 
-const ServicesPage = () => {
+const Info = () => {
   return (
     <div className="  p-6">
       {/* Hero Section */}
@@ -80,4 +80,4 @@ const ServicesPage = () => {
   );
 };
 
-export default ServicesPage;
+export default Info;
