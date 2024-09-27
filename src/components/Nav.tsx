@@ -33,6 +33,7 @@ const Nav = () => {
                     <ul className="menu menu-horizontal px-1">
                         <li><Link to={"/service"}>Service</Link></li>
                         <li><Link to={"/dashboard"}>Dashboard</Link></li>
+                        <li><Link to={"/about"}>About</Link></li>
                     </ul>
                 </div>
 

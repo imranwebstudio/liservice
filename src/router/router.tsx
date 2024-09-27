@@ -7,6 +7,8 @@ import Dashboard from "../layout/Dashboard";
 import AddServices from "../pages/dashboard/adminDashboard/AddServices";
 import SingleOrder from "../pages/dashboard/userDashboard/SingleOrder";
 import AddBalance from "../pages/dashboard/userDashboard/AddBalance";
+import State from "../components/State";
+import AboutUs from "../pages/aboutUs/AboutUs";
 
 const router = createBrowserRouter([
     {
@@ -20,6 +22,10 @@ const router = createBrowserRouter([
             {
                 path: "/service",
                 element: <ServiceCards />
+            },
+            {
+                path: "about",
+                element: <AboutUs/>
             }
         ]
     },
@@ -27,6 +33,10 @@ const router = createBrowserRouter([
         path: "/dashboard",
         element: <Dashboard/>,
         children: [
+            {
+                index: true,
+                element: <State/>
+            },
             {
                 path: "addService",
                 element: <AddServices/>
