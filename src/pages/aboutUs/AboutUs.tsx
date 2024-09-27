@@ -4,7 +4,7 @@ import Container from "../../utils/Container";
 const AboutUs: React.FC = () => {
     return (
         <Container>
-            <div className="max-w-3xl mx-auto p-6 shadow-md rounded-lg">
+            <div className="max-w-3xl mx-auto p-6 text-justify shadow-md rounded-lg">
                 <h1 className="text-4xl font-bold text-center text-primary mb-6">About Us</h1>
 
                 <p className="text-lg leading-7 mb-4">
