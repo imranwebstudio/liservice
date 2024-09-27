@@ -7,11 +7,11 @@ import rocket from "../../../assets/rocket.png";
 import taka from "../../../assets/taka.svg";
 const PaymentPage = () => {
     const location = useLocation();
-    const { method, amount, extraFee, total } = location.state || {};
-    const [refarence, setReference] = useState<string>("");
+    const { method, amount, total } = location.state || {};
+    const [reference, setReference] = useState<string>("");
 
     const handleSubmit = () => {
-        // Handle payment logic here
+        console.log("Reference:", reference);
     };
 
     console.log("Method:", method);
