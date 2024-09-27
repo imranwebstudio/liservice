@@ -9,6 +9,8 @@ import SingleOrder from "../pages/dashboard/userDashboard/SingleOrder";
 import AddBalance from "../pages/dashboard/userDashboard/AddBalance";
 import State from "../components/State";
 import AboutUs from "../pages/aboutUs/AboutUs";
+import OrderHistory from "../pages/dashboard/userDashboard/OrderHistory";
+import PaymentPage from "../pages/dashboard/userDashboard/PaymentPage";
 
 const router = createBrowserRouter([
     {
@@ -24,8 +26,12 @@ const router = createBrowserRouter([
                 element: <ServiceCards />
             },
             {
-                path: "about",
+                path: "/about",
                 element: <AboutUs/>
+            },
+            {
+                path: '/payment',
+                element: <PaymentPage/>
             }
         ]
     },
@@ -47,7 +53,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "orderHistory",
-                element: <div>Order History</div>
+                element: <OrderHistory/>
             },
             {
                 path: "singleOrder",

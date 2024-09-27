@@ -4,7 +4,7 @@ const Hero = () => {
             <div className="hero ">
                 <div className="hero-content text-center">
                     <div className="max-w-md">
-                        <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
+                        <h1 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
                             Welcome <br /> To LI SERVICE 24
                         </h1>
                         <p className="py-6 ">

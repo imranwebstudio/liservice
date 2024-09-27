@@ -20,38 +20,39 @@ const Nav = () => {
                                     d="M4 6h16M4 12h8m-8 6h16" />
                             </svg>
                         </div>
-                        <ul className="menu menu-horizontal px-1">
+                        <ul
+                            tabIndex={0}
+                            className="menu menu-sm dropdown-content font-bold bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                             <li>
-                                <NavLink
-                                    to="/service"
-                                    className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
-                                >
-                                    Service
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to="/dashboard"
-                                    className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
-                                >
-                                    Dashboard
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to="/about"
-                                    className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
-                                >
-                                    About
-                                </NavLink>
-                            </li>
+                            <NavLink
+                                to="/service"
+                                className={ ({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600 font"}
+                            >
+                                Service
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to="/dashboard"
+                                className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
+                            >
+                                Dashboard
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to="/about"
+                                className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
+                            >
+                                About
+                            </NavLink>
+                        </li>
                         </ul>
-
                     </div>
-                    <a className="btn btn-ghost text-xl">LI SERVICE 24</a>
+                    <Link to="/" className="btn btn-ghost text-xl">LI SERVICE 24</Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1">
+                    <ul className="menu menu-horizontal font-bold px-1">
                         <li>
                             <NavLink
                                 to="/service"
