@@ -11,6 +11,11 @@ import State from "../components/State";
 import AboutUs from "../pages/aboutUs/AboutUs";
 import OrderHistory from "../pages/dashboard/userDashboard/OrderHistory";
 import PaymentPage from "../pages/dashboard/userDashboard/PaymentPage";
+import RechargeHistory from "../pages/dashboard/userDashboard/RechargeHistory";
+import ManageService from "../pages/dashboard/adminDashboard/ManageService";
+import ManageUser from "../pages/dashboard/adminDashboard/ManageUser";
+import ManageOrders from "../pages/dashboard/adminDashboard/ManageOrders";
+import ManageRecharges from "../pages/dashboard/adminDashboard/ManageRecharge";
 
 const router = createBrowserRouter([
     {
@@ -49,11 +54,31 @@ const router = createBrowserRouter([
             },
             {
                 path: "manageOrders",
-                element: <div>Manage Orders</div>
+                element: <ManageOrders />
+            },
+            {
+                path: "manageServices",
+                element: <ManageService/>
+            },
+            {
+                path: "manageUsers",
+                element: <ManageUser/>
+            },
+            {
+                path: "manageRecharges",
+                element: <ManageRecharges/>
+            },
+            {
+                path: "services",
+                element: <ServiceCards/>
             },
             {
                 path: "orderHistory",
                 element: <OrderHistory/>
+            },
+            {
+                path: "rechargeHistory",
+                element: <RechargeHistory/>
             },
             {
                 path: "singleOrder",

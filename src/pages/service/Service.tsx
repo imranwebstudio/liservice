@@ -1,16 +1,23 @@
+import Container from "../../utils/Container";
+import dummy1 from "../../assets/jeanGray.jpg";
+import dummy2 from "../../assets/jeanGray.jpg";
+import dummy3 from "../../assets/jeanGray.jpg";
 
 const services = [
     {
         id: 6550,
-        title: "TikTok Video Views [Max Unlimited]",
+        title: "TikTok Video Views",
+        banner: dummy1,
         rate: 0.0011,
         min: 100,
         max: 2147483647,
         avgTime: "15 minutes",
+
     },
     {
         id: 6544,
-        title: "TikTok Likes [Max 250K]",
+        title: "TikTok Likes",
+        banner: dummy2,
         rate: 0.0850,
         min: 10,
         max: 1000000,
@@ -18,7 +25,8 @@ const services = [
     },
     {
         id: 6545,
-        title: "TikTok Likes [Max: 100K] | SuperInstant",
+        title: "TikTok Likes ",
+        banner: dummy3,
         rate: 0.1375,
         min: 10,
         max: 1000000,
@@ -29,13 +37,14 @@ const services = [
 
 const ServiceCards = () => {
     return (
-        <div className="container mx-auto p-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <Container className="container mx-auto p-4">
+            <div className="flex flex-wrap justify-between items-center  gap-6">
                 {services.map((service) => (
-                    <div className="card card-compact bg-base-100 w-96 shadow-xl">
-                        <figure>
+                    <div className="card card-compact w-80 shadow-xl">
+                        <figure className="w-full h-48">
                             <img
-                                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                                className="w-full h-full object-cover"
+                                src={service.banner} 
                                 alt="Shoes" />
                         </figure>
                         <div className="card-body">
@@ -50,7 +59,7 @@ const ServiceCards = () => {
                     </div>
                 ))}
             </div>
-        </div>
+        </Container>
     );
 };
 

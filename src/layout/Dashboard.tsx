@@ -4,8 +4,8 @@ import Nav from "../components/Nav";
 
 const Dashboard = () => {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            <div className="z-10">
+        <div className="flex flex-wrap gap-6">
+            <div className="z-10 w-[20%] h-screen">
                 <div className="absolute w-full z-30">
                     <Nav />
                 </div>
@@ -14,7 +14,7 @@ const Dashboard = () => {
                 </div>
 
             </div>
-            <div className="z-0 mt-16">
+            <div className="z-0 w-[76%] mt-16">
                 <Outlet />
             </div>
         </div>

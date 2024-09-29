@@ -8,6 +8,7 @@ const AddBalance: React.FC = () => {
     const [extraFee, setExtraFee] = useState<number>(0);
     const [total, setTotal] = useState<number>(0);
 
+    
     // Calculate extra fee (1.85%) and total
     const calculateTotal = (inputAmount: string) => {
         const parsedAmount = parseFloat(inputAmount);
@@ -20,7 +21,7 @@ const AddBalance: React.FC = () => {
     };
 
     return (
-        <div className="card w-full max-w-lg bg-base-100 shadow-xl p-6">
+        <div className="card   bg-base-100 shadow-xl p-6">
             <h2 className="text-2xl font-bold mb-4">Add Balance</h2>
 
             {/* Payment Method */}

@@ -23,7 +23,7 @@ const AddServices: React.FC = () => {
     };
 
     return (
-        <div className="card w-full max-w-lg bg-base-100 shadow-xl p-6">
+        <div className="card w-full  shadow-xl p-6">
             <h2 className="text-2xl font-bold mb-4">Add New Service</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 {/* Service Name */}

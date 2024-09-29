@@ -24,7 +24,7 @@ const SingleOrder: React.FC = () => {
     };
 
     return (
-        <div className="card w-full max-w-lg shadow-xl p-6">
+        <div className="card  shadow-xl p-6">
             <h2 className="text-2xl font-bold mb-4">Buy Service</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 {/* Service Name */}
@@ -100,6 +100,7 @@ const SingleOrder: React.FC = () => {
                     </label>
                     <input
                         type="text"
+                        readOnly
                         className="input input-bordered"
                         {...register("charge", { required: "Charge is required" })}
                     />
