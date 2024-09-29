@@ -1,7 +1,7 @@
 import Container from "../../utils/Container";
 import dummy1 from "../../assets/jeanGray.jpg";
-import dummy2 from "../../assets/jeanGray.jpg";
-import dummy3 from "../../assets/jeanGray.jpg";
+import dummy2 from "../../assets/alexendra.jpg";
+import dummy3 from "../../assets/emma.jpg";
 
 const services = [
     {
