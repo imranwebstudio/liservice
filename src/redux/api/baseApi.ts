@@ -9,7 +9,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/api/v1",
   credentials: "include", // This is correct to include cookies
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token;
+    const token = (getState() as RootState).auth.tokens;
     if (token) {
       headers.set("authorization", `${token}`);
     }
