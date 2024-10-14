@@ -26,29 +26,47 @@ const Register = () => {
                 password: data.password
             }
 
-            const res = await login(loginData).unwrap();
-            dispatch(setUser({ user: res.data.data, tokens: res.data.tokens }));
-            if(res.success === true) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Login Successful',
-                })
-                navigate("/");
-            }
-            else {
+            Swal.fire({
+                title: 'Loging you in...',
+                text: 'Please wait while we process your request',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            try {
+                const res = await login(loginData).unwrap();
+                dispatch(setUser({ user: res.data.data, tokens: res.data.tokens }));
+                if (res.success === true) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Login Successful',
+                    })
+                    navigate("/");
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Login Failed',
+                    })
+                }
+
+            } catch (error) {
+                console.log(error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
                     text: 'Login Failed',
                 })
             }
-            
-            console.log(res.data.tokens);
+
         } else {
             console.log("Register Data:", data);
         }
-        reset(); 
+        reset();
     };
 
     return (

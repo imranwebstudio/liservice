@@ -38,7 +38,6 @@ const ServiceCards = () => {
             // Make the API request to buy the service
              await buyService(id).unwrap();
 
-            // On success, show a success alert
             Swal.fire({
                 icon: 'success',
                 title: 'Order Successful!',

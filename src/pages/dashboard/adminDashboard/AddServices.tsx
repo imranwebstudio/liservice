@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useCreateServiceMutation } from "../../../redux/features/service/service.api";
+import Swal from "sweetalert2";
 
 interface FormValues {
     name: string;
@@ -35,8 +36,33 @@ const [addService] = useCreateServiceMutation();
             avgTime: Number(data.avgTime),
             isDeleted: false
         }
-        const res = await addService(serviceData).unwrap();
-        console.log("submission:", res);
+
+        Swal.fire({
+            title: 'Processing Order...',
+            text: 'Please wait while we process your order',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try {
+            await addService(serviceData).unwrap();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Service Added Successful!',
+                text: 'Your service has been successfully Added.',
+            });
+            
+        } catch (error) {
+            console.log(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Service Failed',
+                text: 'There was an error processing your Service. Please try again.',
+            });   
+        }
     };
 
     return (
