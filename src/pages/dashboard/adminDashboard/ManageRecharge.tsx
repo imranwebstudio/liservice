@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import  { useState } from "react";
 import Container from "../../../utils/Container";
 
@@ -12,7 +13,7 @@ const mockRecharges = [
 
 const ManageRecharges = () => {
     // State to manage recharge data
-    const [recharges, setRecharges] = useState(mockRecharges);
+    const [recharges, _setRecharges] = useState(mockRecharges);
 
     return (
         <Container>
