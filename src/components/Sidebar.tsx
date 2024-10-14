@@ -2,7 +2,7 @@ import { FiHome, FiMenu } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
-    const role: 'user' | 'admin' = 'user';
+    const role: 'user' | 'admin' = 'admin';
     return (
         <div>
             <div className="drawer lg:drawer-open">

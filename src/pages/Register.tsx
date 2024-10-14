@@ -2,24 +2,51 @@ import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Container from "../utils/Container";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../redux/hooks";
+import { useLoginMutation } from "../redux/features/auth/authApi";
+import Swal from "sweetalert2";
+import { setUser } from "../redux/features/auth/authSlice";
 
 const Register = () => {
     const [isLogin, setIsLogin] = useState(true); // State to toggle between Login and Register forms
     const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
+    const dispatch = useAppDispatch();
+    const [login] = useLoginMutation();
+
+    const [showPassword, setShowPassword] = useState(false);  // State to toggle password visibility
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);  // State for confirm password
 
     // Handle form submission
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         if (isLogin) {
             // Handle login logic
             const loginData = {
-                username: data.username,
+                userName: data.username,
                 password: data.password
             }
-            console.log("Login Data:", loginData);
+
+            const res = await login(loginData).unwrap();
+            dispatch(setUser({ user: res.data.data, tokens: res.data.tokens }));
+            if(res.success === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Login Successful',
+                })
+            }
+            else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Login Failed',
+                })
+            }
+            
+            console.log(res.data.tokens);
         } else {
             console.log("Register Data:", data);
         }
-        reset(); // Reset form after submission
+        reset(); 
     };
 
     return (
@@ -99,18 +126,27 @@ const Register = () => {
                                 <label className="label">
                                     <span className="label-text">Password</span>
                                 </label>
-                                <input
-                                    type="password"
-                                    placeholder="password"
-                                    className="input input-bordered"
-                                    {...register("password", {
-                                        required: "Password is required",
-                                        minLength: {
-                                            value: 6,
-                                            message: "Password must be at least 6 characters"
-                                        }
-                                    })}
-                                />
+                                <div className="relative">
+                                    <input
+                                        type={showPassword ? "text" : "password"} // Toggle input type
+                                        placeholder="password"
+                                        className="input input-bordered w-full"
+                                        {...register("password", {
+                                            required: "Password is required",
+                                            minLength: {
+                                                value: 6,
+                                                message: "Password must be at least 6 characters"
+                                            }
+                                        })}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="absolute inset-y-0 right-3 flex items-center text-sm"
+                                        onClick={() => setShowPassword((prev) => !prev)}
+                                    >
+                                        {showPassword ? "Hide" : "Show"}
+                                    </button>
+                                </div>
                                 {typeof errors.password?.message === "string" && (
                                     <span className="text-red-500 text-sm">{errors.password.message}</span>
                                 )}
@@ -122,15 +158,24 @@ const Register = () => {
                                     <label className="label">
                                         <span className="label-text">Confirm Password</span>
                                     </label>
-                                    <input
-                                        type="password"
-                                        placeholder="confirm password"
-                                        className="input input-bordered"
-                                        {...register("confirmPassword", {
-                                            required: "Please confirm your password",
-                                            validate: (value) => value === watch("password") || "Passwords do not match"
-                                        })}
-                                    />
+                                    <div className="relative">
+                                        <input
+                                            type={showConfirmPassword ? "text" : "password"}  // Toggle input type for confirm password
+                                            placeholder="confirm password"
+                                            className="input input-bordered w-full"
+                                            {...register("confirmPassword", {
+                                                required: "Please confirm your password",
+                                                validate: (value) => value === watch("password") || "Passwords do not match"
+                                            })}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="absolute inset-y-0 right-3 flex items-center text-sm"
+                                            onClick={() => setShowConfirmPassword((prev) => !prev)}
+                                        >
+                                            {showConfirmPassword ? "Hide" : "Show"}
+                                        </button>
+                                    </div>
                                     {typeof errors.confirmPassword?.message === "string" && (
                                         <span className="text-red-500 text-sm">{errors.confirmPassword.message}</span>
                                     )}
