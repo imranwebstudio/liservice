@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
 export type TUser = {
+    [x: string]: string | undefined;
     _id: string;
     name: string;
     email: string;
@@ -39,3 +40,11 @@ export const { setUser, logout } = authSlice.actions;
 export default authSlice.reducer;
 
 export const selectUser = (state: RootState) => state.auth.user;
+
+export const userRole = (state: RootState) => {
+    if (state.auth.user) {
+        return state.auth.user.role;
+    } else {
+        return null;
+    }
+}

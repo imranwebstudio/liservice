@@ -1,8 +1,14 @@
 import { FiHome, FiMenu } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
+import { useAppSelector } from "../redux/hooks";
+import { userRole } from "../redux/features/auth/authSlice";
 
 const Sidebar = () => {
-    const role: 'user' | 'admin' = 'admin';
+
+    const role = useAppSelector(userRole)
+
+    console.log(role);
+    // const role: 'user' | 'admin' = 'admin';
     return (
         <div>
             <div className="drawer lg:drawer-open">

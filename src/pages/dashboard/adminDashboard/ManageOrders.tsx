@@ -1,34 +1,28 @@
-import  { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Container from "../../../utils/Container";
+import { useApproveServiceMutation, useGetPendingServicesQuery } from "../../../redux/features/service/service.api";
+import Loading from "../../../utils/Loading";
 
-// Mock Order Data for Social Media Promotion Services
-const mockOrders = [
-    { id: 1, customer: "John Doe", service: "Facebook Post Boost", platform: "Facebook", quantity: "5k", cost: "$50", status: "Pending" },
-    { id: 2, customer: "Jane Smith", service: "YouTube Channel Boost", platform: "YouTube", quantity: "10k Views", cost: "$100", status: "Approved" },
-    { id: 3, customer: "Michael Johnson", service: "Instagram Likes Enhancement", platform: "Instagram", quantity: "2k Likes", cost: "$40", status: "Pending" },
-    { id: 4, customer: "Emily Davis", service: "Twitter Follower Growth", platform: "Twitter", quantity: "1k Followers", cost: "$30", status: "Shipped" },
-    { id: 5, customer: "Chris Lee", service: "TikTok Engagement Boost", platform: "TikTok", quantity: "3k Views", cost: "$60", status: "Pending" },
-];
+
 
 const ManageOrders = () => {
-    // State to manage the orders
-    const [orders, setOrders] = useState(mockOrders);
+
+    const { data, isLoading } = useGetPendingServicesQuery(undefined);
+    const [updateServiceStatus, { isLoading: isUpdating }] = useApproveServiceMutation();
+
+    if (isLoading) return <Loading />;
+
+    const handleStatusUpdate = async (serviceId: string, status: string) => {
+        try {
+            await updateServiceStatus({ id: serviceId, status }).unwrap();
+            alert(`Service updated to ${status}`);
+        } catch (error) {
+            console.error("Failed to update service status:", error);
+        }
+    };
 
     // Function to handle approval of an order
-    const handleApprove = (orderId: number) => {
-        const updatedOrders = orders.map(order =>
-            order.id === orderId ? { ...order, status: "Approved" } : order
-        );
-        setOrders(updatedOrders);
-    };
-
-    // Function to handle cancellation of an order
-    const handleCancel = (orderId: number) => {
-        const updatedOrders = orders.map(order =>
-            order.id === orderId ? { ...order, status: "Cancelled" } : order
-        );
-        setOrders(updatedOrders);
-    };
+  
 
     return (
         <Container>
@@ -42,37 +36,33 @@ const ManageOrders = () => {
                                 <th>#</th>
                                 <th>Customer</th>
                                 <th>Service</th>
-                                <th>Platform</th>
-                                <th>Quantity</th>
                                 <th>Cost</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map((order, index) => (
-                                <tr key={order.id}>
+                            {data?.data?.map((service: any, index: any) => (
+                                <tr key={service.id}>
                                     <th>{index + 1}</th>
-                                    <td>{order.customer}</td>
-                                    <td>{order.service}</td>
-                                    <td>{order.platform}</td>
-                                    <td>{order.quantity}</td>
-                                    <td>{order.cost}</td>
-                                    <td>{order.status}</td>
+                                    <td>{service.userId.userName}</td>
+                                    <td>{service.serviceId.name}</td>
+                                    <td>{service.serviceId.price}</td>
+                                    <td>{service.status}</td>
                                     <td>
-                                        {/* Buttons to approve or cancel */}
-                                        <button
-                                            className="btn btn-sm btn-success mr-2"
-                                            onClick={() => handleApprove(order.id)}
-                                            disabled={order.status === "Approved" || order.status === "Shipped"}
+                                    <button
+                                            className="btn btn-success btn-xs mr-2"
+                                            onClick={() => handleStatusUpdate(service._id, "done")}
+                                            disabled={isUpdating || service.status !== "pending"}
                                         >
                                             Approve
                                         </button>
                                         <button
-                                            className="btn btn-sm btn-error"
-                                            onClick={() => handleCancel(order.id)}
+                                            className="btn btn-danger btn-xs"
+                                            onClick={() => handleStatusUpdate(service._id, "rejected")}
+                                            disabled={isUpdating || service.status !== "pending"}
                                         >
-                                            Cancel
+                                            Reject
                                         </button>
                                     </td>
                                 </tr>

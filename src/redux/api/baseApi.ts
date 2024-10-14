@@ -5,13 +5,15 @@ import { logout, setUser } from "../features/auth/authSlice";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/api/v1",
   credentials: "include", // This is correct to include cookies
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.tokens;
+    const token = (getState() as RootState).auth.tokens as unknown as { accessToken: string };
+    // console.log(token);
     if (token) {
-      headers.set("authorization", `${token}`);
+      headers.set("authorization", `Bearer ${token.accessToken}`);
     }
     return headers;
   },
@@ -65,6 +67,6 @@ async (args, api, extraOptions): Promise<any> => {
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ['SemesterRegistration'],
+  tagTypes: ['User', 'services'],
   endpoints: () => ({})
 });

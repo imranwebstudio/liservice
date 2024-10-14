@@ -1,42 +1,57 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useGetServicesQuery,  } from "../../../redux/features/service/service.api";
 import Container from "../../../utils/Container";
+import Loading from "../../../utils/Loading";
 
 const ManageService = () => {
+    const { data, isLoading } = useGetServicesQuery(undefined);
+
+    if (isLoading) return <Loading />;
+
+    console.log("Services:", data?.data);
+
     return (
         <Container>
             <div>
                 <div className="overflow-x-auto">
                     <table className="table">
-                        {/* head */}
+                        {/* Table Head */}
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>#</th>
                                 <th>Name</th>
-                                <th>Job</th>
-                                <th>Favorite Color</th>
+                                <th>Price</th>
+                                <th>Avg. Time</th>
+                                <th>Min</th>
+                                <th>Max</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
+                        {/* Table Body */}
                         <tbody>
-                            {/* row 1 */}
-                            <tr>
-                                <th>1</th>
-                                <td>Cy Ganderton</td>
-                                <td>Quality Control Specialist</td>
-                                <td>Blue</td>
-                            </tr>
-                            {/* row 2 */}
-                            <tr className="hover">
-                                <th>2</th>
-                                <td>Hart Hagerty</td>
-                                <td>Desktop Support Technician</td>
-                                <td>Purple</td>
-                            </tr>
-                            {/* row 3 */}
-                            <tr>
-                                <th>3</th>
-                                <td>Brice Swyre</td>
-                                <td>Tax Accountant</td>
-                                <td>Red</td>
-                            </tr>
+                            {data?.data?.map((service: any, index: number) => (
+                                <tr key={service._id}>
+                                    <th>{index + 1}</th>
+                                    <td>{service.name}</td>
+                                    <td>{service.price}</td>
+                                    <td>{service.avgTime} hrs</td>
+                                    <td>{service.min}</td>
+                                    <td>{service.max}</td>
+                                    <td >
+                                        <button
+                                            className="btn btn-success btn-xs mr-2"
+                                            
+                                        >
+                                            Update
+                                        </button>
+                                        <button
+                                            className="btn btn-danger btn-xs"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

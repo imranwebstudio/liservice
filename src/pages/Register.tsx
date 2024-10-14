@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Container from "../utils/Container";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../redux/hooks";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import Swal from "sweetalert2";
@@ -12,6 +12,7 @@ const Register = () => {
     const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
     const dispatch = useAppDispatch();
     const [login] = useLoginMutation();
+    const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);  // State to toggle password visibility
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);  // State for confirm password
@@ -33,6 +34,7 @@ const Register = () => {
                     title: 'Success',
                     text: 'Login Successful',
                 })
+                navigate("/");
             }
             else {
                 Swal.fire({

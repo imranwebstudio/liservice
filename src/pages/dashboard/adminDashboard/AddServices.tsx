@@ -1,13 +1,17 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useCreateServiceMutation } from "../../../redux/features/service/service.api";
 
 interface FormValues {
-    serviceName: string;
-    category: string;
-    ratePer1000: number;
+    name: string;
+    image?: string;
+    userId?: string[];
+    description: string;
+    price: number;
     min: number;
     max: number;
-    avgTime: string;
+    avgTime: number;
+    isDeleted?: boolean;
 }
 
 const AddServices: React.FC = () => {
@@ -16,14 +20,27 @@ const AddServices: React.FC = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<FormValues>();
+const [addService] = useCreateServiceMutation();
 
-    const onSubmit: SubmitHandler<FormValues> = (data) => {
-        console.log("Form Data:", data);
-        // Here you can send the data to the backend or perform other actions
+
+    const onSubmit: SubmitHandler<FormValues> = async (data) => {
+
+        const serviceData = {
+            name: data.name,
+            image: data.image,
+            description: data.description,
+            price: Number(data.price),
+            min: Number(data.min),
+            max: Number(data.max),
+            avgTime: Number(data.avgTime),
+            isDeleted: false
+        }
+        const res = await addService(serviceData).unwrap();
+        console.log("submission:", res);
     };
 
     return (
-        <div className="card w-full  shadow-xl p-6">
+        <div className="card w-full shadow-xl p-6">
             <h2 className="text-2xl font-bold mb-4">Add New Service</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 {/* Service Name */}
@@ -34,56 +51,68 @@ const AddServices: React.FC = () => {
                     <input
                         type="text"
                         className="input input-bordered"
-                        {...register("serviceName", { required: "Service name is required" })}
+                        {...register("name", { required: "Service name is required" })}
                     />
-                    {errors.serviceName && (
-                        <span className="text-red-500 text-sm">{errors.serviceName.message}</span>
+                    {errors.name && (
+                        <span className="text-red-500 text-sm">{errors.name.message}</span>
                     )}
                 </div>
 
-                {/* Category */}
+                {/* Image (optional) */}
                 <div className="form-control mb-4">
                     <label className="label">
-                        <span className="label-text">Category</span>
+                        <span className="label-text">Image URL</span>
                     </label>
                     <input
                         type="text"
                         className="input input-bordered"
-                        {...register("category", { required: "Category is required" })}
+                        {...register("image")}
                     />
-                    {errors.category && (
-                        <span className="text-red-500 text-sm">{errors.category.message}</span>
+                </div>
+
+              
+                {/* Description */}
+                <div className="form-control mb-4">
+                    <label className="label">
+                        <span className="label-text">Description</span>
+                    </label>
+                    <textarea
+                        className="textarea textarea-bordered"
+                        {...register("description", { required: "Description is required" })}
+                    />
+                    {errors.description && (
+                        <span className="text-red-500 text-sm">{errors.description.message}</span>
                     )}
                 </div>
 
-                {/* Rate per 1000 */}
+                {/* Price */}
                 <div className="form-control mb-4">
                     <label className="label">
-                        <span className="label-text">Rate per 1000</span>
+                        <span className="label-text">Price</span>
                     </label>
                     <input
                         type="number"
                         className="input input-bordered"
-                        {...register("ratePer1000", {
-                            required: "Rate per 1000 is required",
-                            min: { value: 0, message: "Must be a positive number" },
+                        {...register("price", {
+                            required: "Price is required",
+                            min: { value: 0, message: "Price must be a positive number" },
                         })}
                     />
-                    {errors.ratePer1000 && (
-                        <span className="text-red-500 text-sm">{errors.ratePer1000.message}</span>
+                    {errors.price && (
+                        <span className="text-red-500 text-sm">{errors.price.message}</span>
                     )}
                 </div>
 
                 {/* Min */}
                 <div className="form-control mb-4">
                     <label className="label">
-                        <span className="label-text">Min </span>
+                        <span className="label-text">Min</span>
                     </label>
                     <input
                         type="number"
                         className="input input-bordered"
                         {...register("min", {
-                            required: "Minimum likes is required",
+                            required: "Minimum value is required",
                             min: { value: 10, message: "Must be at least 10" },
                         })}
                     />
@@ -101,12 +130,9 @@ const AddServices: React.FC = () => {
                         type="number"
                         className="input input-bordered"
                         {...register("max", {
-                            required: "Maximum likes is required",
-                            validate: (value) => {
-                                const minLikes = Number(value); // Ensure value is a number
-                                // const maxLikes = Number(value);
-                                return minLikes > 10 || "Maximum likes must be greater than Minimum likes";
-                            },
+                            required: "Maximum value is required",
+                            validate: (value) =>
+                                value > 10 || "Maximum must be greater than 10",
                         })}
                     />
                     {errors.max && (
@@ -117,17 +143,21 @@ const AddServices: React.FC = () => {
                 {/* Average Time */}
                 <div className="form-control mb-4">
                     <label className="label">
-                        <span className="label-text">Average Time</span>
+                        <span className="label-text">Average Time (in hours)</span>
                     </label>
                     <input
-                        type="text"
+                        type="number"
                         className="input input-bordered"
-                        {...register("avgTime", { required: "Average time is required" })}
+                        {...register("avgTime", {
+                            required: "Average time is required",
+                            min: { value: 1, message: "Time must be at least 1 hour" },
+                        })}
                     />
                     {errors.avgTime && (
                         <span className="text-red-500 text-sm">{errors.avgTime.message}</span>
                     )}
                 </div>
+
 
                 {/* Submit Button */}
                 <div className="form-control mt-4">
