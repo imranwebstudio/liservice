@@ -7,15 +7,15 @@ const AddBalance: React.FC = () => {
     const [amount, setAmount] = useState<number>(0);
     const [extraFee, setExtraFee] = useState<number>(0);
     const [total, setTotal] = useState<number>(0);
+    const [accepted, setAccepted] = useState<boolean>(false);
 
-    
     // Calculate extra fee (1.85%) and total
     const calculateTotal = (inputAmount: string) => {
         const parsedAmount = parseFloat(inputAmount);
         if (!parsedAmount || isNaN(parsedAmount)) return;
 
         setAmount(parsedAmount);
-        const calculatedFee = Math.round(parsedAmount * 0.0185); // Extra fee (1.85%)
+        const calculatedFee = Math.round(parsedAmount * 140); // Extra fee (1.85%)
         setExtraFee(calculatedFee);
         setTotal(parsedAmount + calculatedFee);
     };
@@ -49,9 +49,9 @@ const AddBalance: React.FC = () => {
                     <span className="label-text">Amount</span>
                 </label>
                 <input
-                    type="number"
+                    type="text"
                     className="input input-bordered"
-                    placeholder="Enter amount"
+                    placeholder="Enter amount in Dollar $"
                     onChange={(e) => calculateTotal(e.target.value)}
                 />
             </div>
@@ -84,25 +84,31 @@ const AddBalance: React.FC = () => {
 
             {/* Terms and Conditions */}
             <div className="form-control mb-4">
-                <label className="label cursor-pointer">
+                <label className="label cursor-pointer justify-start gap-4">
                     <input
-                        required
+                        onChange={() => setAccepted(!accepted)}
                         type="checkbox"
                         className="checkbox checkbox-primary"
                     />
-                    <span className="label-text">Accept the terms and conditions</span>
+                    <span className="text-xl">Accept the terms and conditions</span>
                 </label>
             </div>
 
             {/* Submit Button */}
             <div className="form-control mt-4">
-                <Link
-                    to="/payment"
-                    state={{ method, amount, extraFee, total }} // Passing all values to the payment page
-                    className="btn btn-primary"
-                >
-                    Go to Payment
-                </Link>
+                {accepted ? (
+                    <Link
+                        to="/payment"
+                        state={{ method, amount, extraFee, total }} // Passing all values to the payment page
+                        className="btn btn-primary"
+                    >
+                        Go to Payment
+                    </Link>
+                ) : (
+                    <button className="btn btn-primary" disabled>
+                        Go to Payment
+                    </button>
+                )}
             </div>
         </div>
     );

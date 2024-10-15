@@ -119,26 +119,48 @@ const Register = () => {
 
                             {/* Email field is only required for registration */}
                             {!isLogin && (
-                                <div className="form-control">
-                                    <label className="label">
-                                        <span className="label-text">Email</span>
-                                    </label>
-                                    <input
-                                        type="email"
-                                        placeholder="email"
-                                        className="input input-bordered"
-                                        {...register("email", {
-                                            required: "Email is required",
-                                            pattern: {
-                                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                                message: "Invalid email address"
-                                            }
-                                        })}
-                                    />
-                                    {typeof errors.email?.message === "string" && (
-                                        <span className="text-red-500 text-sm">{errors.email.message}</span>
-                                    )}
-                                </div>
+                                <>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Email</span>
+                                        </label>
+                                        <input
+                                            type="email"
+                                            placeholder="email"
+                                            className="input input-bordered"
+                                            {...register("email", {
+                                                required: "Email is required",
+                                                pattern: {
+                                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                    message: "Invalid email address"
+                                                }
+                                            })}
+                                        />
+                                        {typeof errors.email?.message === "string" && (
+                                            <span className="text-red-500 text-sm">{errors.email.message}</span>
+                                        )}
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text">Email</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            placeholder="Phone Number"
+                                            className="input input-bordered"
+                                            {...register("phone", {
+                                                required: "phone number is required",
+                                                pattern: {
+                                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                    message: "Invalid email address"
+                                                }
+                                            })}
+                                        />
+                                        {typeof errors.email?.message === "string" && (
+                                            <span className="text-red-500 text-sm">{errors.email.message}</span>
+                                        )}
+                                    </div>
+                                </>
                             )}
 
                             {/* Password field */}

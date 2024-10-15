@@ -1,19 +1,37 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import  { useState } from "react";
 import Container from "../../../utils/Container";
+import { useApproveBalanceRequestMutation, useGetBalanceRequestQuery } from "../../../redux/features/balance/balance.api";
+import Loading from "../../../utils/Loading";
+import moment from "moment";
+import Swal from "sweetalert2";
 
 // Mock Recharge Data
-const mockRecharges = [
-    { id: 1, name: "John Doe", email: "john@example.com", amountRecharged: "$100", balance: "$80", lastRecharge: "2024-09-25" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", amountRecharged: "$150", balance: "$120", lastRecharge: "2024-09-20" },
-    { id: 3, name: "Michael Johnson", email: "michael@example.com", amountRecharged: "$50", balance: "$10", lastRecharge: "2024-09-15" },
-    { id: 4, name: "Emily Davis", email: "emily@example.com", amountRecharged: "$200", balance: "$190", lastRecharge: "2024-09-10" },
-    { id: 5, name: "Chris Lee", email: "chris@example.com", amountRecharged: "$75", balance: "$50", lastRecharge: "2024-09-12" },
-];
+
 
 const ManageRecharges = () => {
-    // State to manage recharge data
-    const [recharges, _setRecharges] = useState(mockRecharges);
+    const { data, isLoading } = useGetBalanceRequestQuery(undefined);
+    const [approveRecharge] = useApproveBalanceRequestMutation();
+
+    const handleApproveRecharge = async (id: string, status: string) => {
+        Swal.fire({
+            title: 'processing...',
+            text: 'Please wait while we process your request',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try {
+            await approveRecharge({ id, status }).unwrap();
+            Swal.fire("Success", "Recharge request approved successfully", "success");
+        } catch (error) {
+            Swal.fire("Error", "Failed to approve recharge request", "error");
+        }
+    };
+
+    if (isLoading) return <Loading />
 
     return (
         <Container>
@@ -26,29 +44,53 @@ const ManageRecharges = () => {
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th>Amount Recharged</th>
-                                <th>Balance</th>
-                                <th>Last Recharge</th>
+                                <th>Phone</th>
+                                <th>Amount </th>
+                                <th>Paid Taka</th>
+                                <th>Recharge Date</th>
+                                <th>Method</th>
+                                <th>TransactionId</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {recharges.map((recharge, index) => (
+                            {data?.data?.balanceRequests?.map((recharge: any, index: any) => (
                                 <tr key={recharge.id}>
                                     <th>{index + 1}</th>
-                                    <td>{recharge.name}</td>
-                                    <td>{recharge.email}</td>
-                                    <td>{recharge.amountRecharged}</td>
-                                    <td>{recharge.balance}</td>
-                                    <td>{recharge.lastRecharge}</td>
+                                    <td>{recharge.userId.name}</td>
+                                    <td>{recharge.userId.phone}</td>
+                                    <td>{recharge.paidTaka}</td>
+                                    <td>${recharge.amount}</td>
+                                    <td>{moment(recharge.createdAt).format("MMMM Do YYYY, h:mm:ss a")}</td>
+                                    <td>{recharge.paymentMethod}</td>
+                                    <td>{recharge.reference}</td>
                                     <td>
+                                        <span
+                                            className={`${recharge.status === "approved"
+                                                ? "text-green-600"
+                                                : recharge.status === "pending"
+                                                    ? "text-yellow-500"
+                                                    : "text-red-500"
+                                                } font-semibold`}
+                                        >
+                                            {recharge.status}
+                                        </span>
+                                    </td>
+                                    <td className="flex gap-6">
                                         {/* Button to Refund Recharge */}
                                         <button
-                                            className="btn btn-sm btn-warning"
-                                            onClick={() => alert(`Refund issued for ${recharge.name}`)}
+                                            disabled={recharge.status === "approved"}
+                                            className="btn btn-sm btn-success"
+                                            onClick={() => handleApproveRecharge(recharge._id, "approved")}
                                         >
-                                            Refund
+                                            Approve
+                                        </button>
+                                        <button
+                                            className="btn btn-sm btn-warning"
+                                            onClick={() => handleApproveRecharge(recharge._id, "rejected")}
+                                        >
+                                            Reject
                                         </button>
                                     </td>
                                 </tr>

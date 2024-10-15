@@ -1,37 +1,16 @@
-import  { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import moment from "moment";
+import { useGetBalanceByUserIdQuery } from "../../../redux/features/balance/balance.api";
+import Loading from "../../../utils/Loading";
 
 const RechargeHistory = () => {
+  const {data, isLoading} = useGetBalanceByUserIdQuery(undefined);
+  console.log(data);
+  
+
+  if(isLoading) return <Loading />
+
   // Mock recharge data
-  const [recharges] = useState([
-    {
-      id: 1,
-      transactionId: "TXN12345",
-      amount: "$100",
-      status: "Completed",
-      date: "2023-09-10",
-    },
-    {
-      id: 2,
-      transactionId: "TXN67890",
-      amount: "$50",
-      status: "Pending",
-      date: "2023-09-15",
-    },
-    {
-      id: 3,
-      transactionId: "TXN54321",
-      amount: "$200",
-      status: "Failed",
-      date: "2023-09-20",
-    },
-    {
-      id: 4,
-      transactionId: "TXN98765",
-      amount: "$150",
-      status: "Completed",
-      date: "2023-09-25",
-    },
-  ]);
 
   return (
     <div>
@@ -44,22 +23,24 @@ const RechargeHistory = () => {
               <th>#</th>
               <th>Transaction ID</th>
               <th>Amount</th>
+              <th>Paid Taka</th>
               <th>Status</th>
               <th>Date</th>
             </tr>
           </thead>
           <tbody>
-            {recharges.map((recharge, index) => (
-              <tr key={recharge.id} className={recharge.status === "Failed" ? "bg-red-100" : ""}>
+            {data?.data?.balanceRequest?.map((recharge: any, index: any) => (
+              <tr key={recharge._id} className={recharge.status === "Failed" ? "bg-red-100" : ""}>
                 <th>{index + 1}</th>
-                <td>{recharge.transactionId}</td>
-                <td>{recharge.amount}</td>
+                <td>{recharge.reference}</td>
+                <td>${recharge.paidTaka}</td>
+                <td>৳{recharge.amount}</td>
                 <td>
                   <span
                     className={`${
-                      recharge.status === "Completed"
+                      recharge.status === "approved"
                         ? "text-green-600"
-                        : recharge.status === "Pending"
+                        : recharge.status === "pending"
                         ? "text-yellow-500"
                         : "text-red-500"
                     } font-semibold`}
@@ -67,7 +48,7 @@ const RechargeHistory = () => {
                     {recharge.status}
                   </span>
                 </td>
-                <td>{recharge.date}</td>
+                <td>{moment(recharge.createdAt).format("MMMM Do YYYY, h:mm:ss a")}</td>
               </tr>
             ))}
           </tbody>

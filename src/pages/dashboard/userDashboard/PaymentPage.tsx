@@ -4,7 +4,6 @@ import { useState } from "react";
 import bkash from "../../../assets/BKash-bKash-Logo.wine.svg";
 import nagad from "../../../assets/nagad.png";
 import rocket from "../../../assets/rocket.png";
-import taka from "../../../assets/taka.svg";
 import { useAddBalanceMutation } from "../../../redux/features/balance/balance.api";
 import Swal from "sweetalert2";
 const PaymentPage = () => {
@@ -13,6 +12,7 @@ const PaymentPage = () => {
     const [reference, setReference] = useState<string>("");
     const [addBalance] = useAddBalanceMutation();
 
+    console.log(method);
     const navigate = useNavigate();
     const handleSubmit = async () => {
         Swal.fire({
@@ -25,9 +25,11 @@ const PaymentPage = () => {
         });
         try {
             const balanceData = {
-                amount: total,
-                paymentMethod: method
-            }
+                amount: Number(total),
+                paidTaka: Number(amount),
+                paymentMethod: method,
+                reference
+            }   
 
             await addBalance(balanceData).unwrap();
 
@@ -36,7 +38,7 @@ const PaymentPage = () => {
                 title: 'Success',
                 text: 'Balance request Posted Successfully',
             })
-            navigate("/");
+            navigate("/dashboard");
         } catch (error) {
             console.log("error:", error);
             Swal.fire({
@@ -54,10 +56,10 @@ const PaymentPage = () => {
                 <img className="p-2 my-3" src={method === "Bkash" ? bkash : method === "Nagad" ? nagad : rocket} alt="" />
                 <div className="flex justify-between">
                     <p className="border-2 p-2 rounded text-gray-500 flex justify-between gap-4 items-center">
-                        <img src={taka} className="size-7 inline opacity-60" alt="" /> <span className="inline text-4xl">{amount}</span>
+                       <span className="text-3xl">$</span>  <span className="inline text-4xl">{amount}</span>
                     </p>
                 </div>
-                <p>Total: {total}</p>
+                <p>Total: {total} TK</p>
                 <div className="form-control my-4 ">
                     <input
                         type="text"
@@ -66,7 +68,7 @@ const PaymentPage = () => {
                         onChange={(e) => setReference(e.target.value)}
                     />
                 </div>
-                <button className="btn btn-primary" onClick={handleSubmit}>
+                <button disabled={!reference} className="btn btn-primary" onClick={handleSubmit}>
                     Pay
                 </button>
             </div>
