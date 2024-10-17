@@ -2,6 +2,8 @@ import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { logout, selectUser } from "../redux/features/auth/authSlice";
+import logo1 from '../assets/logoWhite.png'
+import logo2 from '../assets/logoBlack.png'
 
 const Nav = () => {
     // State to manage the theme, default is "bumblebee" from daisyUI
@@ -74,7 +76,9 @@ const Nav = () => {
                             </li>
                         </ul>
                     </div>
-                    <Link to="/" className="btn btn-ghost text-xl">LI SERVICE 24</Link>
+                    <Link to="/" className="btn btn-ghost text-xl">
+                            <img className="w-14" src={theme === 'bumblebee' ? logo2 : logo1} alt="" />
+                    </Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal font-bold px-1">

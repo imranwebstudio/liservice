@@ -7,8 +7,6 @@ const Sidebar = () => {
 
     const role = useAppSelector(userRole)
 
-    console.log(role);
-    // const role: 'user' | 'admin' = 'admin';
     return (
         <div>
             <div className="drawer lg:drawer-open">
@@ -59,7 +57,7 @@ const Sidebar = () => {
                                             className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
                                             to="/dashboard/singleOrder"
                                         >
-                                            Single Order
+                                            Customized Order
                                         </NavLink>
                                     </li>
                                     <li>

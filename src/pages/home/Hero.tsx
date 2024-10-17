@@ -1,23 +1,27 @@
+import logo1 from '../../assets/logoWhite.png'
+import logo2 from '../../assets/logoBlack.png'
+import { useEffect, useState } from 'react';
 const Hero = () => {
+    
+    const [theme, setTheme] = useState('bumblebee'); // Use useState to track theme state
+    useEffect(() => {
+        const current = localStorage.getItem('theme');
+        if (current) {
+            setTheme(current); // Update the state with the theme from localStorage
+        }
+    }, []); // Empty dependency array so it runs only once
+
     return (
         <div>
-            <div className="hero ">
-                <div className="hero-content text-center">
-                    <div className="max-w-md">
-                        <h1 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
-                            Welcome <br /> To LI SERVICE 24
-                        </h1>
-                        <p className="py-6 ">
-                            LI SERVICE 24 is an online platform that provides
-                            reliable and efficient promoting service to customers.
-                            Please contact us if you have any questions.
-                        </p>
-                        <a href="https://wa.me/qr/YD4JOJ4PEP2WE1" className="">
-                            <img className="w-36 mx-auto" src="https://www.i-eventplanner.com/wp-content/uploads/2023/03/Click-to-WhatsApp.png" alt="" />
-                        </a>
-                    </div>
-                </div>
-            </div>
+            {/* Hero Section */}
+            <section className="text-center py-16 bg-gradient-to-r from-blue-500 to-blue-800 text-white flex flex-col justify-center items-center">
+            <img className="w-40" src={theme === 'bumblebee' ? logo2 : logo1} alt="" />
+                <h1 className="text-5xl font-bold">Best SMM Panel in the World</h1>
+                <p className="text-2xl mt-4">Boost your online presence with Li Service 24</p>
+                <a href="https://wa.me/qr/YD4JOJ4PEP2WE1" className=" mt-10">
+                    <img className="w-36 mx-auto" src="https://www.i-eventplanner.com/wp-content/uploads/2023/03/Click-to-WhatsApp.png" alt="" />
+                </a>
+            </section>
         </div>
     );
 };

@@ -10,8 +10,8 @@ const serviceApi = baseApi.injectEndpoints({
             })
         }),
         getServices: build.query({
-            query: () => ({
-                url: "/service/getAll",
+            query: ({category}) => ({
+                url: `/service/getAll?category=${category}`,
                 method: "GET"
             })
         }),
