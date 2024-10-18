@@ -4,14 +4,7 @@ import { Link } from "react-router-dom";
 const Info = () => {
   return (
     <div className="  p-6">
-      {/* Hero Section */}
-      <section className="text-center py-16 bg-gradient-to-r from-blue-500 to-blue-800 text-white flex flex-col justify-center items-center">
-        <h1 className="text-5xl font-bold">Best SMM Panel in the World</h1>
-        <p className="text-2xl mt-4">Boost your online presence with Li Service 24</p>
-        <Link to="/services" className="mt-6 px-8 py-3 bg-yellow-400 text-black font-semibold rounded-lg hover:bg-yellow-500 transition">
-          Explore Services
-        </Link>
-      </section>
+     
 
       {/* Why Choose Us Section */}
       <section className="py-12">

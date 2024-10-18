@@ -8,6 +8,7 @@ interface FormValues {
     image?: string;
     userId?: string[];
     description: string;
+    category: string;
     price: number;
     min: number;
     max: number;
@@ -38,8 +39,8 @@ const [addService] = useCreateServiceMutation();
         }
 
         Swal.fire({
-            title: 'Processing Order...',
-            text: 'Please wait while we process your order',
+            title: 'Processing Service...',
+            text: 'Please wait while we process your Service',
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading();
@@ -108,6 +109,25 @@ const [addService] = useCreateServiceMutation();
                     />
                     {errors.description && (
                         <span className="text-red-500 text-sm">{errors.description.message}</span>
+                    )}
+                </div>
+              
+
+                {/* Price */}
+                <div className="form-control mb-4">
+                    <label className="label">
+                        <span className="label-text">Price</span>
+                    </label>
+                    <input
+                        type="text"
+                        className="input input-bordered"
+                        {...register("category", {
+                            required: "Category is required",
+                            min: { value: 0, message: "Category is required" },
+                        })}
+                    />
+                    {errors.price && (
+                        <span className="text-red-500 text-sm">{errors.price.message}</span>
                     )}
                 </div>
 
