@@ -17,7 +17,13 @@ const authorization = baseApi.injectEndpoints({
                 body: data
             }),
         }),
+        getUserProfile: build.query({
+            query: () => ({
+                url: "user/profile",
+                method: "GET",
+            }),
+        })
     }),
 })
 
-export const { useLoginMutation, useRegisterMutation } = authorization
+export const { useLoginMutation, useRegisterMutation, useGetUserProfileQuery } = authorization

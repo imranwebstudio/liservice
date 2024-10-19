@@ -16,6 +16,7 @@ import ManageService from "../pages/dashboard/adminDashboard/ManageService";
 import ManageUser from "../pages/dashboard/adminDashboard/ManageUser";
 import ManageOrders from "../pages/dashboard/adminDashboard/ManageOrders";
 import ManageRecharges from "../pages/dashboard/adminDashboard/ManageRecharge";
+import UserProfile from "../pages/user/UserProfile";
 
 const router = createBrowserRouter([
     {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
             {
                 path: '/payment',
                 element: <PaymentPage/>
+            },
+            {
+                path: '/profile',
+                element: <UserProfile/>
             }
         ]
     },

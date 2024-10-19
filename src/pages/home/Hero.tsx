@@ -1,16 +1,16 @@
 import logo1 from '../../assets/logoWhite.png'
 import logo2 from '../../assets/logoBlack.png'
-import { useEffect, useState } from 'react';
+import { useTheme } from '../../utils/ThemeContext';
 const Hero = () => {
-    
-    const [theme, setTheme] = useState('bumblebee'); // Use useState to track theme state
-    useEffect(() => {
-        const current = localStorage.getItem('theme');
-        if (current) {
-            setTheme(current); // Update the state with the theme from localStorage
-        }
-    }, []); // Empty dependency array so it runs only once
+    const themeContext = useTheme();
 
+    if (!themeContext) {
+        // Handle the case where themeContext is null
+        // You can return a default theme or throw an error
+        throw new Error("Theme context is not available");
+    }
+    const theme = themeContext?.theme;
+    
     return (
         <div>
             {/* Hero Section */}

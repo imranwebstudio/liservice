@@ -1,29 +1,18 @@
 import { Link, NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { logout, selectUser } from "../redux/features/auth/authSlice";
 import logo1 from '../assets/logoWhite.png'
 import logo2 from '../assets/logoBlack.png'
+import { useTheme } from "../utils/ThemeContext";
 
 const Nav = () => {
-    // State to manage the theme, default is "bumblebee" from daisyUI
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'bumblebee');
+    const themeContext = useTheme(); // Use the custom hook
 
     const user = useAppSelector(selectUser);
     const dispatch = useAppDispatch();
 
-    // Function to toggle the theme
-    const toggleTheme = () => {
-        const newTheme = theme === 'bumblebee' ? 'dark' : 'bumblebee'; // Toggle between 'bumblebee' and 'dark'
-        setTheme(newTheme);
-        localStorage.setItem('theme', newTheme); // Save the selected theme in localStorage
-        document.documentElement.setAttribute('data-theme', newTheme); // Apply the theme to <html> element
-    };
 
-    // Set the theme on component mount based on the saved preference in localStorage
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-    }, [theme]);
+    
 
     return (
         <div>
@@ -46,7 +35,7 @@ const Nav = () => {
                         </div>
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content font-bold bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                            className={ ` menu menu-sm dropdown-content font-bold bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow`}>
                             <li>
                                 <NavLink
                                     to="/service"
@@ -77,7 +66,7 @@ const Nav = () => {
                         </ul>
                     </div>
                     <Link to="/" className="btn btn-ghost text-xl">
-                            <img className="w-14" src={theme === 'bumblebee' ? logo2 : logo1} alt="" />
+                            <img className="w-14" src={themeContext?.theme === 'bumblebee' ? logo2 : logo1} alt="" />
                     </Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
@@ -115,7 +104,7 @@ const Nav = () => {
                 <div className="navbar-end">
                     <label className="swap swap-rotate mx-5">
                         {/* Hidden checkbox controls the state */}
-                        <input type="checkbox" onChange={toggleTheme} checked={theme === 'dark'} />
+                        <input type="checkbox" onChange={themeContext?.toggleTheme} checked={themeContext?.theme === 'dark'} />
 
                         {/* Sun icon for light mode */}
                         <svg
@@ -145,10 +134,10 @@ const Nav = () => {
                                 </label>
                                 <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
                                     <li>
-                                        <a className="justify-between">
+                                        <Link to="/profile" className="justify-between">
                                             Profile
                                             <span className="badge">New</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li><a>Settings</a></li>
                                     <li><button onClick={() => dispatch(logout())}>Logout</button></li>
