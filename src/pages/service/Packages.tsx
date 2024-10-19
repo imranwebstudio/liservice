@@ -1,22 +1,73 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import Swal from "sweetalert2";
+import { useBuyServiceMutation, useGetServicesQuery } from "../../redux/features/service/service.api";
 import Container from "../../utils/Container";
+import { IService } from "./Service";
+import Loading from "../../utils/Loading";
 
 const Packages = () => {
+  const { data, isLoading } = useGetServicesQuery({ category: "feature" })
+  const [buyService, { isLoading: buyingService }] = useBuyServiceMutation()
+
+  const handleOrderRequest = async (id: string) => {
+    if (buyingService) {
+      return;
+    }
+
+    // Show a loading alert before the request
+    Swal.fire({
+      title: 'Processing Order...',
+      text: 'Please wait while we process your order',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    try {
+      // Make the API request to buy the service
+      await buyService(id).unwrap();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Order Successful!',
+        text: 'Your service has been successfully purchased.',
+      });
+
+    } catch (error: any) {
+      // On error, show an error alert
+      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Order Failed',
+        text: 'There was an error processing your order. Please try again.',
+      });
+    }
+  };
+
+  if (isLoading) return <Loading />
+
   return (
     <Container className="py-10">
-      <div className="card glass w-96">
-        <figure>
-          <img
-            src="https://img.freepik.com/free-vector/flat-customer-service-week-horizontal-banner-template_23-2149644216.jpg"
-            alt="car!" />
-        </figure>
-        <div className="card-body">
-          <h2 className="card-title"></h2>
-          <p>How to park your car at your garage?</p>
-          <div className="card-actions justify-end">
-            <button className="btn btn-primary">Learn now!</button>
+      {data?.data?.map((service: IService) => (
+        <div className="card card-compact w-80 shadow-xl">
+          <figure className="w-full h-48">
+            <img
+              className="w-full h-full object-cover"
+              src={service.image}
+              alt="Shoes" />
+          </figure>
+          <div className="card-body">
+            <h2 className="card-title">{service.name}</h2>
+            <p>Price: {service.price}</p>
+            <p>Min: {service.min}</p> <p>Max: {service.max}</p>
+            <p>Avg. Time: {service.avgTime}</p>
+            <div className="card-actions justify-end">
+              <button onClick={() => handleOrderRequest(service?._id)} className="btn btn-primary">Create Order</button>
+            </div>
           </div>
         </div>
-      </div>
+      ))}
     </Container>
   );
 };

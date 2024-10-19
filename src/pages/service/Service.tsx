@@ -4,7 +4,7 @@ import { useBuyServiceMutation, useGetServicesQuery } from "../../redux/features
 import Loading from "../../utils/Loading";
 import Swal from "sweetalert2";
 
-interface IService {
+export interface IService {
     _id: string;
     name: string;
     price: number;
@@ -16,9 +16,9 @@ interface IService {
 
 
 const ServiceCards = () => {
-    const { data, isLoading } = useGetServicesQuery(undefined)
+    const { data, isLoading } = useGetServicesQuery({category: "feature"})
     const [buyService, { isLoading: buyingService }] = useBuyServiceMutation()
-
+    console.log(data);
     const handleOrderRequest = async (id: string) => {
         if (buyingService) {
             return;

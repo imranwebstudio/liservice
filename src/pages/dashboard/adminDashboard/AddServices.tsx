@@ -32,6 +32,7 @@ const [addService] = useCreateServiceMutation();
             image: data.image,
             description: data.description,
             price: Number(data.price),
+            category: data.category,
             min: Number(data.min),
             max: Number(data.max),
             avgTime: Number(data.avgTime),
@@ -116,16 +117,15 @@ const [addService] = useCreateServiceMutation();
                 {/* Price */}
                 <div className="form-control mb-4">
                     <label className="label">
-                        <span className="label-text">Price</span>
+                        <span className="label-text">Category</span>
                     </label>
-                    <input
-                        type="text"
-                        className="input input-bordered"
-                        {...register("category", {
-                            required: "Category is required",
-                            min: { value: 0, message: "Category is required" },
-                        })}
-                    />
+                    <select  {...register("category", { required: "category name is required" })} className="select select-bordered w-full ">
+                        <option disabled selected>Select Service</option>
+                        <option selected>facebook</option>
+                        <option selected>youtube</option>
+                        <option selected>feature</option>
+                        
+                    </select>
                     {errors.price && (
                         <span className="text-red-500 text-sm">{errors.price.message}</span>
                     )}
