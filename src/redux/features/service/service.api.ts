@@ -17,11 +17,12 @@ const serviceApi = baseApi.injectEndpoints({
         }),
 
         buyService: build.mutation({
-            query: (id) => {
-                console.log("Buying service with ID:", id); // Log the service ID
+            query: (data) => {
+                console.log("Buying service with ID:", data.id); // Log the service ID
                 return {
-                    url: `/service/buy/${id}`,
+                    url: `/service/buy/${data.id}`,
                     method: "POST",
+                    body: {link: data.link}
                 };
             }
         }),

@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/api/v1",
-  credentials: "include", // This is correct to include cookies
+  credentials: "include", 
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.tokens as unknown as { accessToken: string };
     // console.log(token);
@@ -35,7 +35,7 @@ async (args, api, extraOptions): Promise<any> => {
     console.log('Sending refresh token');
 
     const res = await axios.post(
-      "http://localhost:5000/api/v1/auth/refresh-token",
+      "http://localhost:5000/refresh",
       {}, // Your request body goes here if needed
       {
         withCredentials: true,
