@@ -5,7 +5,10 @@ const App = () => {
     return (
         <div>
           <Nav />
+          <div className="">
           <Outlet/>
+          </div>
+            
         </div>
     );
 };

@@ -9,6 +9,8 @@ export interface IService {
     _id: string;
     name: string;
     price: number;
+    category: string;
+    description: string;
     min: number;
     max: number;
     avgTime: number;
@@ -80,7 +82,7 @@ const ServiceCards = () => {
     }
 
     return (
-        <Container className="container mx-auto p-4">
+        <Container className="container mx-auto p-4 my-16">
             <div className="flex flex-wrap items-center gap-6">
                 {data?.data?.map((service: IService) => (
                     <div key={service._id} className="card card-compact w-80 shadow-xl">

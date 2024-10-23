@@ -19,8 +19,8 @@ const Nav = () => {
 
 
     return (
-        <div>
-            <div className="navbar ">
+        <div className="w-full fixed z-50 top-0 ">
+            <div className="navbar">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -43,7 +43,7 @@ const Nav = () => {
                             <li>
                                 <NavLink
                                     to="/service"
-                                    className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600 font"}
+                                    className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-red-100 font"}
                                 >
                                     Service
                                 </NavLink>
@@ -53,7 +53,7 @@ const Nav = () => {
                                 <li>
                                     <NavLink
                                         to="/dashboard"
-                                        className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
+                                        className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-red-100"}
                                     >
                                         Dashboard
                                     </NavLink>
@@ -62,7 +62,7 @@ const Nav = () => {
                             <li>
                                 <NavLink
                                     to="/about"
-                                    className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
+                                    className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-red-100"}
                                 >
                                     About
                                 </NavLink>
@@ -73,22 +73,25 @@ const Nav = () => {
                         <img className="w-14" src={themeContext?.theme === 'bumblebee' ? logo2 : logo1} alt="" />
                     </Link>
                 </div>
-                <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal font-bold px-1">
+                <div className="navbar-center hidden lg:flex bg-red-700 rounded-3xl">
+                    <ul className="menu menu-horizontal font-bold px-1 ">
                         <li>
                             <NavLink
                                 to="/service"
-                                className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
+                                className={({ isActive }) =>
+                                    ` ${isActive ? "text-blue-500 font-semibold bg-black rounded-3xl" : "text-red-100"}`
+                                }
                             >
                                 Service
                             </NavLink>
                         </li>
+
                         {
                             user && // Conditional rendering for the Dashboard link
                             <li>
                                 <NavLink
                                     to="/dashboard"
-                                    className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
+                                    className={({ isActive }) => isActive ? "text-blue-500 font-semibold bg-black rounded-3xl" : "text-red-100"}
                                 >
                                     Dashboard
                                 </NavLink>
@@ -97,7 +100,7 @@ const Nav = () => {
                         <li>
                             <NavLink
                                 to="/about"
-                                className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
+                                className={({ isActive }) => isActive ? "text-blue-500 font-semibold bg-black rounded-3xl" : "text-red-100"}
                             >
                                 About
                             </NavLink>

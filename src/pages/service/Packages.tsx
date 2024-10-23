@@ -77,6 +77,11 @@ const Packages = () => {
             </figure>
             <div className="card-body">
               <h2 className="card-title">{service.name}</h2>
+              {
+                service?.description.split(",").map((line, index) => (
+                  <li key={index}>{line}</li>
+                ))
+              }
               <p>Price: {service.price}</p>
               <p>Min: {service.min}</p>
               <p>Max: {service.max}</p>
