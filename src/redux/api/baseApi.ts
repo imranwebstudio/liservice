@@ -4,10 +4,11 @@ import { RootState } from "../store";
 import { logout, setUser } from "../features/auth/authSlice";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { BaseApi } from "../baseApi";
 
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000/api/v1",
+  baseUrl: BaseApi,
   credentials: "include", 
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.tokens as unknown as { accessToken: string };
@@ -35,7 +36,7 @@ async (args, api, extraOptions): Promise<any> => {
     console.log('Sending refresh token');
 
     const res = await axios.post(
-      "http://localhost:5000/refresh",
+      `${BaseApi}/refresh`,
       {}, // Your request body goes here if needed
       {
         withCredentials: true,

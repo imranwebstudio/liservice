@@ -17,6 +17,7 @@ import ManageUser from "../pages/dashboard/adminDashboard/ManageUser";
 import ManageOrders from "../pages/dashboard/adminDashboard/ManageOrders";
 import ManageRecharges from "../pages/dashboard/adminDashboard/ManageRecharge";
 import UserProfile from "../pages/user/UserProfile";
+import PrivateRoute from "../privetRoutes/PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -33,72 +34,72 @@ const router = createBrowserRouter([
             },
             {
                 path: "/about",
-                element: <AboutUs/>
+                element: <AboutUs />
             },
             {
                 path: '/payment',
-                element: <PaymentPage/>
+                element: <PrivateRoute><PaymentPage /></PrivateRoute> 
             },
             {
                 path: '/profile',
-                element: <UserProfile/>
+                element: <PrivateRoute><UserProfile /></PrivateRoute>
             }
         ]
     },
     {
         path: "/dashboard",
-        element: <Dashboard/>,
+        element: <PrivateRoute><Dashboard/></PrivateRoute>,
         children: [
             {
                 index: true,
-                element: <State/>
+                element: <State />
             },
             {
                 path: "addService",
-                element: <AddServices/>
+                element: <PrivateRoute><AddServices /></PrivateRoute>, 
             },
             {
                 path: "manageOrders",
-                element: <ManageOrders />
+                element: <PrivateRoute><ManageOrders /></PrivateRoute>, 
             },
             {
                 path: "manageServices",
-                element: <ManageService/>
+                element: <PrivateRoute><ManageService /></PrivateRoute>,
             },
             {
                 path: "manageUsers",
-                element: <ManageUser/>
+                element: <PrivateRoute><ManageUser /></PrivateRoute>, 
             },
             {
                 path: "manageRecharges",
-                element: <ManageRecharges/>
+                element: <PrivateRoute><ManageRecharges /></PrivateRoute>,
             },
             {
                 path: "services",
-                element: <ServiceCards/>
+                element: <ServiceCards />
             },
             {
                 path: "orderHistory",
-                element: <OrderHistory/>
+                element:  <OrderHistory />
             },
             {
                 path: "rechargeHistory",
-                element: <RechargeHistory/>
+                element: <RechargeHistory />
             },
             {
                 path: "singleOrder",
-                element: <SingleOrder/>
+                element: <SingleOrder />
             },
             {
                 path: "addBalance",
-                element: <AddBalance/>
+                element: <AddBalance />
             }
         ]
     }
     ,
     {
         path: "/register",
-        element: <Register/>
+        element: <Register />
     }
 ])
 

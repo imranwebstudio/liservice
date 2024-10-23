@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { logout, selectUser } from "../redux/features/auth/authSlice";
 import logo1 from '../assets/logoWhite.png'
@@ -7,12 +7,16 @@ import { useTheme } from "../utils/ThemeContext";
 
 const Nav = () => {
     const themeContext = useTheme(); // Use the custom hook
-
+    const location = useNavigate();
     const user = useAppSelector(selectUser);
     const dispatch = useAppDispatch();
 
+    const handleLogout = () => {
+        dispatch(logout());
+        location("/");
+    };
 
-    
+
 
     return (
         <div>
@@ -35,7 +39,7 @@ const Nav = () => {
                         </div>
                         <ul
                             tabIndex={0}
-                            className={ ` menu menu-sm dropdown-content font-bold bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow`}>
+                            className={` menu menu-sm dropdown-content font-bold bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow`}>
                             <li>
                                 <NavLink
                                     to="/service"
@@ -66,7 +70,7 @@ const Nav = () => {
                         </ul>
                     </div>
                     <Link to="/" className="btn btn-ghost text-xl">
-                            <img className="w-14" src={themeContext?.theme === 'bumblebee' ? logo2 : logo1} alt="" />
+                        <img className="w-14" src={themeContext?.theme === 'bumblebee' ? logo2 : logo1} alt="" />
                     </Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
@@ -140,7 +144,7 @@ const Nav = () => {
                                         </Link>
                                     </li>
                                     <li><a>Settings</a></li>
-                                    <li><button onClick={() => dispatch(logout())}>Logout</button></li>
+                                    <li><button onClick={handleLogout}>Logout</button></li>
                                 </ul>
                             </div>
                         ) : (
