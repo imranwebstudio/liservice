@@ -67,6 +67,8 @@ const [addService] = useCreateServiceMutation();
         }
     };
 
+    const catagories = ["feature", "facebook", "instagram", "youtube", "tiktok"];
+
     return (
         <div className="card w-full shadow-xl p-6">
             <h2 className="text-2xl font-bold mb-4">Add New Service</h2>
@@ -121,9 +123,12 @@ const [addService] = useCreateServiceMutation();
                     </label>
                     <select  {...register("category", { required: "category name is required" })} className="select select-bordered w-full ">
                         <option disabled selected>Select Service</option>
-                        <option selected>facebook</option>
-                        <option selected>youtube</option>
-                        <option selected>feature</option>
+
+                        {catagories.map((cat) => (
+                            <option key={cat} value={cat}>
+                                {cat}
+                            </option>
+                        ))}
                         
                     </select>
                     {errors.price && (
