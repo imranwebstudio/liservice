@@ -9,12 +9,12 @@ const Dashboard = () => {
                 <div className="absolute w-full z-30">
                     <Nav />
                 </div>
-                <div className="mt-16">
+                <div className="mt-20">
                     <Sidebar />
                 </div>
 
             </div>
-            <div className="z-0 w-[76%] mt-16">
+            <div className="z-0 w-[76%] mt-28">
                 <Outlet />
             </div>
         </div>

@@ -2,7 +2,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { logout, selectUser } from "../redux/features/auth/authSlice";
 import logo1 from '../assets/logoWhite.png'
-import logo2 from '../assets/logoBlack.png'
+// import logo2 from '../assets/logoBlack.png'
 import { useTheme } from "../utils/ThemeContext";
 
 const Nav = () => {
@@ -69,12 +69,22 @@ const Nav = () => {
                             </li>
                         </ul>
                     </div>
-                    <Link to="/" className="btn btn-ghost text-xl">
-                        <img className="w-14" src={themeContext?.theme === 'bumblebee' ? logo2 : logo1} alt="" />
+                    <Link to="/" className=" text-xl">
+                        <img className="w-20 ml-5" src={logo1} alt="" />
                     </Link>
                 </div>
-                <div className="navbar-center hidden lg:flex bg-red-700 rounded-3xl">
+                <div className="navbar-center hidden lg:flex bg-[#e20b0b] rounded-3xl">
                     <ul className="menu menu-horizontal font-bold px-1 ">
+                        <li>
+                            <NavLink
+                                to="/"
+                                className={({ isActive }) =>
+                                    ` ${isActive ? "text-blue-500 font-semibold bg-black rounded-3xl" : "text-red-100"}`
+                                }
+                            >
+                                Home
+                            </NavLink>
+                        </li>
                         <li>
                             <NavLink
                                 to="/service"
@@ -109,6 +119,8 @@ const Nav = () => {
                 </div>
 
                 <div className="navbar-end">
+                    {user&&  <div className="font-bold text-lg"> Balance: ${user?.balance}</div>}
+
                     <label className="swap swap-rotate mx-5">
                         {/* Hidden checkbox controls the state */}
                         <input type="checkbox" onChange={themeContext?.toggleTheme} checked={themeContext?.theme === 'dark'} />
@@ -133,23 +145,26 @@ const Nav = () => {
                     </label>
                     {
                         user ? (
-                            <div className="dropdown dropdown-end">
-                                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                                    <div className="w-10 rounded-full">
-                                        <img src={user?.avatar || 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'} alt="User Avatar" />
-                                    </div>
-                                </label>
-                                <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
-                                    <li>
-                                        <Link to="/profile" className="justify-between">
-                                            Profile
-                                            <span className="badge">New</span>
-                                        </Link>
-                                    </li>
-                                    <li><a>Settings</a></li>
-                                    <li><button onClick={handleLogout}>Logout</button></li>
-                                </ul>
-                            </div>
+                            <>
+                               
+                                <div className="dropdown dropdown-end">
+                                    <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                                        <div className="w-10 rounded-full">
+                                            <img src={user?.avatar || 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'} alt="User Avatar" />
+                                        </div>
+                                    </label>
+                                    <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
+                                        <li>
+                                            <Link to="/profile" className="justify-between">
+                                                Profile
+                                                <span className="badge">New</span>
+                                            </Link>
+                                        </li>
+                                        <li><a>Settings</a></li>
+                                        <li><button onClick={handleLogout}>Logout</button></li>
+                                    </ul>
+                                </div>
+                            </>
                         ) : (
                             <Link to="/register" className="btn">Register</Link>
                         )

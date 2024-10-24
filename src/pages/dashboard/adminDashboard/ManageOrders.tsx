@@ -27,7 +27,7 @@ const ManageOrders = () => {
     return (
         <Container>
             <div>
-                <h2 className="text-xl font-bold mb-4">Manage Promotion Orders</h2>
+                <h2 className="text-xl font-bold mb-4 mx-auto text-center">Manage Promotion Orders</h2>
                 <div className="overflow-x-auto">
                     <table className="table table-zebra w-full">
                         {/* Table Head */}

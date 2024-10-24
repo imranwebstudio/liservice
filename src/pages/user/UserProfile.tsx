@@ -9,7 +9,7 @@ const UserProfile = () => {
     console.log(user);
 
     return (
-        <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-10">
+        <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-28">
             <div className="bg-blue-500 h-40 flex items-center justify-center">
                 <img
                     className="h-24 w-24 rounded-full border-4 border-white"

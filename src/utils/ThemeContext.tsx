@@ -14,7 +14,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Function to toggle the theme
     const toggleTheme = () => {
-        const newTheme = theme === "bumblebee" ? "dark" : "bumblebee";
+        const newTheme = theme === "bumblebee" ? "black" : "bumblebee";
         setTheme(newTheme);
         localStorage.setItem("theme", newTheme);
         document.documentElement.setAttribute("data-theme", newTheme);

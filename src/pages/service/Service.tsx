@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import  { useState } from "react";
+import { useState } from "react";
 import Container from "../../utils/Container";
 import { useBuyServiceMutation, useGetServicesQuery } from "../../redux/features/service/service.api";
 import Loading from "../../utils/Loading";
@@ -18,7 +18,8 @@ export interface IService {
 }
 
 const ServiceCards = () => {
-    const { data, isLoading } = useGetServicesQuery({});
+    const [category, setCategory] = useState({ category: "" });
+    const { data, isLoading } = useGetServicesQuery(category);
     const [buyService, { isLoading: buyingService }] = useBuyServiceMutation();
 
     const [selectedService, setSelectedService] = useState<IService | null>(null);
@@ -26,7 +27,7 @@ const ServiceCards = () => {
 
     const openModal = (service: IService) => {
         setSelectedService(service);
-        setLink(""); 
+        setLink("");
     };
 
     const closeModal = () => {
@@ -83,26 +84,58 @@ const ServiceCards = () => {
 
     return (
         <Container className="container mx-auto p-4 my-16">
-            <div className="flex flex-wrap items-center gap-6">
-                {data?.data?.map((service: IService) => (
-                    <div key={service._id} className="card card-compact w-80 shadow-xl">
-                        <figure className="w-full h-48">
-                            <img className="w-full h-full object-cover" src={service.image} alt={service.name} />
-                        </figure>
-                        <div className="card-body">
-                            <h2 className="card-title">{service.name}</h2>
-                            <p>Price: {service.price}</p>
-                            <p>Min: {service.min}</p>
-                            <p>Max: {service.max}</p>
-                            <p>Avg. Time: {service.avgTime}</p>
-                            <div className="card-actions justify-end">
-                                <button onClick={() => openModal(service)} className="btn btn-primary">
-                                    Create Order
-                                </button>
+
+            {/* Category Tabs */}
+            <div role="tablist" className="tabs tabs-boxed md:my-10">
+                <button role="tab" className={`tab ${category.category === "" && "tab-active"}`} onClick={() => setCategory({ category: "" })}>All</button>
+                <button role="tab" className={`tab ${category.category === "feature" && "tab-active"}`} onClick={() => setCategory({ category: "feature" })}>Feature</button>
+                <button role="tab" className={`tab ${category.category === "facebook" && "tab-active"}`} onClick={() => setCategory({ category: "facebook" })}>Facebook</button>
+                <button role="tab" className={`tab ${category.category === "instagram" && "tab-active"}`} onClick={() => setCategory({ category: "instagram" })}>Instagram</button>
+                <button role="tab" className={`tab ${category.category === "youtube" && "tab-active"}`} onClick={() => setCategory({ category: "youtube" })}>Youtube</button>
+                <button role="tab" className={`tab ${category.category === "tiktok" && "tab-active"}`} onClick={() => setCategory({ category: "tiktok" })}>Tiktok</button>
+            </div>
+
+            {/* Services List */}
+            <div className="flex flex-wrap items-stretch gap-6">
+                {!data?.data?.length ? (
+                    <div className="flex flex-col items-center justify-center w-full h-[50vh]">
+                        <img src={"https://cdn.dribbble.com/users/721524/screenshots/4117132/untitled-1-_1_.png"} alt="No data found" className="h-60 mb-4" />
+                        <h3 className="text-xl font-semibold mb-2">No Services Found</h3>
+                        <p className="mb-6">We couldn't find any services matching your search. Please try a different category or check back later.</p>
+                        <button className="btn btn-primary" onClick={() => setCategory({ category: "" })}>View All Services</button>
+                    </div>
+                ) : (
+                    data?.data?.map((service: IService) => (
+                        <div key={service._id} className="card card-compact w-80 shadow-3xl rounded-2xl shadow-slate-500 flex flex-col justify-between">
+                            <figure className="w-full h-48">
+                                <img className="w-full h-full object-cover" src={service.image} alt={service.name} />
+                            </figure>
+                            <div className="card-body flex-grow flex flex-col justify-between">
+                                <h2 className="card-title">{service.name}</h2>
+
+                                {/* Limiting description lines */}
+                                {
+                                    service?.description.split(".").map((line, index) => (
+                                        <li key={index}>{line}</li>
+                                    ))
+                                }
+
+                                <div className=" text-sm text-gray-600">
+                                    <p>Price: {service.price}</p>
+                                    <p>Min: {service.min}</p>
+                                    <p>Max: {service.max}</p>
+                                    <p>Avg. Time: {service.avgTime}</p>
+                                </div>
+
+                                <div className="card-actions justify-end mt-4">
+                                    <button onClick={() => openModal(service)} className="btn btn-primary">
+                                        Create Order
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
             </div>
 
             {/* Modal */}

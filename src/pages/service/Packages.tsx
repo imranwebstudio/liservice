@@ -69,16 +69,17 @@ const Packages = () => {
 
   return (
     <Container className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-4 text-center my-10 text-blue-500">Features Packages</h1>
       <div className="flex flex-wrap items-center gap-6">
         {data?.data?.map((service: IService) => (
-          <div key={service._id} className="card card-compact w-80 shadow-xl">
+          <div key={service._id} className="card card-compact w-80 shadow-3xl shadow-slate-500">
             <figure className="w-full h-48">
               <img className="w-full h-full object-cover" src={service.image} alt={service.name} />
             </figure>
             <div className="card-body">
               <h2 className="card-title">{service.name}</h2>
               {
-                service?.description.split(",").map((line, index) => (
+                service?.description.split(".").map((line, index) => (
                   <li key={index}>{line}</li>
                 ))
               }
