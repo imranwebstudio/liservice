@@ -10,11 +10,17 @@ const Packages = () => {
   const { data, isLoading } = useGetServicesQuery({ category: "feature" })
   const [buyService, { isLoading: buyingService }] = useBuyServiceMutation()
   const [selectedService, setSelectedService] = useState<IService | null>(null);
-  const [link, setLink] = useState(""); 
+  const [buyInfo, setBuyInfo] = useState({
+    link: "",
+    quantity: 0
+  }); // State to hold the user's link input
 
   const openModal = (service: IService) => {
     setSelectedService(service);
-    setLink("");
+    setBuyInfo({
+      link: "",
+      quantity: 0
+    });
   };
 
   const closeModal = () => {
@@ -27,7 +33,7 @@ const Packages = () => {
     }
 
     // Ensure the link is provided
-    if (!link) {
+    if (!buyInfo.link) {
       Swal.fire({
         icon: 'error',
         title: 'Link Required',
@@ -47,7 +53,7 @@ const Packages = () => {
 
     try {
       // Make the API request to buy the service
-      await buyService({ id: selectedService?._id, link }).unwrap();
+      await buyService({ id: selectedService?._id, buyInfo }).unwrap();
 
       Swal.fire({
         icon: 'success',
@@ -105,8 +111,14 @@ const Packages = () => {
             <input
               type="text"
               placeholder="Enter your link here"
-              value={link}
-              onChange={(e) => setLink(e.target.value)}
+              value={buyInfo.link}
+              onChange={(e) => setBuyInfo({ ...buyInfo, link: e.target.value })}
+              className="input input-bordered w-full mb-4"
+            />
+            <input
+              type="text"
+              placeholder="Enter your quantity here"
+              onChange={(e) => setBuyInfo({ ...buyInfo, quantity: parseInt(e.target.value) })}
               className="input input-bordered w-full mb-4"
             />
             <div className="flex justify-end">

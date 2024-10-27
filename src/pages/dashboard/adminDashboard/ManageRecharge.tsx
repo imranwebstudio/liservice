@@ -45,8 +45,8 @@ const ManageRecharges = () => {
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Phone</th>
-                                <th>Amount </th>
                                 <th>Paid Taka</th>
+                                <th>Amount </th>
                                 <th>Recharge Date</th>
                                 <th>Method</th>
                                 <th>TransactionId</th>
@@ -60,7 +60,7 @@ const ManageRecharges = () => {
                                     <th>{index + 1}</th>
                                     <td>{recharge.userId.name}</td>
                                     <td>{recharge.userId.phone}</td>
-                                    <td>{recharge.paidTaka}</td>
+                                    <td>৳{recharge.paidTaka}</td>
                                     <td>${recharge.amount}</td>
                                     <td>{moment(recharge.createdAt).format("MMMM Do YYYY, h:mm:ss a")}</td>
                                     <td>{recharge.paymentMethod}</td>
@@ -80,7 +80,7 @@ const ManageRecharges = () => {
                                     <td className="flex gap-6">
                                         {/* Button to Refund Recharge */}
                                         <button
-                                            disabled={recharge.status === "approved"}
+                                            disabled={recharge.status === "approved" || recharge.status === "rejected"}
                                             className="btn btn-sm btn-success"
                                             onClick={() => handleApproveRecharge(recharge._id, "approved")}
                                         >
@@ -89,6 +89,7 @@ const ManageRecharges = () => {
                                         <button
                                             className="btn btn-sm btn-warning"
                                             onClick={() => handleApproveRecharge(recharge._id, "rejected")}
+                                            disabled={recharge.status === "rejected" || recharge.status === "approved"}
                                         >
                                             Reject
                                         </button>

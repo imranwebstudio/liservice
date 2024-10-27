@@ -1,27 +1,52 @@
-import  { useState } from "react";
-import Container from "../../../utils/Container";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-// Mock User Data
-const mockUsers = [
-    { id: 1, name: "Cy Ganderton", email: "cy@example.com", job: "Quality Control Specialist", favoriteColor: "Blue", isBlocked: false },
-    { id: 2, name: "Hart Hagerty", email: "hart@example.com", job: "Desktop Support Technician", favoriteColor: "Purple", isBlocked: true },
-    { id: 3, name: "Brice Swyre", email: "brice@example.com", job: "Tax Accountant", favoriteColor: "Red", isBlocked: false },
-    { id: 4, name: "Emily Doe", email: "emily@example.com", job: "Marketing Specialist", favoriteColor: "Green", isBlocked: false },
-];
+import moment from "moment";
+import { useGetAllUsersQuery, useUpdateUserMutation } from "../../../redux/features/auth/authApi";
+import Container from "../../../utils/Container";
+import Loading from "../../../utils/Loading";
+import Swal from "sweetalert2";
+
+
 
 const ManageUser = () => {
-    // State to manage user data
-    const [users, setUsers] = useState(mockUsers);
+const {data, refetch, isLoading} = useGetAllUsersQuery(undefined);
+const [blockUser, { isLoading: isBlocking }] = useUpdateUserMutation();
+const handleBlockUser = async (user: any) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, block it!",
+    })
+    .then(async (result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: "Blocking...",
+                text: "Please wait while we process your request",
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
 
-    // Function to block or unblock a user
-    const toggleBlockUser = (userId: number) => {
-        setUsers((prevUsers) =>
-            prevUsers.map((user) =>
-                user.id === userId ? { ...user, isBlocked: !user.isBlocked } : user
-            )
-        );
-    };
 
+            try {
+                await blockUser({ id: user?._id , ...user, isDeleted: true }).unwrap();
+                Swal.fire("Blocked!", "User has been blocked.", "success");
+
+                refetch();
+            } catch (error) {
+                console.error("Failed to block user:", error);
+                Swal.fire("Error", "Failed to block user.", "error");
+            }
+        }
+    });
+};
+
+if(isLoading || isBlocking) return <Loading />
     return (
         <Container>
             <div>
@@ -34,28 +59,28 @@ const ManageUser = () => {
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Job</th>
-                                <th>Favorite Color</th>
+                                <th>Balance</th>
+                                <th>Join Date</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map((user, index) => (
+                            {data?.data.map((user: any, index: number) => (
                                 <tr key={user.id} className={user.isBlocked ? "bg-red-100" : ""}>
                                     <th>{index + 1}</th>
                                     <td>{user.name}</td>
                                     <td>{user.email}</td>
-                                    <td>{user.job}</td>
-                                    <td>{user.favoriteColor}</td>
-                                    <td>{user.isBlocked ? "Blocked" : "Active"}</td>
+                                    <td>${user.balance}</td>
+                                    <td>{moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}</td>
+                                    <td>{user.isDeleted ? "Blocked" : "Active"}</td>
                                     <td>
                                         {/* Block/Unblock Button */}
                                         <button
                                             className={`btn btn-sm ${user.isBlocked ? "btn-success" : "btn-warning"}`}
-                                            onClick={() => toggleBlockUser(user.id)}
+                                            onClick={() => handleBlockUser(user)}
                                         >
-                                            {user.isBlocked ? "Unblock" : "Block"}
+                                            {user.isDeleted ? "Unblock" : "Block"}
                                         </button>
                                     </td>
                                 </tr>

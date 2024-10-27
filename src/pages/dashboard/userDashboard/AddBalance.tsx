@@ -18,6 +18,7 @@ const AddBalance: React.FC = () => {
         setTotal(calculatedFee);
     };
 
+
     return (
         <div className="card   bg-base-100 shadow-xl p-6">
             <h2 className="text-2xl font-bold mb-4">Add Balance</h2>
@@ -28,6 +29,7 @@ const AddBalance: React.FC = () => {
                     <span className="label-text">Payment Method</span>
                 </label>
                 <select
+                required
                     value={method}
                     onChange={(e) => setMethod(e.target.value)}
                     className="select select-bordered w-full"
@@ -94,7 +96,7 @@ const AddBalance: React.FC = () => {
 
             {/* Submit Button */}
             <div className="form-control mt-4">
-                {accepted ? (
+                {accepted && method && amount  ? (
                     <Link
                         to="/payment"
                         state={{ method, amount,  total }} // Passing all values to the payment page

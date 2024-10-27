@@ -22,7 +22,7 @@ const serviceApi = baseApi.injectEndpoints({
                 return {
                     url: `/service/buy/${data.id}`,
                     method: "POST",
-                    body: {link: data.link}
+                    body: {quantity: data.buyInfo.quantity, link: data.buyInfo.link}
                 };
             }
         }),
@@ -53,6 +53,13 @@ const serviceApi = baseApi.injectEndpoints({
             })
         }),
 
+        deleteService: build.mutation({
+            query: (id) => ({
+                url: `/service/delete/${id}`,
+                method: "DELETE"
+            })
+        }),
+
     })
 })
 
@@ -62,5 +69,6 @@ export const {
     useBuyServiceMutation, 
     useGetPendingServicesQuery, 
     useApproveServiceMutation,
-    useGetPendingServiceByUserIdQuery 
+    useGetPendingServiceByUserIdQuery,
+    useDeleteServiceMutation 
 } = serviceApi;

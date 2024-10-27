@@ -7,8 +7,11 @@ import Loading from "../../../utils/Loading";
 
 const ManageOrders = () => {
 
-    const { data, isLoading } = useGetPendingServicesQuery(undefined);
+    const { data, isLoading } = useGetPendingServicesQuery(undefined, {pollingInterval: 10000});
     const [updateServiceStatus, { isLoading: isUpdating }] = useApproveServiceMutation();
+
+
+    console.log(data);
 
     if (isLoading) return <Loading />;
 
@@ -46,8 +49,8 @@ const ManageOrders = () => {
                                 <tr key={service.id}>
                                     <th>{index + 1}</th>
                                     <td>{service.userId.userName}</td>
-                                    <td>{service.serviceId.name}</td>
-                                    <td>{service.serviceId.price}</td>
+                                    <td>{service?.serviceId?.name}</td>
+                                    <td>{service?.serviceId?.price}</td>
                                     <td>{service.status}</td>
                                     <td>
                                     <button
@@ -60,7 +63,7 @@ const ManageOrders = () => {
                                         <button
                                             className="btn btn-danger btn-xs"
                                             onClick={() => handleStatusUpdate(service._id, "rejected")}
-                                            disabled={isUpdating || service.status !== "pending"}
+                                            disabled={isUpdating || service.status === "approved"}
                                         >
                                             Reject
                                         </button>

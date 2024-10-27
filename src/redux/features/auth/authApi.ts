@@ -1,3 +1,4 @@
+
 import { baseApi } from "../../api/baseApi"
 
 
@@ -22,8 +23,27 @@ const authorization = baseApi.injectEndpoints({
                 url: "user/profile",
                 method: "GET",
             }),
-        })
+        }),
+        getAllUsers: build.query({
+            query: () => ({
+                url: "user/getAll",
+                method: "GET",
+            }),
+        }),
+
+        updateUser : build.mutation({
+            query: (data) => ({
+                url: `user/update/${data.id}`,
+                method: "PUT",
+                body: data
+            }),
+        }),
     }),
 })
 
-export const { useLoginMutation, useRegisterMutation, useGetUserProfileQuery } = authorization
+export const { useLoginMutation, 
+    useRegisterMutation,
+     useGetUserProfileQuery,
+    useGetAllUsersQuery,
+    useUpdateUserMutation
+    } = authorization

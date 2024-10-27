@@ -4,8 +4,10 @@ import { logout, selectUser } from "../redux/features/auth/authSlice";
 import logo1 from '../assets/logoWhite.png'
 // import logo2 from '../assets/logoBlack.png'
 import { useTheme } from "../utils/ThemeContext";
+import { useGetUserProfileQuery } from "../redux/features/auth/authApi";
 
 const Nav = () => {
+    const {data} = useGetUserProfileQuery(undefined, {pollingInterval: 5000});
     const themeContext = useTheme(); // Use the custom hook
     const location = useNavigate();
     const user = useAppSelector(selectUser);
@@ -17,7 +19,7 @@ const Nav = () => {
     };
 
 
-
+// console.log(data, isLoading);
     return (
         <div className="w-full fixed z-50 top-0 ">
             <div className="navbar">
@@ -39,7 +41,7 @@ const Nav = () => {
                         </div>
                         <ul
                             tabIndex={0}
-                            className={` menu menu-sm dropdown-content font-bold bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow`}>
+                            className={` menu menu-sm dropdown-content font-bold bg-red-500  rounded-box z-[1] mt-3 w-52 p-2 shadow`}>
                             <li>
                                 <NavLink
                                     to="/service"
@@ -70,7 +72,7 @@ const Nav = () => {
                         </ul>
                     </div>
                     <Link to="/" className=" text-xl">
-                        <img className="w-20 ml-5" src={logo1} alt="" />
+                        <img className="w-20 ml-5 bg-black/80 p-1 rounded" src={logo1} alt="" />
                     </Link>
                 </div>
                 <div className="navbar-center hidden lg:flex bg-[#e20b0b] rounded-3xl">
@@ -119,7 +121,7 @@ const Nav = () => {
                 </div>
 
                 <div className="navbar-end">
-                    {user&&  <div className="font-bold text-lg"> Balance: ${user?.balance}</div>}
+                    {user&&  <div className="font-bold text-lg"> Balance: ${data?.data?.balance}</div>}
 
                     <label className="swap swap-rotate mx-5">
                         {/* Hidden checkbox controls the state */}
@@ -166,7 +168,7 @@ const Nav = () => {
                                 </div>
                             </>
                         ) : (
-                            <Link to="/register" className="btn">Register</Link>
+                            <Link to="/register" className="btn btn-md">Login</Link>
                         )
                     }
                 </div>

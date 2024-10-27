@@ -4,7 +4,7 @@ import Nav from "../components/Nav";
 
 const Dashboard = () => {
     return (
-        <div className="flex flex-wrap gap-6">
+        <div className="flex gap-6">
             <div className="z-10 w-[20%] h-screen">
                 <div className="absolute w-full z-30">
                     <Nav />

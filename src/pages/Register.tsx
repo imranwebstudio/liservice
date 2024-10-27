@@ -89,7 +89,7 @@ const Register = () => {
       }
     }
 
-    reset();
+  
   };
 
   return (

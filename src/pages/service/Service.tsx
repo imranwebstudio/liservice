@@ -23,11 +23,17 @@ const ServiceCards = () => {
     const [buyService, { isLoading: buyingService }] = useBuyServiceMutation();
 
     const [selectedService, setSelectedService] = useState<IService | null>(null);
-    const [link, setLink] = useState(""); // State to hold the user's link input
+    const [buyInfo, setBuyInfo] = useState({
+        link: "",
+        quantity: 0
+    }); // State to hold the user's link input
 
     const openModal = (service: IService) => {
         setSelectedService(service);
-        setLink("");
+        setBuyInfo({
+            link: "",
+            quantity: 0
+        });
     };
 
     const closeModal = () => {
@@ -40,7 +46,7 @@ const ServiceCards = () => {
         }
 
         // Ensure the link is provided
-        if (!link) {
+        if (!buyInfo.link) {
             Swal.fire({
                 icon: 'error',
                 title: 'Link Required',
@@ -60,7 +66,7 @@ const ServiceCards = () => {
 
         try {
             // Make the API request to buy the service
-            await buyService({ id: selectedService?._id, link }).unwrap();
+            await buyService({ id: selectedService?._id, buyInfo }).unwrap();
 
             Swal.fire({
                 icon: 'success',
@@ -96,7 +102,7 @@ const ServiceCards = () => {
             </div>
 
             {/* Services List */}
-            <div className="flex flex-wrap items-stretch gap-6">
+            <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-6">
                 {!data?.data?.length ? (
                     <div className="flex flex-col items-center justify-center w-full h-[50vh]">
                         <img src={"https://cdn.dribbble.com/users/721524/screenshots/4117132/untitled-1-_1_.png"} alt="No data found" className="h-60 mb-4" />
@@ -146,8 +152,14 @@ const ServiceCards = () => {
                         <input
                             type="text"
                             placeholder="Enter your link here"
-                            value={link}
-                            onChange={(e) => setLink(e.target.value)}
+                            value={buyInfo.link}
+                            onChange={(e) => setBuyInfo({ ...buyInfo, link: e.target.value })} // Convert to number(e.target.value)}
+                            className="input input-bordered w-full mb-4"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Enter your quantity here"
+                            onChange={(e) => setBuyInfo({ ...buyInfo, quantity: parseInt(e.target.value) })} // Convert to number(e.target.value)}
                             className="input input-bordered w-full mb-4"
                         />
                         <div className="flex justify-end">

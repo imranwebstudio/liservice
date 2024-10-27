@@ -22,8 +22,8 @@ const RechargeHistory = () => {
             <tr>
               <th>#</th>
               <th>Transaction ID</th>
-              <th>Amount</th>
               <th>Paid Taka</th>
+              <th>Amount</th>
               <th>Status</th>
               <th>Date</th>
             </tr>
@@ -33,8 +33,8 @@ const RechargeHistory = () => {
               <tr key={recharge._id} className={recharge.status === "Failed" ? "bg-red-100" : ""}>
                 <th>{index + 1}</th>
                 <td>{recharge.reference}</td>
-                <td>${recharge.paidTaka}</td>
-                <td>৳{recharge.amount}</td>
+                <td>৳{recharge.paidTaka}</td>
+                <td>${recharge.amount}</td>
                 <td>
                   <span
                     className={`${
