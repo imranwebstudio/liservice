@@ -10,7 +10,7 @@ import Container from "../utils/Container";
 
 const Register = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Register forms
-  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
+  const { register, handleSubmit, formState: { errors }, watch } = useForm();
   const dispatch = useAppDispatch();
   const [login] = useLoginMutation();
   const [registerUser] = useRegisterMutation();
