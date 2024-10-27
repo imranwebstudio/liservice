@@ -121,7 +121,7 @@ const ServiceCards = () => {
                                 }
 
                                 <div className=" text-sm text-gray-600">
-                                    <p>Price: {service.price}</p>
+                                    <p>Price: ${service.price} per {service.min}</p>
                                     <p>Min: {service.min}</p>
                                     <p>Max: {service.max}</p>
                                     <p>Avg. Time: {service.avgTime}</p>

@@ -1,38 +1,17 @@
-import  { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import moment from "moment";
+import { useGetPendingServiceByUserIdQuery } from "../../../redux/features/service/service.api";
+import Loading from "../../../utils/Loading";
 
 const OrderHistory = () => {
-    // Mock order data
-    const [orders] = useState([
-        {
-            id: 1,
-            service: "Facebook Post Boost",
-            amount: "$50",
-            status: "Completed",
-            date: "2023-09-15",
-        },
-        {
-            id: 2,
-            service: "YouTube Channel Boost",
-            amount: "$120",
-            status: "Processing",
-            date: "2023-09-18",
-        },
-        {
-            id: 3,
-            service: "Instagram Likes Enhancement",
-            amount: "$75",
-            status: "Completed",
-            date: "2023-09-20",
-        },
-        {
-            id: 4,
-            service: "Twitter Followers Boost",
-            amount: "$90",
-            status: "Failed",
-            date: "2023-09-22",
-        },
-    ]);
+    const { data, isLoading } = useGetPendingServiceByUserIdQuery(undefined);
+    
+    console.log(data);
 
+    if (isLoading) {
+        return <Loading />;
+    }
     return (
         <div>
             <h2 className="text-xl font-bold mb-4">Order History</h2>
@@ -49,11 +28,11 @@ const OrderHistory = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders.map((order, index) => (
+                        {data?.data?.map((order: any, index: number) => (
                             <tr key={order.id} className={order.status === "Failed" ? "bg-red-100" : ""}>
                                 <th>{index + 1}</th>
-                                <td>{order.service}</td>
-                                <td>{order.amount}</td>
+                                <td>{order.serviceId}</td>
+                                <td>${order.price}</td>
                                 <td>
                                     <span
                                         className={`${
@@ -67,7 +46,7 @@ const OrderHistory = () => {
                                         {order.status}
                                     </span>
                                 </td>
-                                <td>{order.date}</td>
+                                <td>{moment(order.createdAt).format("MMMM Do YYYY, h:mm:ss a")}</td>
                             </tr>
                         ))}
                     </tbody>

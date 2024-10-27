@@ -83,7 +83,7 @@ const Packages = () => {
                   <li key={index}>{line}</li>
                 ))
               }
-              <p>Price: {service.price}</p>
+              <p>Price: ${service.price}</p>
               <p>Min: {service.min}</p>
               <p>Max: {service.max}</p>
               <p>Avg. Time: {service.avgTime}</p>

@@ -46,7 +46,21 @@ const serviceApi = baseApi.injectEndpoints({
             invalidatesTags: ["services"],
         }),
 
+        getPendingServiceByUserId: build.query({
+            query: () => ({
+                url: "/service/getServiceByUserId",
+                method: "GET"
+            })
+        }),
+
     })
 })
 
-export const { useCreateServiceMutation, useGetServicesQuery, useBuyServiceMutation, useGetPendingServicesQuery, useApproveServiceMutation } = serviceApi;
+export const {
+     useCreateServiceMutation, 
+    useGetServicesQuery, 
+    useBuyServiceMutation, 
+    useGetPendingServicesQuery, 
+    useApproveServiceMutation,
+    useGetPendingServiceByUserIdQuery 
+} = serviceApi;

@@ -25,8 +25,8 @@ const PaymentPage = () => {
         });
         try {
             const balanceData = {
-                amount: Number(total),
-                paidTaka: Number(amount),
+                amount: Number(amount),
+                paidTaka: Number(total),
                 paymentMethod: method,
                 reference
             }   

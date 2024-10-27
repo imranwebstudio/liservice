@@ -95,7 +95,7 @@ const Register = () => {
   return (
     <Container>
       <Link to="/" className="btn my-10 normal-case text-xl mb-4">Home</Link>
-      <div className="hero">
+      <div className="hero py-8">
         <div className={`hero-content flex-col lg:flex-row-reverse bg-blue-600`}>
           <div className="text-center lg:text-left">
             <h1 className="text-4xl font-bold  text-white">{isLogin ? "Login" : "Register"} now!</h1>

@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 const AddBalance: React.FC = () => {
     const [method, setMethod] = useState<string>("");
     const [amount, setAmount] = useState<number>(0);
-    const [extraFee, setExtraFee] = useState<number>(0);
     const [total, setTotal] = useState<number>(0);
     const [accepted, setAccepted] = useState<boolean>(false);
 
@@ -15,9 +14,8 @@ const AddBalance: React.FC = () => {
         if (!parsedAmount || isNaN(parsedAmount)) return;
 
         setAmount(parsedAmount);
-        const calculatedFee = Math.round(parsedAmount * 140); // Extra fee (1.85%)
-        setExtraFee(calculatedFee);
-        setTotal(parsedAmount + calculatedFee);
+        const calculatedFee = Math.round(parsedAmount * 123); // Extra fee (1.85%)
+        setTotal(calculatedFee);
     };
 
     return (
@@ -62,7 +60,7 @@ const AddBalance: React.FC = () => {
                     <span className="label-text">Extra Fee (1.85%)</span>
                 </label>
                 <input
-                    value={extraFee.toFixed(2)}
+                    // value={extraFee.toFixed(2)}
                     readOnly
                     type="text"
                     className="input input-bordered"
@@ -99,7 +97,7 @@ const AddBalance: React.FC = () => {
                 {accepted ? (
                     <Link
                         to="/payment"
-                        state={{ method, amount, extraFee, total }} // Passing all values to the payment page
+                        state={{ method, amount,  total }} // Passing all values to the payment page
                         className="btn btn-primary"
                     >
                         Go to Payment
