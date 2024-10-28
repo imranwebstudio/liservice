@@ -3,6 +3,8 @@ import { useState } from "react";
 import Container from "../../utils/Container";
 import { useBuyServiceMutation, useGetServicesQuery } from "../../redux/features/service/service.api";
 import Loading from "../../utils/Loading";
+import RangeSlider from 'react-range-slider-input';
+import 'react-range-slider-input/dist/style.css';
 import Swal from "sweetalert2";
 
 export interface IService {
@@ -21,20 +23,23 @@ const ServiceCards = () => {
     const [category, setCategory] = useState({ category: "" });
     const { data, isLoading } = useGetServicesQuery(category);
     const [buyService, { isLoading: buyingService }] = useBuyServiceMutation();
-    console.log(data);
+    
     const [selectedService, setSelectedService] = useState<IService | null>(null);
-    const [buyInfo, setBuyInfo] = useState({
-        link: "",
-        quantity: 0
-    }); // State to hold the user's link input
-
+    const [quantity, setQuantity] = useState(0);
+    const [link, setLink] = useState(''); // State to hold the user's link input
+    const [price, setPrice] = useState(0)
     const openModal = (service: IService) => {
         setSelectedService(service);
-        setBuyInfo({
-            link: "",
-            quantity: 0
-        });
+        setPrice(service.price);
+        setLink('');
+        setQuantity(0);
     };
+
+
+    // const calculatePrice = () => {
+
+    // }
+
 
     const closeModal = () => {
         setSelectedService(null);
@@ -46,7 +51,7 @@ const ServiceCards = () => {
         }
 
         // Ensure the link is provided
-        if (!buyInfo.link) {
+        if (!link) {
             Swal.fire({
                 icon: 'error',
                 title: 'Link Required',
@@ -66,7 +71,7 @@ const ServiceCards = () => {
 
         try {
             // Make the API request to buy the service
-            await buyService({ id: selectedService?._id, buyInfo }).unwrap();
+            await buyService({ id: selectedService?._id, buyInfo: { link, quantity } }).unwrap();
 
             Swal.fire({
                 icon: 'success',
@@ -84,6 +89,7 @@ const ServiceCards = () => {
         }
     };
 
+
     if (isLoading) {
         return <Loading />;
     }
@@ -99,6 +105,8 @@ const ServiceCards = () => {
                 <button role="tab" className={`tab ${category.category === "instagram" && "tab-active"}`} onClick={() => setCategory({ category: "instagram" })}>Instagram</button>
                 <button role="tab" className={`tab ${category.category === "youtube" && "tab-active"}`} onClick={() => setCategory({ category: "youtube" })}>Youtube</button>
                 <button role="tab" className={`tab ${category.category === "tiktok" && "tab-active"}`} onClick={() => setCategory({ category: "tiktok" })}>Tiktok</button>
+                <button role="tab" className={`tab ${category.category === "telegram" && "tab-active"}`} onClick={() => setCategory({ category: "telegram" })}>Telegram</button>
+                <button role="tab" className={`tab ${category.category === "linkedin" && "tab-active"}`} onClick={() => setCategory({ category: "linkedin" })}>Linkedin</button>
             </div>
 
             {/* Services List */}
@@ -140,7 +148,7 @@ const ServiceCards = () => {
                                 }
 
                                 <div className=" text-sm text-gray-600">
-                                    <p>Price: ${service.price} per {service.min}</p>
+                                    <p>Price: ${service.price} per 1000</p>
                                     <p>Min: {service.min}</p>
                                     <p>Max: {service.max}</p>
                                     <p>Avg. Time: {service.avgTime}</p>
@@ -161,20 +169,41 @@ const ServiceCards = () => {
             {selectedService && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-75">
                     <div className="bg-white w-11/12 md:max-w-md mx-auto rounded-lg shadow-lg p-6">
-                        <h3 className="text-lg font-semibold mb-4">Order for {selectedService.name}</h3>
+                        <h3 className="text-lg font-semibold mb-4">Order for: {selectedService.name} <span>${price}</span></h3>
                         <input
                             type="text"
                             placeholder="Enter your link here"
-                            value={buyInfo.link}
-                            onChange={(e) => setBuyInfo({ ...buyInfo, link: e.target.value })} // Convert to number(e.target.value)}
+                            value={link}
+                            onChange={(e) => setLink(e.target.value)} // Convert to number(e.target.value)}
                             className="input input-bordered w-full mb-4"
                         />
                         <input
                             type="text"
                             placeholder="Enter your quantity here"
-                            onChange={(e) => setBuyInfo({ ...buyInfo, quantity: parseInt(e.target.value) })} // Convert to number(e.target.value)}
+                            onChange={(e) => setQuantity(Number(e.target.value))} // Convert to number(e.target.value)}
                             className="input input-bordered w-full mb-4"
+                            value={quantity}
                         />
+
+
+                        <div className="mb-4">
+                            <div className="flex justify-between mb-2">
+                                <span>{selectedService.min}</span>
+                                <span>{selectedService.max}</span>
+                            </div>
+                            <RangeSlider
+                                value={[selectedService.min, quantity]} // Fixed left thumb at min, and right thumb for quantity
+                                onInput={(value: any[]) => setQuantity(value[1])} // Update only the right thumb value
+                                min={selectedService.min}
+                                max={selectedService.max}
+                                thumbsDisabled={[true, false]} // Disable left thumb movement
+                            />
+                            <div className="text-center mt-2 text-lg font-semibold">
+                                Selected Quantity: {quantity}
+                            </div>
+                        </div>
+
+
                         {/* <input type="range" min={selectedService.min} max={selectedService.max}  className="range range-xs" /> */}
                         <div className="flex justify-end">
                             <button onClick={closeModal} className="btn btn-primary btn-outline mr-2">

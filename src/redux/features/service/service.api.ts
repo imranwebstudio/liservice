@@ -13,7 +13,9 @@ const serviceApi = baseApi.injectEndpoints({
             query: ({category}) => ({
                 url: `/service/getAll?category=${category}`,
                 method: "GET"
-            })
+            }),
+
+            providesTags: ["services"],
         }),
 
         buyService: build.mutation({
@@ -57,7 +59,9 @@ const serviceApi = baseApi.injectEndpoints({
             query: (id) => ({
                 url: `/service/delete/${id}`,
                 method: "DELETE"
-            })
+            }),
+
+            invalidatesTags: ["services"],
         }),
 
     })

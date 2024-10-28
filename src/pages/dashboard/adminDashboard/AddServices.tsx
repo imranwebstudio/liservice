@@ -35,7 +35,7 @@ const [addService] = useCreateServiceMutation();
             category: data.category,
             min: Number(data.min),
             max: Number(data.max),
-            avgTime: Number(data.avgTime),
+            avgTime: (data.avgTime),
             isDeleted: false
         }
 
@@ -67,7 +67,7 @@ const [addService] = useCreateServiceMutation();
         }
     };
 
-    const catagories = ["feature", "facebook", "instagram", "youtube", "tiktok"];
+    const catagories = ["feature", "facebook", "instagram", "youtube", "tiktok", "telegram", "linkedin"];
 
     return (
         <div className="card w-full shadow-xl p-6">
@@ -142,7 +142,7 @@ const [addService] = useCreateServiceMutation();
                         <span className="label-text">Price</span>
                     </label>
                     <input
-                        type="number"
+                        type="text"
                         className="input input-bordered"
                         {...register("price", {
                             required: "Price is required",
@@ -197,7 +197,7 @@ const [addService] = useCreateServiceMutation();
                         <span className="label-text">Average Time (in hours)</span>
                     </label>
                     <input
-                        type="number"
+                        type="text"
                         className="input input-bordered"
                         {...register("avgTime", {
                             required: "Average time is required",

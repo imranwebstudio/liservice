@@ -1,6 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { logout, selectUser } from "../redux/features/auth/authSlice";
+import { logout, selectUser, userRole } from "../redux/features/auth/authSlice";
 import logo1 from '../assets/logoWhite.png'
 // import logo2 from '../assets/logoBlack.png'
 import { useTheme } from "../utils/ThemeContext";
@@ -11,6 +11,7 @@ const Nav = () => {
     const themeContext = useTheme(); // Use the custom hook
     const location = useNavigate();
     const user = useAppSelector(selectUser);
+    const role = useAppSelector(userRole);
     const dispatch = useAppDispatch();
 
     const handleLogout = () => {
@@ -22,8 +23,8 @@ const Nav = () => {
 // console.log(data, isLoading);
     return (
         <div className="w-full fixed z-50 top-0 ">
-            <div className="navbar">
-                <div className="navbar-start">
+            <div className="navbar justify-between">
+                <div className="">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
                             <svg
@@ -72,7 +73,7 @@ const Nav = () => {
                         </ul>
                     </div>
                     <Link to="/" className=" text-xl">
-                        <img className="w-20 ml-5 bg-black/80 p-1 rounded" src={logo1} alt="" />
+                        <img className="w-10 md:w-20 mx-1 bg-black/80 p-1 rounded" src={logo1} alt="" />
                     </Link>
                 </div>
                 <div className="navbar-center hidden lg:flex bg-[#e20b0b] rounded-3xl">
@@ -120,8 +121,8 @@ const Nav = () => {
                     </ul>
                 </div>
 
-                <div className="navbar-end">
-                    {user&&  <div className="font-bold text-lg"> Balance: ${data?.data?.balance}</div>}
+                <div className="">
+                    {(user && role !== "admin") &&  <Link to="/dashboard/addBalance" className="font-bold text-xs md:text-md lg:text-lg"> Balance: ${data?.data?.balance}</Link>}
 
                     <label className="swap swap-rotate mx-5">
                         {/* Hidden checkbox controls the state */}
@@ -129,7 +130,7 @@ const Nav = () => {
 
                         {/* Sun icon for light mode */}
                         <svg
-                            className="swap-on h-10 w-10 fill-current"
+                            className="swap-on size-7 md:size-10 fill-current"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24">
                             <path
@@ -138,7 +139,7 @@ const Nav = () => {
 
                         {/* Moon icon for dark mode */}
                         <svg
-                            className="swap-off h-10 w-10 fill-current"
+                            className="swap-off size-7 md:size-10 fill-current"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24">
                             <path
@@ -151,7 +152,7 @@ const Nav = () => {
                                
                                 <div className="dropdown dropdown-end">
                                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                                        <div className="w-10 rounded-full">
+                                        <div className="w-7 md:w-10 rounded-full">
                                             <img src={user?.avatar || 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'} alt="User Avatar" />
                                         </div>
                                     </label>

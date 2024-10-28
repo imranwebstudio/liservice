@@ -31,7 +31,7 @@ const OrderHistory = () => {
                         {data?.data?.map((order: any, index: number) => (
                             <tr key={order.id} className={order.status === "Failed" ? "bg-red-100" : ""}>
                                 <th>{index + 1}</th>
-                                <td>{order.serviceId}</td>
+                                <td>{order?.serviceId?.name}</td>
                                 <td>${order.price}</td>
                                 <td>
                                     <span
