@@ -21,7 +21,7 @@ const ServiceCards = () => {
     const [category, setCategory] = useState({ category: "" });
     const { data, isLoading } = useGetServicesQuery(category);
     const [buyService, { isLoading: buyingService }] = useBuyServiceMutation();
-console.log(data);
+    console.log(data);
     const [selectedService, setSelectedService] = useState<IService | null>(null);
     const [buyInfo, setBuyInfo] = useState({
         link: "",
@@ -114,7 +114,20 @@ console.log(data);
                     data?.data?.map((service: IService) => (
                         <div key={service._id} className="card card-compact w-80 shadow-3xl rounded-2xl shadow-slate-500 flex flex-col justify-between">
                             <figure className="w-full h-48">
-                                <img className="w-full h-full object-cover" src={service.image !== "" ? service.image : service.category === "facebook" ?  " https://cdn.dribbble.com/users/721524/screenshots/4117132/untitled-1-_1_.png" : category.category === "instagram" ? "https://cdn.dribbble.com/users/721524/screenshots/4117132/untitled-1-_1_.png" : "https://cdn.dribbble.com/users/721524/screenshots/4117132/untitled-1-_1_.png"} alt={service.name} />
+                                <img
+                                    className="w-full h-full object-cover"
+                                    src={
+                                        service.image !== ""
+                                            ? service.image
+                                            : service.category === "facebook"
+                                                ? "https://images.macrumors.com/t/3SwpDI7nrMQeeIro9X7SbILE4_I=/1600x0/article-new/2021/03/Facebook-Feature.jpg"
+                                                : service.category === "instagram"
+                                                    ? "https://www.internetmatters.org/wp-content/uploads/2020/01/instalogo.png"
+                                                    : service.category === "youtube" ? "https://images.macrumors.com/t/oVY3CeutZiDKCY3YZHL7LEoRf54=/1600x0/article-new/2021/09/General-YouTube-Feature-1.jpg" : "https://www.manchesterdigital.com/storage/15585/alexander-shatov-I4p0FcjDBJI-unsplash.jpg"
+                                    }
+                                    alt={service.name}
+                                />
+
                             </figure>
                             <div className="card-body flex-grow flex flex-col justify-between">
                                 <h2 className="card-title">{service.name}</h2>

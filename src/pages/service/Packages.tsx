@@ -75,7 +75,12 @@ const Packages = () => {
 
   return (
     <Container className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4 text-center my-10 text-blue-500">Features Packages</h1>
+      {
+        data?.data?.length !== 0 && (
+          <h1 className="text-3xl font-bold mb-4 text-center my-10 text-blue-500">Features Packages</h1>
+          
+        )
+      }
       <div className="flex flex-wrap items-center gap-6">
         {data?.data?.map((service: IService) => (
           <div key={service._id} className="card card-compact w-80 shadow-3xl shadow-slate-500">
