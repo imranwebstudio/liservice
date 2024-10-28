@@ -78,14 +78,26 @@ const Packages = () => {
       {
         data?.data?.length !== 0 && (
           <h1 className="text-3xl font-bold mb-4 text-center my-10 text-blue-500">Features Packages</h1>
-          
+
         )
       }
       <div className="flex flex-wrap items-center gap-6">
         {data?.data?.map((service: IService) => (
           <div key={service._id} className="card card-compact w-80 shadow-3xl shadow-slate-500">
             <figure className="w-full h-48">
-              <img className="w-full h-full object-cover" src={service.image} alt={service.name} />
+              <img
+                className="w-full h-full object-cover"
+                src={
+                  service.image !== ""
+                    ? service.image
+                    : service.category === "facebook"
+                      ? "https://images.macrumors.com/t/3SwpDI7nrMQeeIro9X7SbILE4_I=/1600x0/article-new/2021/03/Facebook-Feature.jpg"
+                      : service.category === "instagram"
+                        ? "https://www.internetmatters.org/wp-content/uploads/2020/01/instalogo.png"
+                        : service.category === "youtube" ? "https://images.macrumors.com/t/oVY3CeutZiDKCY3YZHL7LEoRf54=/1600x0/article-new/2021/09/General-YouTube-Feature-1.jpg" : "https://www.manchesterdigital.com/storage/15585/alexander-shatov-I4p0FcjDBJI-unsplash.jpg"
+                }
+                alt={service.name}
+              />
             </figure>
             <div className="card-body">
               <h2 className="card-title">{service.name}</h2>

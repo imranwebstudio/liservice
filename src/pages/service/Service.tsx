@@ -175,6 +175,7 @@ const ServiceCards = () => {
                             onChange={(e) => setBuyInfo({ ...buyInfo, quantity: parseInt(e.target.value) })} // Convert to number(e.target.value)}
                             className="input input-bordered w-full mb-4"
                         />
+                        {/* <input type="range" min={selectedService.min} max={selectedService.max}  className="range range-xs" /> */}
                         <div className="flex justify-end">
                             <button onClick={closeModal} className="btn btn-primary btn-outline mr-2">
                                 Cancel
