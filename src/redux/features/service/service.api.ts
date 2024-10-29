@@ -10,7 +10,7 @@ const serviceApi = baseApi.injectEndpoints({
             })
         }),
         getServices: build.query({
-            query: ({category}) => ({
+            query: ({ category }) => ({
                 url: `/service/getAll?category=${category}`,
                 method: "GET"
             }),
@@ -24,7 +24,7 @@ const serviceApi = baseApi.injectEndpoints({
                 return {
                     url: `/service/buy/${data.id}`,
                     method: "POST",
-                    body: {quantity: data.buyInfo.quantity, link: data.buyInfo.link}
+                    body: { quantity: data.buyInfo.quantity, link: data.buyInfo.link }
                 };
             }
         }),
@@ -42,7 +42,7 @@ const serviceApi = baseApi.injectEndpoints({
             query: (args) => ({
                 url: `/service/approve/${args.id}`,
                 method: "PUT",
-                body: {status: args.status}
+                body: { status: args.status }
             }),
 
             invalidatesTags: ["services"],
@@ -53,6 +53,19 @@ const serviceApi = baseApi.injectEndpoints({
                 url: "/service/getServiceByUserId",
                 method: "GET"
             })
+        }),
+
+        updateService: build.mutation({
+            query: (data) => {
+                console.log("inside update mutation",data);
+                return {
+                    url: `/service/update/${data.id}`,
+                    method: "PUT",
+                    body: data.service
+                }
+            },
+
+            invalidatesTags: ["services"],
         }),
 
         deleteService: build.mutation({
@@ -68,11 +81,12 @@ const serviceApi = baseApi.injectEndpoints({
 })
 
 export const {
-     useCreateServiceMutation, 
-    useGetServicesQuery, 
-    useBuyServiceMutation, 
-    useGetPendingServicesQuery, 
+    useCreateServiceMutation,
+    useGetServicesQuery,
+    useBuyServiceMutation,
+    useGetPendingServicesQuery,
     useApproveServiceMutation,
     useGetPendingServiceByUserIdQuery,
-    useDeleteServiceMutation 
+    useDeleteServiceMutation,
+    useUpdateServiceMutation
 } = serviceApi;

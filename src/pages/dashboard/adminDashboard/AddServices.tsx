@@ -3,7 +3,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useCreateServiceMutation } from "../../../redux/features/service/service.api";
 import Swal from "sweetalert2";
 
-interface FormValues {
+export interface FormValues {
+    _id: any;
     name: string;
     image?: string;
     userId?: string[];

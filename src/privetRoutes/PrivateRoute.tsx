@@ -3,9 +3,7 @@ import { useAppSelector } from "../redux/hooks";
 import Swal from "sweetalert2";
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-  console.log("Private Route");
-  const user = useAppSelector((state) => state.auth.user); // Adjust this to match your state structure
-  console.log(user);
+  const user = useAppSelector((state) => state.auth.user); 
 
   if (user) {
     return children;

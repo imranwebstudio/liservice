@@ -8,7 +8,7 @@ import { BaseApi } from "../baseApi";
 
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: BaseApi,
+  baseUrl: `${BaseApi}/api/v1`,
   credentials: "include", 
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.tokens as unknown as { accessToken: string };
@@ -34,9 +34,8 @@ async (args, api, extraOptions): Promise<any> => {
 
   if (result?.error?.status === 401) {
     console.log('Sending refresh token');
-
     const res = await axios.post(
-      `${BaseApi}/refresh`,
+      `/${BaseApi}/refresh`,
       {}, // Your request body goes here if needed
       {
         withCredentials: true,

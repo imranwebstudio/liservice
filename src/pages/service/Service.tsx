@@ -28,6 +28,9 @@ const ServiceCards = () => {
     const [quantity, setQuantity] = useState(0);
     const [link, setLink] = useState(''); // State to hold the user's link input
     const [price, setPrice] = useState(0)
+
+
+    
     const openModal = (service: IService) => {
         setSelectedService(service);
         setPrice(service.price);
@@ -98,7 +101,7 @@ const ServiceCards = () => {
         <Container className="container mx-auto p-4 my-16">
 
             {/* Category Tabs */}
-            <div role="tablist" className="tabs tabs-boxed md:my-10">
+            <div role="tablist" className="tabs tabs-boxed mb-10 md:my-10 flex justify-center flex-wrap gap-1">
                 <button role="tab" className={`tab ${category.category === "" && "tab-active"}`} onClick={() => setCategory({ category: "" })}>All</button>
                 <button role="tab" className={`tab ${category.category === "feature" && "tab-active"}`} onClick={() => setCategory({ category: "feature" })}>Feature</button>
                 <button role="tab" className={`tab ${category.category === "facebook" && "tab-active"}`} onClick={() => setCategory({ category: "facebook" })}>Facebook</button>
@@ -110,9 +113,9 @@ const ServiceCards = () => {
             </div>
 
             {/* Services List */}
-            <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-6">
+            <div className="  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-6">
                 {!data?.data?.length ? (
-                    <div className="flex flex-col items-center justify-center w-full h-[50vh]">
+                    <div className="flex flex-col items-center justify-center w-full h-[50vh] my-10">
                         <img src={"https://cdn.dribbble.com/users/721524/screenshots/4117132/untitled-1-_1_.png"} alt="No data found" className="h-60 mb-4" />
                         <h3 className="text-xl font-semibold mb-2">No Services Found</h3>
                         <p className="mb-6">We couldn't find any services matching your search. Please try a different category or check back later.</p>
