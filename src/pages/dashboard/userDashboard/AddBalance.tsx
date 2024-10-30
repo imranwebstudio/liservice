@@ -37,6 +37,7 @@ const AddBalance: React.FC = () => {
                     <option disabled value="">
                         Pick your payment method
                     </option>
+                    <option value="Binance">Binance</option>
                     <option value="Bkash">Bkash</option>
                     <option value="Nagad">Nagad</option>
                     <option value="Rocket">Rocket</option>
@@ -59,10 +60,11 @@ const AddBalance: React.FC = () => {
             {/* Extra Fee (1.85%) */}
             <div className="form-control mb-4">
                 <label className="label">
-                    <span className="label-text">Extra Fee (1.85%)</span>
+                    <span className="label-text line-through ">Extra Fee  (1.85%)</span>
                 </label>
                 <input
                     // value={extraFee.toFixed(2)}
+                    placeholder="NO EXTRA FEE"
                     readOnly
                     type="text"
                     className="input input-bordered"

@@ -46,6 +46,8 @@ const TableHeader = () => (
             <th>#</th>
             <th>Customer</th>
             <th>Service</th>
+            <th>Link</th>
+            <th>amount</th>
             <th>Cost</th>
             <th>Status</th>
             <th>Actions</th>
@@ -68,6 +70,8 @@ const TableRow = ({ service, index, onStatusUpdate, isUpdating }: { service: any
         <th>{index + 1}</th>
         <td>{service.userId.userName}</td>
         <td>{service?.serviceId?.name}</td>
+        <td>{service?.link}</td>
+        <td>{service?.quantity}</td>
         <td>{service?.serviceId?.price}</td>
         <td>{service?.status}</td>
         <td>

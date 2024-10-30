@@ -4,6 +4,7 @@ import { useState } from "react";
 import bkash from "../../../assets/BKash-bKash-Logo.wine.svg";
 import nagad from "../../../assets/nagad.png";
 import rocket from "../../../assets/rocket.png";
+import Binance from "../../../assets/binance.jpg";
 import logo from "../../../assets/logoWhite.png";
 import { useAddBalanceMutation } from "../../../redux/features/balance/balance.api";
 import Swal from "sweetalert2";
@@ -140,7 +141,7 @@ const PaymentPage = () => {
                                 </div>
                                 <div className="text-start">
                                     <h1 className="font-bold">liservice24.com</h1>
-                                    
+
                                 </div>
                             </div>
 
@@ -152,58 +153,64 @@ const PaymentPage = () => {
 
                     {/* 4step  */}
                     <div className="mt-5">
-                        <div className={`w-full ${method === "Nagad" ? "bg-red-600" : method === "Bkash" ? "bg-[#e0126d]" : "bg-[#8c3494]"} text-white rounded-md p-2 text-start`}>
-
-                            {/* Apply list-disc and list-inside to the ul */}
-                            <ul className="list-disc list-inside text-md mt-3">
-                                <li className="border-b border-b-orange-400 text-sm py-3">
-                                    {method === "Nagad" ? "*167#" : method === "Bkash" ? "*247#" : "*322#"} ডায়াল করে আপনার {method} মোবাইল মেনুতে যান অথবা {method} অ্যাপে যান ৷
-                                </li>
-                                <li className="border-b border-b-orange-400 text-sm py-3">
-                                    <span className="text-orange-400 font-bold">
-                                        "Send Money"{" "}
-                                    </span>
-                                    ক্লিক করুন ৷
-                                </li>
-                                <li className="border-b border-b-orange-400 text-sm py-3">
-                                    প্রাপক নম্বর হিসেবে ওই নম্বর লিখুন{" "}
-                                    <span className="text-orange-400 font-bold">01618616066</span>
-                                </li>
-                                <li className="border-b border-b-orange-400 text-sm py-3">
-                                    টাকার পরিমান{" "}
-                                    <span className="text-orange-400 font-bold"> ৳{total}</span>
-                                </li>
-                                <li className="border-b border-b-orange-400 text-sm py-3">
-                                    নিশ্চিত করতে এখন আপনার {method} মোবাইল মেনু পিন লিখুন ৷
-                                </li>
-                                <li className="border-b border-b-orange-400 text-sm py-3">
-                                    সবকিছু ঠিক থাকলে আপনি {method} থেকে একটা নিশ্চিতকরণ বার্তা পাবেন
-                                    ৷
-                                </li>
-                                <li className="border-b border-b-orange-400 text-sm py-3">
-                                    এখন উপরের বক্সে আপনার{" "}
-                                    <span className="text-orange-400 font-bold">
-                                        Transaction ID
-                                    </span>{" "}
-                                    দিন এবং নিচের{" "}
-                                    <span className="text-orange-400 font-bold"> VERIFY </span>
-                                    বাটনে ক্লিক করুন ৷
-                                </li>
-                            </ul>
-                            <h1 className="text-center p-2 font-bold">ট্রানজেকশন আইডি দিন</h1>
-                            <input
-                                className="w-full p-2 rounded-md text-gray-400"
-                                type="text"
-                                placeholder="ট্রানজেকশন আইডি দিন"
-                                onChange={(e) => setReference(e.target.value)}
-                            />
-                        </div>
+                        {
+                            method === "Binance" ? <div>
+                                <img src={Binance} alt="" />
+                            </div> :
+                                <div className={`w-full ${method === "Nagad" ? "bg-red-600" : method === "Bkash" ? "bg-[#e0126d]" : "bg-[#8c3494]"} text-white rounded-md p-2 text-start`}>
+                                    {/* Apply list-disc and list-inside to the ul */}
+                                    <ul className="list-disc list-inside text-md mt-3">
+                                        <li className="border-b border-b-orange-400 text-sm py-3">
+                                            {method === "Nagad" ? "*167#" : method === "Bkash" ? "*247#" : "*322#"} ডায়াল করে আপনার {method} মোবাইল মেনুতে যান অথবা {method} অ্যাপে যান ৷
+                                        </li>
+                                        <li className="border-b border-b-orange-400 text-sm py-3">
+                                            <span className="text-orange-400 font-bold">
+                                                "Send Money"{" "}
+                                            </span>
+                                            ক্লিক করুন ৷
+                                        </li>
+                                        <li className="border-b border-b-orange-400 text-sm py-3">
+                                            প্রাপক নম্বর হিসেবে ওই নম্বর লিখুন{" "}
+                                            <span className="text-orange-400 font-bold">{
+                                                method === "Nagad" ? "01688943310" : method === "Bkash" ? "01618416066" : "018774443699"
+                                            }</span>
+                                        </li>
+                                        <li className="border-b border-b-orange-400 text-sm py-3">
+                                            টাকার পরিমান{" "}
+                                            <span className="text-orange-400 font-bold"> ৳{total}</span>
+                                        </li>
+                                        <li className="border-b border-b-orange-400 text-sm py-3">
+                                            নিশ্চিত করতে এখন আপনার {method} মোবাইল মেনু পিন লিখুন ৷
+                                        </li>
+                                        <li className="border-b border-b-orange-400 text-sm py-3">
+                                            সবকিছু ঠিক থাকলে আপনি {method} থেকে একটা নিশ্চিতকরণ বার্তা পাবেন
+                                            ৷
+                                        </li>
+                                        <li className="border-b border-b-orange-400 text-sm py-3">
+                                            এখন উপরের বক্সে আপনার{" "}
+                                            <span className="text-orange-400 font-bold">
+                                                Transaction ID
+                                            </span>{" "}
+                                            দিন এবং নিচের{" "}
+                                            <span className="text-orange-400 font-bold"> VERIFY </span>
+                                            বাটনে ক্লিক করুন ৷
+                                        </li>
+                                    </ul>
+                                    <h1 className="text-center p-2 font-bold">ট্রানজেকশন আইডি দিন</h1>
+                                    <input
+                                        className="w-full p-2 rounded-md text-gray-400"
+                                        type="text"
+                                        placeholder="ট্রানজেকশন আইডি দিন"
+                                        onChange={(e) => setReference(e.target.value)}
+                                    />
+                                </div>
+                        }
                     </div>
 
                     {/* step  */}
 
                     <div className="mt-5">
-                        <button onClick={handleSubmit} className="w-full  bg-red-600 text-white font-semibold rounded-md btn hover:bg-red-700 text-center p-2">
+                        <button disabled={!reference} onClick={handleSubmit} className="w-full  bg-red-600 text-white font-semibold rounded-md btn hover:bg-red-700 text-center p-2">
                             VERIFY
                         </button>
                     </div>

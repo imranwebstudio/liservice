@@ -4,7 +4,7 @@ import { useCreateServiceMutation } from "../../../redux/features/service/servic
 import Swal from "sweetalert2";
 
 export interface FormValues {
-    _id: any;
+    _id: string;
     name: string;
     image?: string;
     userId?: string[];

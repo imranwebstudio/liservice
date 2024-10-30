@@ -39,9 +39,6 @@ const ServiceCards = () => {
     };
 
 
-    // const calculatePrice = () => {
-
-    // }
 
 
     const closeModal = () => {

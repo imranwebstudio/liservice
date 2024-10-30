@@ -35,7 +35,7 @@ async (args, api, extraOptions): Promise<any> => {
   if (result?.error?.status === 401) {
     console.log('Sending refresh token');
     const res = await axios.post(
-      `/${BaseApi}/refresh`,
+      `${BaseApi}/refresh`,
       {}, // Your request body goes here if needed
       {
         withCredentials: true,
