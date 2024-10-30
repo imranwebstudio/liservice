@@ -7,10 +7,10 @@ import { useTheme } from "../utils/ThemeContext";
 import { useGetUserProfileQuery } from "../redux/features/auth/authApi";
 
 const Nav = () => {
-    const {data} = useGetUserProfileQuery(undefined, {pollingInterval: 5000});
+    const user = useAppSelector(selectUser);
+    const {data} = useGetUserProfileQuery(undefined, { skip: !user || user?.role === 'admin', pollingInterval: 5000});
     const themeContext = useTheme(); // Use the custom hook
     const location = useNavigate();
-    const user = useAppSelector(selectUser);
     const role = useAppSelector(userRole);
     const dispatch = useAppDispatch();
 
