@@ -35,7 +35,9 @@ const ManageOrders = () => {
                     <TableBody data={data?.data} onStatusUpdate={handleStatusUpdate} isUpdating={isUpdating} />
                 </table>
             </div>
+            
         </Container>
+
     );
 };
 
