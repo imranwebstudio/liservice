@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "../../utils/Container";
 import { useBuyServiceMutation, useGetServicesQuery } from "../../redux/features/service/service.api";
 import Loading from "../../utils/Loading";
@@ -23,19 +23,17 @@ const ServiceCards = () => {
     const [category, setCategory] = useState({ category: "" });
     const { data, isLoading } = useGetServicesQuery(category);
     const [buyService, { isLoading: buyingService }] = useBuyServiceMutation();
-    
+
     const [selectedService, setSelectedService] = useState<IService | null>(null);
     const [quantity, setQuantity] = useState(0);
     const [link, setLink] = useState(''); // State to hold the user's link input
-    const [price, setPrice] = useState(0)
+    const [price, setPrice] = useState(0);
 
-
-    
     const openModal = (service: IService) => {
         setSelectedService(service);
         setPrice(service.price);
         setLink('');
-        setQuantity(0);
+        setQuantity(service.min); // Start with minimum quantity
     };
 
 
@@ -45,12 +43,19 @@ const ServiceCards = () => {
         setSelectedService(null);
     };
 
+    // Calculate price when quantity or selectedService changes
+    useEffect(() => {
+        if (selectedService) {
+            const pricePerUnit = selectedService.price / 1000;
+            setPrice(quantity * pricePerUnit);
+        }
+    }, [quantity, selectedService]);
+
     const handleSubmit = async () => {
         if (buyingService) {
             return;
         }
 
-        // Ensure the link is provided
         if (!link) {
             Swal.fire({
                 icon: 'error',
@@ -70,8 +75,7 @@ const ServiceCards = () => {
         });
 
         try {
-            // Make the API request to buy the service
-            await buyService({ id: selectedService?._id, buyInfo: { link, quantity } }).unwrap();
+            await buyService({ id: selectedService?._id, buyInfo: { link, quantity, price } }).unwrap();
 
             Swal.fire({
                 icon: 'success',
@@ -80,7 +84,6 @@ const ServiceCards = () => {
             });
             closeModal();
         } catch (error: any) {
-            console.error(error);
             Swal.fire({
                 icon: 'error',
                 title: 'Order Failed',
@@ -89,28 +92,26 @@ const ServiceCards = () => {
         }
     };
 
-
     if (isLoading) {
         return <Loading />;
     }
 
     return (
         <Container className="container mx-auto p-4 my-16">
-
             {/* Category Tabs */}
             <div role="tablist" className="tabs tabs-boxed mb-10 md:my-10 flex justify-center flex-wrap gap-1">
                 <button role="tab" className={`tab ${category.category === "" && "tab-active"}`} onClick={() => setCategory({ category: "" })}>All</button>
                 <button role="tab" className={`tab ${category.category === "feature" && "tab-active"}`} onClick={() => setCategory({ category: "feature" })}>Feature</button>
                 <button role="tab" className={`tab ${category.category === "facebook" && "tab-active"}`} onClick={() => setCategory({ category: "facebook" })}>Facebook</button>
                 <button role="tab" className={`tab ${category.category === "instagram" && "tab-active"}`} onClick={() => setCategory({ category: "instagram" })}>Instagram</button>
-                <button role="tab" className={`tab ${category.category === "youtube" && "tab-active"}`} onClick={() => setCategory({ category: "youtube" })}>Youtube</button>
-                <button role="tab" className={`tab ${category.category === "tiktok" && "tab-active"}`} onClick={() => setCategory({ category: "tiktok" })}>Tiktok</button>
+                <button role="tab" className={`tab ${category.category === "youtube" && "tab-active"}`} onClick={() => setCategory({ category: "youtube" })}>YouTube</button>
+                <button role="tab" className={`tab ${category.category === "tiktok" && "tab-active"}`} onClick={() => setCategory({ category: "tiktok" })}>TikTok</button>
                 <button role="tab" className={`tab ${category.category === "telegram" && "tab-active"}`} onClick={() => setCategory({ category: "telegram" })}>Telegram</button>
-                <button role="tab" className={`tab ${category.category === "linkedin" && "tab-active"}`} onClick={() => setCategory({ category: "linkedin" })}>Linkedin</button>
+                <button role="tab" className={`tab ${category.category === "linkedin" && "tab-active"}`} onClick={() => setCategory({ category: "linkedin" })}>LinkedIn</button>
             </div>
 
             {/* Services List */}
-            <div className="  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-6">
                 {!data?.data?.length ? (
                     <div className="flex flex-col items-center justify-center w-full h-[50vh] my-10">
                         <img src={"https://cdn.dribbble.com/users/721524/screenshots/4117132/untitled-1-_1_.png"} alt="No data found" className="h-60 mb-4" />
@@ -135,25 +136,15 @@ const ServiceCards = () => {
                                     }
                                     alt={service.name}
                                 />
-
                             </figure>
                             <div className="card-body flex-grow flex flex-col justify-between">
                                 <h2 className="card-title">{service.name}</h2>
-
-                                {/* Limiting description lines */}
-                                {
-                                    service?.description.split(".").map((line, index) => (
-                                        <li key={index}>{line}</li>
-                                    ))
-                                }
-
-                                <div className=" text-sm text-gray-600">
+                                <div className="text-sm text-gray-600">
                                     <p>Price: ${service.price} per 1000</p>
                                     <p>Min: {service.min}</p>
                                     <p>Max: {service.max}</p>
                                     <p>Avg. Time: {service.avgTime}</p>
                                 </div>
-
                                 <div className="card-actions justify-end mt-4">
                                     <button onClick={() => openModal(service)} className="btn btn-primary">
                                         Create Order
@@ -169,42 +160,35 @@ const ServiceCards = () => {
             {selectedService && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-75">
                     <div className="bg-white w-11/12 md:max-w-md mx-auto rounded-lg shadow-lg p-6">
-                        <h3 className="text-lg font-semibold mb-4">Order for: {selectedService.name} <span>${price}</span></h3>
+                        <h3 className="text-lg font-semibold mb-4">
+                            Order for: {selectedService.name} <span>${price.toFixed(2)}</span>
+                        </h3>
                         <input
                             type="text"
                             placeholder="Enter your link here"
                             value={link}
-                            onChange={(e) => setLink(e.target.value)} // Convert to number(e.target.value)}
+                            onChange={(e) => setLink(e.target.value)}
                             className="input input-bordered w-full mb-4"
                         />
                         <input
-                            type="text"
+                            type="number"
                             placeholder="Enter your quantity here"
-                            onChange={(e) => setQuantity(Number(e.target.value))} // Convert to number(e.target.value)}
-                            className="input input-bordered w-full mb-4"
                             value={quantity}
+                            onChange={(e) => setQuantity(Number(e.target.value))}
+                            className="input input-bordered w-full mb-4"
                         />
-
-
                         <div className="mb-4">
-                            <div className="flex justify-between mb-2">
-                                <span>{selectedService.min}</span>
-                                <span>{selectedService.max}</span>
-                            </div>
                             <RangeSlider
-                                value={[selectedService.min, quantity]} // Fixed left thumb at min, and right thumb for quantity
-                                onInput={(value: any[]) => setQuantity(value[1])} // Update only the right thumb value
+                                value={[selectedService.min, quantity]}
+                                onInput={(value: any[]) => setQuantity(value[1])}
                                 min={selectedService.min}
                                 max={selectedService.max}
-                                thumbsDisabled={[true, false]} // Disable left thumb movement
+                                thumbsDisabled={[true, false]}
                             />
                             <div className="text-center mt-2 text-lg font-semibold">
                                 Selected Quantity: {quantity}
                             </div>
                         </div>
-
-
-                        {/* <input type="range" min={selectedService.min} max={selectedService.max}  className="range range-xs" /> */}
                         <div className="flex justify-end">
                             <button onClick={closeModal} className="btn btn-primary btn-outline mr-2">
                                 Cancel
