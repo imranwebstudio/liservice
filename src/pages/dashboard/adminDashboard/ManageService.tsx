@@ -130,6 +130,7 @@ const dataToBeUpdated = {
                             <th>#</th>
                             <th>Name</th>
                             <th>Price</th>
+                            <th>Total Sell</th>
                             <th>Avg. Time</th>
                             <th>Min</th>
                             <th>Max</th>
@@ -142,6 +143,7 @@ const dataToBeUpdated = {
                                 <th>{index + 1}</th>
                                 <td>{service.name}</td>
                                 <td>{service.price}</td>
+                                <td>{service?.userIds?.length}</td>
                                 <td>{service.avgTime} hrs</td>
                                 <td>{service.min}</td>
                                 <td>{service.max}</td>

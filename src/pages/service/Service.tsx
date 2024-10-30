@@ -193,7 +193,7 @@ const ServiceCards = () => {
                             <button onClick={closeModal} className="btn btn-primary btn-outline mr-2">
                                 Cancel
                             </button>
-                            <button onClick={handleSubmit} className="btn btn-primary">
+                            <button disabled={!link} onClick={handleSubmit} className="btn btn-primary">
                                 Submit
                             </button>
                         </div>
