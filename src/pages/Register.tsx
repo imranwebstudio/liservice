@@ -39,7 +39,7 @@ const Register = () => {
             icon: 'success',
             title: 'Login Successful',
           });
-          navigate("/");
+          navigate("/dashboard");
         } else {
           Swal.fire({
             icon: 'error',
@@ -72,7 +72,7 @@ const Register = () => {
             icon: 'success',
             title: 'Registration Successful',
           });
-          navigate("/");
+          navigate("/dashboard");
         } else {
           Swal.fire({
             icon: 'error',

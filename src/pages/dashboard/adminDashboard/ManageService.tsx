@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-{/* Importing necessary components and libraries */}
+{/* Importing necessary components and libraries */ }
 import Swal from "sweetalert2";
 import { useDeleteServiceMutation, useGetServicesQuery, useUpdateServiceMutation } from "../../../redux/features/service/service.api";
 import Container from "../../../utils/Container";
@@ -84,7 +84,7 @@ const ManageService = () => {
             isDeleted: false
         };
 
-    
+
 
         Swal.fire({
             title: 'Processing Service...',
@@ -95,12 +95,12 @@ const ManageService = () => {
             }
         });
 
-const dataToBeUpdated = {
-    id: selectedForUpdate._id,
-    service
-}
+        const dataToBeUpdated = {
+            id: selectedForUpdate._id,
+            service
+        }
         try {
-            await updateService(dataToBeUpdated ).unwrap();
+            await updateService(dataToBeUpdated).unwrap();
 
             Swal.fire({
                 icon: 'success',
@@ -147,7 +147,7 @@ const dataToBeUpdated = {
                                 <td>{service.avgTime} hrs</td>
                                 <td>{service.min}</td>
                                 <td>{service.max}</td>
-                                <td>
+                                <td className="flex gap-2">
                                     <button
                                         className="btn btn-success btn-xs mr-2"
                                         onClick={() => setSelectedForUpdate(service)}
@@ -228,7 +228,63 @@ const dataToBeUpdated = {
                                 {...register("price", { required: "Price is required" })}
                             />
                         </div>
-                        <div className="modal-action">
+
+                        {/* Min */}
+                        <div className="form-control mb-4">
+                            <label className="label">
+                                <span className="label-text">Min</span>
+                            </label>
+                            <input
+                                type="number"
+                                className="input input-bordered"
+                                {...register("min", {
+                                    required: "Minimum value is required",
+                                    min: { value: 10, message: "Must be at least 10" },
+                                })}
+                            />
+                            {errors.min && (
+                                <span className="text-red-500 text-sm">{errors.min.message}</span>
+                            )}
+                        </div>
+
+                        {/* Max */}
+                        <div className="form-control mb-4">
+                            <label className="label">
+                                <span className="label-text">Max</span>
+                            </label>
+                            <input
+                                type="number"
+                                className="input input-bordered"
+                                {...register("max", {
+                                    required: "Maximum value is required",
+                                    validate: (value) =>
+                                        value > 10 || "Maximum must be greater than 10",
+                                })}
+                            />
+                            {errors.max && (
+                                <span className="text-red-500 text-sm">{errors.max.message}</span>
+                            )}
+                        </div>
+
+                        {/* Average Time */}
+                        <div className="form-control mb-4">
+                            <label className="label">
+                                <span className="label-text">Average Time (in hours)</span>
+                            </label>
+                            <input
+                                type="text"
+                                className="input input-bordered"
+                                {...register("avgTime", {
+                                    required: "Average time is required",
+                                    min: { value: 1, message: "Time must be at least 1 hour" },
+                                })}
+                            />
+                            {errors.avgTime && (
+                                <span className="text-red-500 text-sm">{errors.avgTime.message}</span>
+                            )}
+                        </div>
+
+                        <div className="modal-action ">
                             <button type="submit" className="btn btn-primary">Update Service</button>
                             <button type="button" className="btn" onClick={() => setSelectedForUpdate(null)}>Close</button>
                         </div>

@@ -28,14 +28,21 @@ const ManageOrders = () => {
     // Render the orders management table
     return (
         <Container>
-            <h2 className="text-xl font-bold mb-4 mx-auto text-center">Manage Promotion Orders</h2>
-            <div className="overflow-x-auto">
-                <table className="table table-zebra w-full">
-                    <TableHeader />
-                    <TableBody data={data?.data} onStatusUpdate={handleStatusUpdate} isUpdating={isUpdating} />
-                </table>
-            </div>
-            
+            {
+                data?.data.length === 0 ? (
+                    <p className="text-center text-gray-600">No orders found</p>
+                ) :
+                    <>
+                        <h2 className="text-xl font-bold mb-4 mx-auto text-center">Manage Promotion Orders</h2>
+                        <div className="overflow-x-auto">
+                            <table className="table table-zebra w-full">
+                                <TableHeader />
+                                <TableBody data={data?.data} onStatusUpdate={handleStatusUpdate} isUpdating={isUpdating} />
+                            </table>
+                        </div>
+                    </>
+            }
+
         </Container>
 
     );
@@ -83,7 +90,7 @@ const TableRow = ({ service, index, onStatusUpdate, isUpdating }: { service: any
 );
 
 // Component for action buttons
-const ActionButtons = ({ status,  serviceId, onStatusUpdate, isUpdating }: { status: string; serviceId: string; onStatusUpdate: (id: string, status: string) => void; isUpdating: boolean }) => (
+const ActionButtons = ({ status, serviceId, onStatusUpdate, isUpdating }: { status: string; serviceId: string; onStatusUpdate: (id: string, status: string) => void; isUpdating: boolean }) => (
     <>
         <button
             className="btn btn-success btn-xs mr-2"

@@ -33,7 +33,7 @@ const authorization = baseApi.injectEndpoints({
 
         updateUser : build.mutation({
             query: (data) => ({
-                url: `user/update/${data.id}`,
+                url: `user/update`,
                 method: "PUT",
                 body: data
             }),

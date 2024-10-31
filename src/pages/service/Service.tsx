@@ -6,6 +6,7 @@ import Loading from "../../utils/Loading";
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import Swal from "sweetalert2";
+import { catagories } from "../dashboard/adminDashboard/AddServices";
 
 export interface IService {
     _id: string;
@@ -92,6 +93,19 @@ const ServiceCards = () => {
         }
     };
 
+    const categoryImages = {
+        facebook: "https://images.macrumors.com/t/3SwpDI7nrMQeeIro9X7SbILE4_I=/1600x0/article-new/2021/03/Facebook-Feature.jpg",
+        instagram: "https://www.internetmatters.org/wp-content/uploads/2020/01/instalogo.png",
+        youtube: "https://images.macrumors.com/t/oVY3CeutZiDKCY3YZHL7LEoRf54=/1600x0/article-new/2021/09/General-YouTube-Feature-1.jpg",
+        telegram: "https://static1.anpoimages.com/wordpress/wp-content/uploads/2022/03/Telegram-featured.jpg",
+        tiktok: "https://www.manchesterdigital.com/storage/15585/alexander-shatov-I4p0FcjDBJI-unsplash.jpg",
+        whatsapp: "https://www.motortrend.com/uploads/sites/5/2021/11/2021-Whatsapp-Feature.jpg",
+        snapchat: "https://engage.sinch.com/sites/default/files/styles/small/public/image/2023-12/Was%20ist%20Snapchat.jpg?itok=ifJAOVyr",
+        twitter: "https://kendesk.co.ke/wp-content/uploads/X-Twitter.jpg",
+        linkedin: "https://irishtechnews-ie.exactdn.com/wp-content/uploads/2015/12/linkedin-earnings1-759x500.png?lossy=1&ssl=1",
+    };
+
+
     if (isLoading) {
         return <Loading />;
     }
@@ -101,13 +115,10 @@ const ServiceCards = () => {
             {/* Category Tabs */}
             <div role="tablist" className="tabs tabs-boxed mb-10 md:my-10 flex justify-center flex-wrap gap-1">
                 <button role="tab" className={`tab ${category.category === "" && "tab-active"}`} onClick={() => setCategory({ category: "" })}>All</button>
-                <button role="tab" className={`tab ${category.category === "feature" && "tab-active"}`} onClick={() => setCategory({ category: "feature" })}>Feature</button>
-                <button role="tab" className={`tab ${category.category === "facebook" && "tab-active"}`} onClick={() => setCategory({ category: "facebook" })}>Facebook</button>
-                <button role="tab" className={`tab ${category.category === "instagram" && "tab-active"}`} onClick={() => setCategory({ category: "instagram" })}>Instagram</button>
-                <button role="tab" className={`tab ${category.category === "youtube" && "tab-active"}`} onClick={() => setCategory({ category: "youtube" })}>YouTube</button>
-                <button role="tab" className={`tab ${category.category === "tiktok" && "tab-active"}`} onClick={() => setCategory({ category: "tiktok" })}>TikTok</button>
-                <button role="tab" className={`tab ${category.category === "telegram" && "tab-active"}`} onClick={() => setCategory({ category: "telegram" })}>Telegram</button>
-                <button role="tab" className={`tab ${category.category === "linkedin" && "tab-active"}`} onClick={() => setCategory({ category: "linkedin" })}>LinkedIn</button>
+                {catagories?.map((cat: string) => (
+                    <button key={cat} role="tab" className={`tab ${category.category === cat && "tab-active"}`}
+                        onClick={() => setCategory({ category: cat })}>{cat}</button>
+                ))}
             </div>
 
             {/* Services List */}
@@ -126,13 +137,7 @@ const ServiceCards = () => {
                                 <img
                                     className="w-full h-full object-cover"
                                     src={
-                                        service.image !== ""
-                                            ? service.image
-                                            : service.category === "facebook"
-                                                ? "https://images.macrumors.com/t/3SwpDI7nrMQeeIro9X7SbILE4_I=/1600x0/article-new/2021/03/Facebook-Feature.jpg"
-                                                : service.category === "instagram"
-                                                    ? "https://www.internetmatters.org/wp-content/uploads/2020/01/instalogo.png"
-                                                    : service.category === "youtube" ? "https://images.macrumors.com/t/oVY3CeutZiDKCY3YZHL7LEoRf54=/1600x0/article-new/2021/09/General-YouTube-Feature-1.jpg" : "https://www.manchesterdigital.com/storage/15585/alexander-shatov-I4p0FcjDBJI-unsplash.jpg"
+                                        service.image || categoryImages[service?.category as keyof typeof categoryImages] || ""
                                     }
                                     alt={service.name}
                                 />

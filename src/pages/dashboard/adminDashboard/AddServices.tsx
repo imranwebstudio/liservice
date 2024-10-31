@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useCreateServiceMutation } from "../../../redux/features/service/service.api";
@@ -16,7 +17,7 @@ export interface FormValues {
     avgTime: number;
     isDeleted?: boolean;
 }
-
+export const catagories = ["feature", "facebook", "instagram", "youtube", "tiktok", "telegram", "linkedin", "twitter", "whatsapp", "snapchat", ];
 const AddServices: React.FC = () => {
     const {
         register,
@@ -68,7 +69,7 @@ const [addService] = useCreateServiceMutation();
         }
     };
 
-    const catagories = ["feature", "facebook", "instagram", "youtube", "tiktok", "telegram", "linkedin"];
+   
 
     return (
         <div className="card w-full shadow-xl p-6">

@@ -55,14 +55,14 @@ const Sidebar = () => {
                         {
                             (role as 'admin' | 'user') === 'user' && (
                                 <ul className="my-10">
-                                    <li>
+                                    {/* <li>
                                         <NavLink
                                             className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
                                             to="/dashboard/singleOrder"
                                         >
                                             Customized Order
                                         </NavLink>
-                                    </li>
+                                    </li> */}
                                     <li>
                                         <NavLink
                                             className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
