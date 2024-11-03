@@ -1,0 +1,226 @@
+/* eslint-disable react-refresh/only-export-components */
+import React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useCreateServiceMutation } from "../../../redux/features/service/service.api";
+import Swal from "sweetalert2";
+
+export interface FormValues {
+    _id: string;
+    name: string;
+    image?: string;
+    userId?: string[];
+    description: string;
+    category: string;
+    price: number;
+    min: number;
+    max: number;
+    avgTime: number;
+    isDeleted?: boolean;
+}
+export const catagories = ["feature", "facebook", "instagram", "youtube", "tiktok", "telegram", "linkedin", "twitter", "whatsapp", "snapchat", ];
+const AddServices: React.FC = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormValues>();
+const [addService] = useCreateServiceMutation();
+
+
+    const onSubmit: SubmitHandler<FormValues> = async (data) => {
+
+        const serviceData = {
+            name: data.name,
+            image: data.image,
+            description: data.description,
+            price: Number(data.price),
+            category: data.category,
+            min: Number(data.min),
+            max: Number(data.max),
+            avgTime: (data.avgTime),
+            isDeleted: false
+        }
+
+        Swal.fire({
+            title: 'Processing Service...',
+            text: 'Please wait while we process your Service',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try {
+            await addService(serviceData).unwrap();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Service Added Successful!',
+                text: 'Your service has been successfully Added.',
+            });
+            
+        } catch (error) {
+            console.log(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Service Failed',
+                text: 'There was an error processing your Service. Please try again.',
+            });   
+        }
+    };
+
+   
+
+    return (
+        <div className="card w-full shadow-xl p-6">
+            <h2 className="text-2xl font-bold mb-4">Add New Service</h2>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                {/* Service Name */}
+                <div className="form-control mb-4">
+                    <label className="label">
+                        <span className="label-text">Service Name</span>
+                    </label>
+                    <input
+                        type="text"
+                        className="input input-bordered"
+                        {...register("name", { required: "Service name is required" })}
+                    />
+                    {errors.name && (
+                        <span className="text-red-500 text-sm">{errors.name.message}</span>
+                    )}
+                </div>
+
+                {/* Image (optional) */}
+                <div className="form-control mb-4">
+                    <label className="label">
+                        <span className="label-text">Image URL</span>
+                    </label>
+                    <input
+                        type="text"
+                        className="input input-bordered"
+                        {...register("image")}
+                    />
+                </div>
+
+              
+                {/* Description */}
+                <div className="form-control mb-4">
+                    <label className="label">
+                        <span className="label-text">Description</span>
+                    </label>
+                    <textarea
+                        className="textarea textarea-bordered"
+                        {...register("description", { required: "Description is required" })}
+                    />
+                    {errors.description && (
+                        <span className="text-red-500 text-sm">{errors.description.message}</span>
+                    )}
+                </div>
+              
+
+                {/* Price */}
+                <div className="form-control mb-4">
+                    <label className="label">
+                        <span className="label-text">Category</span>
+                    </label>
+                    <select  {...register("category", { required: "category name is required" })} className="select select-bordered w-full ">
+                        <option disabled selected>Select Service</option>
+
+                        {catagories.map((cat) => (
+                            <option key={cat} value={cat}>
+                                {cat}
+                            </option>
+                        ))}
+                        
+                    </select>
+                    {errors.price && (
+                        <span className="text-red-500 text-sm">{errors.price.message}</span>
+                    )}
+                </div>
+
+                {/* Price */}
+                <div className="form-control mb-4">
+                    <label className="label">
+                        <span className="label-text">Price</span>
+                    </label>
+                    <input
+                        type="text"
+                        className="input input-bordered"
+                        {...register("price", {
+                            required: "Price is required",
+                            min: { value: 0, message: "Price must be a positive number" },
+                        })}
+                    />
+                    {errors.price && (
+                        <span className="text-red-500 text-sm">{errors.price.message}</span>
+                    )}
+                </div>
+
+                {/* Min */}
+                <div className="form-control mb-4">
+                    <label className="label">
+                        <span className="label-text">Min</span>
+                    </label>
+                    <input
+                        type="number"
+                        className="input input-bordered"
+                        {...register("min", {
+                            required: "Minimum value is required",
+                            min: { value: 10, message: "Must be at least 10" },
+                        })}
+                    />
+                    {errors.min && (
+                        <span className="text-red-500 text-sm">{errors.min.message}</span>
+                    )}
+                </div>
+
+                {/* Max */}
+                <div className="form-control mb-4">
+                    <label className="label">
+                        <span className="label-text">Max</span>
+                    </label>
+                    <input
+                        type="number"
+                        className="input input-bordered"
+                        {...register("max", {
+                            required: "Maximum value is required",
+                            validate: (value) =>
+                                value > 10 || "Maximum must be greater than 10",
+                        })}
+                    />
+                    {errors.max && (
+                        <span className="text-red-500 text-sm">{errors.max.message}</span>
+                    )}
+                </div>
+
+                {/* Average Time */}
+                <div className="form-control mb-4">
+                    <label className="label">
+                        <span className="label-text">Average Time (in hours)</span>
+                    </label>
+                    <input
+                        type="text"
+                        className="input input-bordered"
+                        {...register("avgTime", {
+                            required: "Average time is required",
+                            min: { value: 1, message: "Time must be at least 1 hour" },
+                        })}
+                    />
+                    {errors.avgTime && (
+                        <span className="text-red-500 text-sm">{errors.avgTime.message}</span>
+                    )}
+                </div>
+
+
+                {/* Submit Button */}
+                <div className="form-control mt-4">
+                    <button type="submit" className="btn btn-primary">
+                        Add Service
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+};
+
+export default AddServices;
