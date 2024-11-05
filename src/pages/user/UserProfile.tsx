@@ -76,7 +76,7 @@ const UserProfile = () => {
         }
     };
 
-    if (isLoading) return <Loading />;
+    if (isLoading || isPasswordLoading) return <Loading />;
 
     return (
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-28">
