@@ -38,6 +38,13 @@ const authorization = baseApi.injectEndpoints({
                 body: data
             }),
         }),
+        changePassword : build.mutation({
+            query: (data) => ({
+                url: `user/changePassword`,
+                method: "PUT",
+                body: data
+            }),
+        }),
     }),
 })
 
@@ -45,5 +52,6 @@ export const { useLoginMutation,
     useRegisterMutation,
      useGetUserProfileQuery,
     useGetAllUsersQuery,
-    useUpdateUserMutation
+    useUpdateUserMutation,
+    useChangePasswordMutation
     } = authorization

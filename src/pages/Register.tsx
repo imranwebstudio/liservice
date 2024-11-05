@@ -9,7 +9,7 @@ import { setUser } from "../redux/features/auth/authSlice";
 import Container from "../utils/Container";
 
 const Register = () => {
-  const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Register forms
+  const [isLogin, setIsLogin] = useState(false); // Toggle between Login and Register forms
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
   const dispatch = useAppDispatch();
   const [login] = useLoginMutation();
@@ -39,7 +39,7 @@ const Register = () => {
             icon: 'success',
             title: 'Login Successful',
           });
-          navigate("/dashboard");
+          navigate("/service");
         } else {
           Swal.fire({
             icon: 'error',

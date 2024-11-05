@@ -4,16 +4,18 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { selectTokens, selectUser, setUser } from '../../redux/features/auth/authSlice';
-import { useUpdateUserMutation } from '../../redux/features/auth/authApi';
+import { useChangePasswordMutation, useUpdateUserMutation } from '../../redux/features/auth/authApi';
 import Loading from '../../utils/Loading';
 
 const UserProfile = () => {
     const [updateUser, { isLoading }] = useUpdateUserMutation();
+    const [changePassword, { isLoading: isPasswordLoading }] = useChangePasswordMutation();
     const user = useAppSelector(selectUser);
     const tokens = useAppSelector(selectTokens)
     const dispatch = useAppDispatch();
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     // State for edit profile form
     const [profileInfo, setProfileInfo] = useState({
@@ -42,12 +44,12 @@ const UserProfile = () => {
                 email: profileInfo.email || user?.email, // Use new email or fallback to existing email
                 phone: profileInfo.phone || user?.phone, // Use new phone or fallback to existing phone
             };
-    
+
             const res = await updateUser(updateUserData).unwrap();
             dispatch(setUser({ user: res.data.data, tokens }));
 
             console.log("Update success", res); // Debug log
-    
+
             Swal.fire("Success!", "Profile updated successfully.", "success");
             toggleEditModal();
         } catch (error) {
@@ -55,7 +57,7 @@ const UserProfile = () => {
             Swal.fire("Error!", "Could not update profile. Please try again.", "error");
         }
     };
-    
+
 
     // Handle Change Password form submission
     const handleChangePassword = async () => {
@@ -66,7 +68,7 @@ const UserProfile = () => {
         }
 
         try {
-            // Add logic to change password in your backend
+            await changePassword(passwordInfo).unwrap();
             Swal.fire("Success!", "Password changed successfully.", "success");
             togglePasswordModal();
         } catch (error) {
@@ -75,7 +77,7 @@ const UserProfile = () => {
     };
 
     if (isLoading) return <Loading />;
-    
+
     return (
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-28">
             <div className="bg-blue-500 h-40 flex items-center justify-center">
@@ -144,20 +146,49 @@ const UserProfile = () => {
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-75">
                     <div className="bg-white w-11/12 md:max-w-md mx-auto rounded-lg shadow-lg p-6">
                         <h3 className="text-lg font-semibold mb-4">Change Password</h3>
-                        <input
-                            type="password"
-                            placeholder="Current Password"
-                            value={passwordInfo.currentPassword}
-                            onChange={(e) => setPasswordInfo({ ...passwordInfo, currentPassword: e.target.value })}
-                            className="input input-bordered w-full mb-4"
-                        />
-                        <input
-                            type="password"
-                            placeholder="New Password"
-                            value={passwordInfo.newPassword}
-                            onChange={(e) => setPasswordInfo({ ...passwordInfo, newPassword: e.target.value })}
-                            className="input input-bordered w-full mb-4"
-                        />
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Old Password</span>
+                            </label>
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                     placeholder="Old Password"
+                                    className="input input-bordered w-full bg-gray-200 text-black"
+                                    onChange={(e) => setPasswordInfo({ ...passwordInfo, currentPassword: e.target.value })}
+
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute inset-y-0 right-3 flex items-center text-sm"
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                >
+                                    {showPassword ? "Hide" : "Show"}
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">New Password</span>
+                            </label>
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder=" New Password"
+                                    className="input input-bordered w-full bg-gray-200 text-black"
+                                    onChange={(e) => setPasswordInfo({ ...passwordInfo, newPassword: e.target.value })}
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute inset-y-0 right-3 flex items-center text-sm"
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                >
+                                    {showPassword ? "Hide" : "Show"}
+                                </button>
+                            </div>
+                        </div>
                         <div className="flex justify-end">
                             <button onClick={togglePasswordModal} className="btn btn-outline mr-2">Cancel</button>
                             <button onClick={handleChangePassword} className="btn btn-primary">Change Password</button>
