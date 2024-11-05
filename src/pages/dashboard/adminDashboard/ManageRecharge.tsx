@@ -58,13 +58,13 @@ const ManageRecharges = () => {
                             {data?.data?.balanceRequests?.map((recharge: any, index: any) => (
                                 <tr key={recharge.id}>
                                     <th>{index + 1}</th>
-                                    <td>{recharge.userId.name}</td>
-                                    <td>{recharge.userId.phone}</td>
-                                    <td>৳{recharge.paidTaka}</td>
-                                    <td>${recharge.amount}</td>
+                                    <td>{recharge?.userId?.name}</td>
+                                    <td>{recharge?.userId?.phone}</td>
+                                    <td>৳{recharge?.paidTaka}</td>
+                                    <td>${recharge?.amount}</td>
                                     <td>{moment(recharge.createdAt).format("MMMM Do YYYY, h:mm:ss a")}</td>
-                                    <td>{recharge.paymentMethod}</td>
-                                    <td>{recharge.reference}</td>
+                                    <td>{recharge?.paymentMethod}</td>
+                                    <td>{recharge?.reference}</td>
                                     <td>
                                         <span
                                             className={`${recharge.status === "approved"

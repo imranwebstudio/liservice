@@ -59,6 +59,8 @@ const UserProfile = () => {
 
     // Handle Change Password form submission
     const handleChangePassword = async () => {
+
+        console.log(passwordInfo);
         if (passwordInfo.newPassword.length < 6) {
             return Swal.fire("Error!", "New password must be at least 8 characters long.", "error");
         }
