@@ -172,7 +172,7 @@ const PaymentPage = () => {
                                         <li className="border-b border-b-orange-400 text-sm py-3">
                                             প্রাপক নম্বর হিসেবে ওই নম্বর লিখুন{" "}
                                             <span className="text-orange-400 font-bold">{
-                                                method === "Nagad" ? "01688943310" : method === "Bkash" ? "01618416066" : "018774443699"
+                                                method === "Nagad" ? "01688943310" : method === "Bkash" ? "01618616066" : "018774443699"
                                             }</span>
                                         </li>
                                         <li className="border-b border-b-orange-400 text-sm py-3">
