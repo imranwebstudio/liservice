@@ -29,7 +29,7 @@ const ManageOrders = () => {
     return (
         <Container>
             {
-                data?.data.length === 0 ? (
+                data?.data?.length === 0 ? (
                     <p className="text-center text-gray-600">No orders found</p>
                 ) :
                     <>
@@ -67,6 +67,14 @@ const TableHeader = () => (
 // Component for table body
 const TableBody = ({ data, onStatusUpdate, isUpdating }: { data: any[]; onStatusUpdate: (id: string, status: string) => void; isUpdating: boolean }) => (
     <tbody>
+        {data?.length === 0 ? (
+            <tr>
+                <td colSpan={8} className="text-center">
+                    No orders found
+                </td>
+            </tr>
+        ) : null}
+        
         {data?.map((service, index) => (
             <TableRow key={service._id} service={service} index={index} onStatusUpdate={onStatusUpdate} isUpdating={isUpdating} />
         ))}
@@ -77,14 +85,14 @@ const TableBody = ({ data, onStatusUpdate, isUpdating }: { data: any[]; onStatus
 const TableRow = ({ service, index, onStatusUpdate, isUpdating }: { service: any; index: number; onStatusUpdate: (id: string, status: string) => void; isUpdating: boolean }) => (
     <tr>
         <th>{index + 1}</th>
-        <td>{service.userId.userName}</td>
+        <td>{service?.userId?.userName}</td>
         <td>{service?.serviceId?.name}</td>
         <td>{service?.link}</td>
         <td>{service?.quantity}</td>
         <td>{service?.price}</td>
         <td>{service?.status}</td>
         <td>
-            <ActionButtons status={service.status} serviceId={service._id} onStatusUpdate={onStatusUpdate} isUpdating={isUpdating} />
+            <ActionButtons status={service?.status} serviceId={service?._id} onStatusUpdate={onStatusUpdate} isUpdating={isUpdating} />
         </td>
     </tr>
 );

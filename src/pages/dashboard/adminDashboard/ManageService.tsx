@@ -144,7 +144,7 @@ const ManageService = () => {
                                 <td>{service.name}</td>
                                 <td>{service.price}</td>
                                 <td>{service?.userIds?.length}</td>
-                                <td>{service.avgTime} hrs</td>
+                                <td>{service.avgTime}</td>
                                 <td>{service.min}</td>
                                 <td>{service.max}</td>
                                 <td className="flex gap-2">

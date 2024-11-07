@@ -99,7 +99,7 @@ const ServiceCards = () => {
         youtube: "https://images.macrumors.com/t/oVY3CeutZiDKCY3YZHL7LEoRf54=/1600x0/article-new/2021/09/General-YouTube-Feature-1.jpg",
         telegram: "https://static1.anpoimages.com/wordpress/wp-content/uploads/2022/03/Telegram-featured.jpg",
         tiktok: "https://www.manchesterdigital.com/storage/15585/alexander-shatov-I4p0FcjDBJI-unsplash.jpg",
-        whatsapp: "https://www.motortrend.com/uploads/sites/5/2021/11/2021-Whatsapp-Feature.jpg",
+        whatsapp: "https://images.macrumors.com/t/vidUYJg5x6IPyS6kgo7Voj5JaXk=/1600x0/article-new/2021/03/Whatsapp-Feature.jpg",
         snapchat: "https://engage.sinch.com/sites/default/files/styles/small/public/image/2023-12/Was%20ist%20Snapchat.jpg?itok=ifJAOVyr",
         twitter: "https://kendesk.co.ke/wp-content/uploads/X-Twitter.jpg",
         linkedin: "https://irishtechnews-ie.exactdn.com/wp-content/uploads/2015/12/linkedin-earnings1-759x500.png?lossy=1&ssl=1",
