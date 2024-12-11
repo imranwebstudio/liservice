@@ -8,13 +8,12 @@ const AddBalance: React.FC = () => {
     const [total, setTotal] = useState<number>(0);
     const [accepted, setAccepted] = useState<boolean>(false);
 
-    // Calculate extra fee (1.85%) and total
     const calculateTotal = (inputAmount: string) => {
         const parsedAmount = parseFloat(inputAmount);
         if (!parsedAmount || isNaN(parsedAmount)) return;
 
         setAmount(parsedAmount);
-        const calculatedFee = Math.round(parsedAmount * 123); // Extra fee (1.85%)
+        const calculatedFee = Math.round(parsedAmount * 126); 
         setTotal(calculatedFee);
     };
 
@@ -47,7 +46,7 @@ const AddBalance: React.FC = () => {
             {/* Amount */}
             <div className="form-control mb-4">
                 <label className="label">
-                    <span className="label-text">Amount</span>
+                    <span className="label-text">Dollar Amount</span>
                 </label>
                 <input
                     type="text"
@@ -74,10 +73,11 @@ const AddBalance: React.FC = () => {
             {/* Total */}
             <div className="form-control mb-4">
                 <label className="label">
-                    <span className="label-text">Total Amount</span>
+                    <span className="label-text">Total Price in taka</span>
                 </label>
                 <input
                     value={total.toFixed(2)}
+                    placeholder="Total Price in taka"
                     readOnly
                     type="text"
                     className="input input-bordered"

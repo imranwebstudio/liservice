@@ -21,7 +21,7 @@ const SingleOrder: React.FC = () => {
         formState: { errors },
     } = useForm<FormValues>();
     const [id, setId] = React.useState<string>("");
-    const {data, isLoading} = useGetServicesQuery(undefined);
+    const { data, isLoading } = useGetServicesQuery(undefined);
 
 
     const onSubmit: SubmitHandler<FormValues> = (data) => {
@@ -29,7 +29,7 @@ const SingleOrder: React.FC = () => {
         // Here you can send the data to the backend or perform other actions
     };
 
-    if(isLoading) <Loading/>
+    if (isLoading) <Loading />
     return (
         <div className="card  shadow-xl p-6">
             <h2 className="text-2xl font-bold mb-4">Buy Service</h2>
@@ -52,7 +52,7 @@ const SingleOrder: React.FC = () => {
                     )}
                 </div>
 
-                
+
                 <div className="form-control mb-4">
                     <label className="label">
                         <span className="label-text">Link</span>

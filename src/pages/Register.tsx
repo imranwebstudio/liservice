@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -33,7 +34,6 @@ const Register = () => {
       try {
         const res = await login(loginData).unwrap();
         dispatch(setUser({ user: res.data.data, tokens: res.data.tokens }));
-
         if (res.success) {
           Swal.fire({
             icon: 'success',
@@ -47,11 +47,11 @@ const Register = () => {
             text: res.message || 'Invalid credentials',
           });
         }
-      } catch (error) {
+      } catch (error: any) {
         Swal.fire({
           icon: 'error',
           title: 'Login Failed',
-          text: 'Please check your credentials',
+          text: error.data.error || 'Please check your credentials',
         });
       }
     } else {
