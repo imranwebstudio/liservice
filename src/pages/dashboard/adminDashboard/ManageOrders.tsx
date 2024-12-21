@@ -11,7 +11,14 @@ const ManageOrders = () => {
 
     // Function to handle service status update
     const handleStatusUpdate = async (serviceId: string, status: string) => {
-        console.log("Button clicked", serviceId, status); // Debug log
+        Swal.fire({
+                    title: 'processing...',
+                    text: 'Please wait while we process your request',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
         try {
             const response = await updateServiceStatus({ id: serviceId, status }).unwrap();
             console.log("Update success", response); // Debug log

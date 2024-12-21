@@ -29,6 +29,7 @@ const authorization = baseApi.injectEndpoints({
                 url: "user/getAll",
                 method: "GET",
             }),
+            providesTags: ["User", "balance"],
         }),
 
         updateUser : build.mutation({

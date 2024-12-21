@@ -36,7 +36,15 @@ const balanceApi = baseApi.injectEndpoints({
             }),
 
             invalidatesTags: ["balance"],
-        })
+        }),
+        giveBalanceByAdmin: build.mutation({
+            query: (data) => ({
+                url: `/balance/giveBalanceByAdmin/${data.id}`,
+                method: "PUT",
+                body: data,
+            }),
+            invalidatesTags: ["balance"],
+        }),
     }),
 })
 
@@ -44,5 +52,6 @@ export const {
     useGetBalanceRequestQuery,
     useAddBalanceMutation,
     useGetBalanceByUserIdQuery,
-    useApproveBalanceRequestMutation
+    useApproveBalanceRequestMutation,
+    useGiveBalanceByAdminMutation,
 } = balanceApi;
