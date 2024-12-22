@@ -9,6 +9,7 @@ import { useGetUserProfileQuery } from "../redux/features/auth/authApi";
 const Nav = () => {
     const user = useAppSelector(selectUser);
     const { data } = useGetUserProfileQuery(undefined, { skip: !user, pollingInterval: 5000 });
+
     const themeContext = useTheme(); // Use the custom hook
     const location = useNavigate();
     // const role = useAppSelector(userRole);
@@ -22,12 +23,13 @@ const Nav = () => {
 
     // console.log(data, isLoading);
     return (
-        <div className="w-full fixed z-50 top-0 ">
+        <div className="w-full absolute z-50 top-0 ">
             <div className="navbar justify-between">
+           
                 <div className="">
                     <div className="dropdown">
-                        <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                            <svg
+                       <div tabIndex={0} role="button" className="btn btn-ghost lg:">
+                            {/* <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-5 w-5"
                                 fill="none"
@@ -38,9 +40,10 @@ const Nav = () => {
                                     strokeLinejoin="round"
                                     strokeWidth="2"
                                     d="M4 6h16M4 12h8m-8 6h16" />
-                            </svg>
+                            </svg> */}
+                            {/* <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} /> */}
                         </div>
-                        <ul
+                        {/*  <ul
                             tabIndex={0}
                             className={` menu menu-sm dropdown-content font-bold bg-red-500  rounded-box z-[1] mt-3 w-52 p-2 shadow`}>
                             <li>
@@ -70,7 +73,8 @@ const Nav = () => {
                                     About
                                 </NavLink>
                             </li>
-                        </ul>
+                        </ul> */}
+                        
                     </div>
                     <Link to="/" className=" text-xl">
                         <img className="w-10 md:w-20 mx-1 bg-black/80 p-1 rounded" src={logo1} alt="" />
@@ -165,6 +169,11 @@ const Nav = () => {
                                             <Link to="/profile" className="justify-between">
                                                 Profile
                                                 <span className="badge">New</span>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/dashboard" className="justify-between">
+                                               Dashboard
                                             </Link>
                                         </li>
                                         <li><button onClick={handleLogout}>Logout</button></li>

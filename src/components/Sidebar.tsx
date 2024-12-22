@@ -2,16 +2,14 @@ import { FiHome, FiMenu } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
 import { userRole } from "../redux/features/auth/authSlice";
-import { useState } from "react";
 
-const Sidebar = () => {
+const Sidebar = ({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: (isOpen: boolean) => void}) => {
 
     const role = useAppSelector(userRole)
-    const [isOpen, setIsOpen] = useState(false);
 
 
     return (
-        <div>
+        <div className="lg:">
             <div className="drawer lg:drawer-open ">
                 <input id="my-drawer" type="checkbox" checked={isOpen} className="drawer-toggle " />
                 <div className="drawer-content">

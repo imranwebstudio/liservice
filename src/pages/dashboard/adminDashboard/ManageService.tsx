@@ -123,6 +123,7 @@ const ManageService = () => {
 
     return (
         <Container>
+            <h1 className="m-4 text-xl font-bold">Manage Service</h1>
             <div className="overflow-x-auto">
                 <table className="table">
                     <thead>
