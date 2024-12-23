@@ -18,6 +18,7 @@ import ManageOrders from "../pages/dashboard/adminDashboard/ManageOrders";
 import ManageRecharges from "../pages/dashboard/adminDashboard/ManageRecharge";
 import UserProfile from "../pages/user/UserProfile";
 import PrivateRoute from "../privetRoutes/PrivateRoute";
+import ResetPassword from "../pages/user/ResetPassword";
 
 const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
             {
                 path: '/profile',
                 element: <UserProfile />
+            },
+            {
+                path: "/reset-password/:token",
+                element: <ResetPassword />
             }
         ]
     },
@@ -53,6 +58,10 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <State />
+            },
+            {
+                path: 'profile',
+                element: <UserProfile />
             },
             {
                 path: "addService",

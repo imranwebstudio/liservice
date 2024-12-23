@@ -51,9 +51,8 @@ const PaymentPage = () => {
     };
 
     return (
-        <Container className=" h-[50vh] mt-20">
-            <section>
-                <div className=" mt-10 w-[600px] mx-auto  p-4 rounded-md border border-blue-600">
+        <Container className=" max-w-[600px] mx-auto ">
+                <div className=" my-2 mx-2 p-4 rounded-md border border-blue-600">
                     {/* 1 step  */}
                     <div>
                         <ul className="w-full border border-gray-300 rounded-xl menu menu-horizontal flex justify-between ">
@@ -215,7 +214,6 @@ const PaymentPage = () => {
                         </button>
                     </div>
                 </div>
-            </section>
         </Container>
     );
 };

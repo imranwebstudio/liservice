@@ -4,15 +4,17 @@ import Search from "./Search";
 import { useAppSelector } from "../../redux/hooks";
 import { userRole } from "../../redux/features/auth/authSlice";
 import { FiDollarSign, FiList, FiPlus, FiSettings, FiUser } from "react-icons/fi";
+import { TbSocial } from "react-icons/tb";
+import { PiInvoice } from "react-icons/pi";
 
 const Sidebar = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpen: boolean) => void }) => {
     const role = useAppSelector(userRole)
     return (
-        <div className={`bg-gray-200 p-3 sidebar ${!isOpen && "hidden"} `}>
+        <div className={`fixed w-[260px] inset-0 z-40 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 lg:relative lg:translate-x-0 bg-base-100 p-3 sidebar`}>
             <div className="overflow-y-scroll sticky top-4 h-[calc(100vh-32px-48px)]">
                 <AccountToggle />
                 <Search />
-                <ul className=" bg-base-200 text-base-content ">
+                <ul className="  text-base-content ">
 
                     {
                         (role as 'admin' | 'user') === 'admin' && (
@@ -39,7 +41,7 @@ const Sidebar = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpen: b
                     {
                         (role as 'admin' | 'user') === 'user' && (
                             <ul className="">
-                                {/* <li>
+                                {/* <li onClick={() => setIsOpen(!isOpen)}>
                                                         <NavLink style={{fontSize: "22px", margin: "20px 0px", display: "flex", gap: "10px", alignItems: "center"}}
                                                             className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
                                                             to="/dashboard/singleOrder"
@@ -47,36 +49,36 @@ const Sidebar = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpen: b
                                                             Customized Order
                                                         </NavLink>
                                                     </li> */}
-                                <li>
+                                <li onClick={() => setIsOpen(!isOpen)}>
                                     <NavLink style={{fontSize: "22px", margin: "20px 0px", display: "flex", gap: "10px", alignItems: "center"}}
                                         className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
                                         to="/dashboard/services"
                                     >
-                                        Services
+                                       <TbSocial/> Services
                                     </NavLink>
                                 </li>
-                                <li>
+                                <li onClick={() => setIsOpen(!isOpen)}>
                                     <NavLink style={{fontSize: "22px", margin: "20px 0px", display: "flex", gap: "10px", alignItems: "center"}}
                                         className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
                                         to="/dashboard/rechargeHistory"
                                     >
-                                        Recharge History
+                                      <FiDollarSign/>  Recharge History
                                     </NavLink>
                                 </li>
-                                <li>
+                                <li onClick={() => setIsOpen(!isOpen)}>
                                     <NavLink style={{fontSize: "22px", margin: "20px 0px", display: "flex", gap: "10px", alignItems: "center"}}
                                         className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
                                         to="/dashboard/orderHistory"
                                     >
-                                        Order History
+                                       <PiInvoice/> Order History
                                     </NavLink>
                                 </li>
-                                <li>
+                                <li onClick={() => setIsOpen(!isOpen)}>
                                     <NavLink style={{fontSize: "22px", margin: "20px 0px", display: "flex", gap: "10px", alignItems: "center"}}
                                         className={({ isActive }) => isActive ? "text-blue-500 font-semibold" : "text-gray-600"}
                                         to="/dashboard/addBalance"
                                     >
-                                        Add Balance
+                                       <FiPlus/> Add Balance
                                     </NavLink>
                                 </li>
                             </ul>

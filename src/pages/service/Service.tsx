@@ -111,7 +111,7 @@ const ServiceCards = () => {
     }
 
     return (
-        <Container className="container mx-auto p-4 my-16">
+        <Container className="container mx-auto p-4 ">
             {/* Category Tabs */}
             <div role="tablist" className="tabs tabs-boxed mb-10 md:my-10 flex justify-center flex-wrap gap-1">
                 <button role="tab" className={`tab ${category.category === "" && "tab-active"}`} onClick={() => setCategory({ category: "" })}>All</button>

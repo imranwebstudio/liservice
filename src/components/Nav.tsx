@@ -23,7 +23,7 @@ const Nav = () => {
 
     // console.log(data, isLoading);
     return (
-        <div className="w-full absolute z-50 top-0 ">
+        <div className="w-full sticky z-50 top-0 bg-base-300 ">
             <div className="navbar justify-between">
            
                 <div className="">

@@ -30,7 +30,7 @@ const State = () => {
                                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <Link to={"/dashboard/manageServices"}>
+                   <Link to={`${role === "admin" ? "/dashboard/manageServices" : "/dashboard/services"}` }>
                         <div className="stat-title">Active Services</div>
                         <div className="stat-value">{services?.data.length + 500}+</div>
                     </Link>
