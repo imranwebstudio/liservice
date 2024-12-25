@@ -34,12 +34,13 @@ const Register = () => {
       });
 
       const res = await forgotPassword({ email: data.email })
+      console.log(res?.data);
 
-      if(res?.data?.success){
+      if(res?.data){
         Swal.fire({
           icon: 'success',
           title: 'Reset Code Sent',
-          text: `Please check  ${data.email} for the reset code.`,
+          text: `Please check  ${data?.email} for the reset code.`,
         });
       }
       else{
