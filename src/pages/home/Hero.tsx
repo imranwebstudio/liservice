@@ -20,7 +20,7 @@ const Hero = () => {
             {/* Hero Section */}
             <section
                 style={{ backgroundImage: `url(${bg})` }}
-                className="relative py-6 text-center bg-cover  bg-opacity-35 bg-gradient-to-r from-blue-500 to-blue-800 text-white flex flex-col justify-center items-center h-[90vh] bg-no-repeat"
+                className="relative py-6 text-center bg-cover  bg-opacity-35 bg-gradient-to-r from-blue-500 to-blue-800 text-white flex flex-col justify-center items-center h-[100dvh] bg-no-repeat"
             >
                 {/* Black Overlay */}
                 <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -37,6 +37,20 @@ const Hero = () => {
                     <a href="https://wa.me/qr/YD4JOJ4PEP2WE1">
                         <img className="w-36 mx-auto pt-6" src="https://www.i-eventplanner.com/wp-content/uploads/2023/03/Click-to-WhatsApp.png" alt="" />
                     </a>
+                </div>
+                <div className='container'>
+                    <div className='grid grid-cols-2 gap-2 lg:grid-cols-3'>
+                        <div className='flex flex-col items-center'>
+                            <div style={{ position: "relative", width: "100%", height: "0px", paddingBottom: "56.250%" }}><iframe allow="fullscreen" allowFullScreen height="100%" src="https://drive.google.com/file/d/1ns-cyL0QpRoAOXzX9XSx8NhFjwbAA1Sl/preview" width="100%" style={{ border: "none", width: "100%", height: "100%", position: "absolute", left: "0px", top: "0px", overflow: "hidden" }}></iframe></div>
+                        </div>
+                        <div className='flex flex-col items-center'>
+                            <div style={{ position: "relative", width: "100%", height: "0px", paddingBottom: "56.250%" }}><iframe allow="fullscreen" allowFullScreen height="100%" src="https://drive.google.com/file/d/152Zgi2rwmvorXD_x5ZnXKRJZwozJnRdB/preview" width="100%" style={{ border: "none", width: "100%", height: "100%", position: "absolute", left: "0px", top: "0px", overflow: "hidden" }}></iframe></div>
+                        </div>
+                        <div className='flex flex-col items-center'>
+                            <div style={{ position: "relative", width: "100%", height: "0px", paddingBottom: "56.250%" }}><iframe allow="fullscreen" allowFullScreen height="100%" src="https://drive.google.com/file/d/1jp5zbW_eITzFZktTbPo8U1r-kt6tYS2-/preview" width="100%" style={{ border: "none", width: "100%", height: "100%", position: "absolute", left: "0px", top: "0px", overflow: "hidden" }}></iframe></div>
+                        </div>
+                    </div>
+
                 </div>
             </section>
         </div>
