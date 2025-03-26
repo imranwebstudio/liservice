@@ -19,7 +19,7 @@ const AccountToggle = () => {
     location("/");
   };
 
-console.log(themeContext);
+// console.log(themeContext);
 
   return (
     <div className="border-b border-gray-300 mt-4 pb-4">

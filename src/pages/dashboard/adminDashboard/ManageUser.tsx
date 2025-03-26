@@ -5,6 +5,8 @@ import Container from "../../../utils/Container";
 import Loading from "../../../utils/Loading";
 import Swal from "sweetalert2";
 import { useGiveBalanceByAdminMutation } from "../../../redux/features/balance/balance.api";
+import { FaSearch } from "react-icons/fa";
+
 interface User {
     _id: string;
     name: string;
@@ -24,8 +26,6 @@ const ManageUser = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
-
-
 
     const handleBlockUser = async (user: User) => {
         Swal.fire({
@@ -98,59 +98,70 @@ const ManageUser = () => {
     if (isLoading || isBlocking) return <Loading />
     return (
         <Container>
-            <div>
-                <h2 className="text-xl font-bold mb-4">Manage Users</h2>
-                <input
-                    type="text"
-                    placeholder="Search by name or email"
-                    className="input input-bordered mb-4"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <div className="overflow-x-auto">
-                    {
-                        filteredUsers?.length === 0 ? (
-                            <p className="text-center text-gray-600">No users found</p>
-                        ) : (
-                            <table className="table table-zebra w-full">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>User Name</th>
-                                        <th>Email</th>
-                                        <th>Balance</th>
-                                        <th>Join Date</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filteredUsers?.map((user: User, index: number) => (
-                                        <tr key={user._id} className={user.isBlocked ? "bg-red-100" : ""}>
-                                            <th>{index + 1}</th>
-                                            <td>{user.name}</td>
-                                            <td>{user.userName}</td>
-                                            <td>{user.email}</td>
-                                            <td>${user.balance}</td>
-                                            <td>{moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}</td>
-                                            <td>{user.isDeleted ? "Blocked" : "Active"}</td>
-                                            <td className="flex gap-2">
-                                                <button className="btn btn-sm btn-primary" onClick={() => handleRechargeClick(user)}>Recharge</button>
-                                                <button
-                                                    className={`btn btn-sm ${user.isBlocked ? "btn-success" : "btn-warning"}`}
-                                                    onClick={() => handleBlockUser(user)}
-                                                >
-                                                    {user.isDeleted ? "Unblock" : "Block"}
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        )
-                    }
+            <div className="sticky top-0 z-10">
+                <div className="bg-base-200 rounded-lg p-6">
+                    <h1 className="text-3xl font-bold text-center text-primary">Manage Users</h1>
+                    <p className="text-center text-gray-600 mt-2">Manage and monitor your users here</p>
                 </div>
+
+                {/* Search Box */}
+                <div className="mb-6 bg-white rounded-lg p-4">
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Search users..."
+                            className="input input-bordered w-full pl-10 focus:border-primary focus:ring-1 focus:ring-primary"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    </div>
+                </div>
+            </div>
+
+            <div className="overflow-x-auto">
+                {
+                    filteredUsers?.length === 0 ? (
+                        <p className="text-center text-gray-600">No users found</p>
+                    ) : (
+                        <table className="table table-zebra w-full">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>User Name</th>
+                                    <th>Email</th>
+                                    <th>Balance</th>
+                                    <th>Join Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredUsers?.map((user: User, index: number) => (
+                                    <tr key={user._id} className={user.isBlocked ? "bg-red-100" : ""}>
+                                        <th>{index + 1}</th>
+                                        <td>{user.name}</td>
+                                        <td>{user.userName}</td>
+                                        <td>{user.email}</td>
+                                        <td>${user.balance}</td>
+                                        <td>{moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}</td>
+                                        <td>{user.isDeleted ? "Blocked" : "Active"}</td>
+                                        <td className="flex gap-2">
+                                            <button className="btn btn-sm btn-primary" onClick={() => handleRechargeClick(user)}>Recharge</button>
+                                            <button
+                                                className={`btn btn-sm ${user.isBlocked ? "btn-success" : "btn-warning"}`}
+                                                onClick={() => handleBlockUser(user)}
+                                            >
+                                                {user.isDeleted ? "Unblock" : "Block"}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )
+                }
             </div>
 
             {isModalOpen && (

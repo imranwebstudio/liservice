@@ -34,7 +34,7 @@ const Hero = () => {
                         !user &&
                         <Link className='btn btn-primary mt-6' to={'/register'}>লগইন  করুন </Link>
                     }
-                    <a href="https://wa.me/qr/YD4JOJ4PEP2WE1">
+                    <a href="https://wa.me/message/FI3L5HOJSGYBA1">
                         <img className="w-36 mx-auto pt-6" src="https://www.i-eventplanner.com/wp-content/uploads/2023/03/Click-to-WhatsApp.png" alt="" />
                     </a>
                 </div>
