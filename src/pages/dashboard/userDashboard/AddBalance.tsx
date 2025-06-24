@@ -19,7 +19,7 @@ const AddBalance: React.FC = () => {
 
 
     return (
-        <div className="card   bg-base-100 shadow-xl p-6">
+        <div className="card bg-base-100 shadow-xl p-6">
             <h2 className="text-2xl font-bold mb-4">Add Balance</h2>
 
             {/* Payment Method */}
@@ -40,6 +40,7 @@ const AddBalance: React.FC = () => {
                     <option value="Bkash">Bkash</option>
                     <option value="Nagad">Nagad</option>
                     <option value="Rocket">Rocket</option>
+                    <option value="stc">STC Pay</option>
                 </select>
             </div>
 

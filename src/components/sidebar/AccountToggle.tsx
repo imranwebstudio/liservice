@@ -1,4 +1,4 @@
-import { FiChevronDown, FiChevronUp, FiSun, FiUser } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp, FiHome, FiSun, FiUser } from "react-icons/fi";
 import { logout, selectUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -36,6 +36,7 @@ const AccountToggle = () => {
         <FiChevronUp className="absolute right-2 top-1/2 translate-y-[calc(-50%-4px)] text-xs" />
       </button>
       <div className={` ${isOpen ? "block" : "hidden"}`}>
+        <NavLink to={"/"} className="w-full flex gap-2 items-center  text-left text-lg py-2 px-4 hover:bg-base-300"><FiHome /> Home</NavLink>
         <NavLink to={"/dashboard/profile"} className="w-full flex gap-2 items-center  text-left text-lg py-2 px-4 hover:bg-base-300"><FiUser /> Profile</NavLink>
         <button onClick={handleLogout} className="flex items-center gap-2 w-full text-left text-lg py-2 px-4 hover:bg-base-300 "> <BiLogOut /> Logout</button>
         <label className="swap swap-rotate mx-5">

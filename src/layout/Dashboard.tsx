@@ -21,6 +21,12 @@ const Dashboard = () => {
               ></div>
           )}
           
+          <div id="whatsapp-widget">
+          <a href="https://api.whatsapp.com/message/FI3L5HOJSGYBA1" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+          </a>
+        </div>
+
           <div className={`grid gap-4 p-4 ${isOpen ? "grid-cols-[280px,_1fr]" : "grid-cols-[1fr]"} lg:grid-cols-[280px,_1fr]`}>
               {/* Sidebar */}
               <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />

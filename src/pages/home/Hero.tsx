@@ -20,7 +20,7 @@ const Hero = () => {
             {/* Hero Section */}
             <section
                 style={{ backgroundImage: `url(${bg})` }}
-                className="relative py-6 text-center bg-cover  bg-opacity-35 bg-gradient-to-r from-blue-500 to-blue-800 text-white flex flex-col justify-center items-center h-[100dvh] bg-no-repeat"
+                className="relative py-6 text-center bg-cover bg-fixed bg-opacity-35 bg-gradient-to-r from-blue-500 to-blue-800 text-white flex flex-col justify-center items-center h-[100dvh] bg-no-repeat"
             >
                 {/* Black Overlay */}
                 <div className="absolute inset-0 bg-black opacity-50"></div>

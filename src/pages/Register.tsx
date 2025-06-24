@@ -103,7 +103,7 @@ const Register = () => {
             icon: 'success',
             title: 'Registration Successful',
           });
-          navigate("/dashboard");
+          navigate("/service");
         } else {
           Swal.fire({
             icon: 'error',
