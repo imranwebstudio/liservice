@@ -1,26 +1,20 @@
 /* eslint-disable react-refresh/only-export-components */
-// ThemeContext.js
 import { createContext, useContext, useState, useEffect } from "react";
 
 const ThemeContext = createContext<{ theme: string; toggleTheme: () => void } | null>(null);
 
-// Custom hook to use the ThemeContext
 export const useTheme = () => useContext(ThemeContext);
 
-// Theme provider component
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-    // Initialize the theme with localStorage value or fallback to 'bumblebee'
-    const [theme, setTheme] = useState(localStorage.getItem("theme") || "bumblebee");
+    const [theme, setTheme] = useState(localStorage.getItem("theme") || "corporate");
 
-    // Function to toggle the theme
     const toggleTheme = () => {
-        const newTheme = theme === "bumblebee" ? "black" : "bumblebee";
+        const newTheme = theme === "corporate" ? "night" : "corporate";
         setTheme(newTheme);
         localStorage.setItem("theme", newTheme);
         document.documentElement.setAttribute("data-theme", newTheme);
     };
 
-    // Set the theme on component mount
     useEffect(() => {
         document.documentElement.setAttribute("data-theme", theme);
     }, [theme]);

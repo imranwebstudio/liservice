@@ -7,314 +7,250 @@ import { useAppDispatch } from "../redux/hooks";
 import { useForgotPasswordMutation, useLoginMutation, useRegisterMutation } from "../redux/features/auth/authApi";
 import Swal from "sweetalert2";
 import { setUser } from "../redux/features/auth/authSlice";
-import Container from "../utils/Container";
+import logo1 from '../assets/logoWhite.png';
+import { FiArrowLeft, FiEye, FiEyeOff, FiLock, FiMail, FiPhone, FiUser } from "react-icons/fi";
+
+type FormMode = 'login' | 'register' | 'forgot';
 
 const Register = () => {
-  const [isLogin, setIsLogin] = useState(false); // Toggle between Login and Register forms
-  const [isForgotPassword, setIsForgotPassword] = useState(false); // Toggle Forgot Password form
-  const { register, handleSubmit, formState: { errors }, watch } = useForm();
-  const dispatch = useAppDispatch();
-  const [login] = useLoginMutation();
-  const [registerUser] = useRegisterMutation();
-  const [forgotPassword] = useForgotPasswordMutation();
-  const navigate = useNavigate();
+    const [mode, setMode] = useState<FormMode>('login');
+    const { register, handleSubmit, formState: { errors }, watch, reset } = useForm();
+    const dispatch = useAppDispatch();
+    const [login] = useLoginMutation();
+    const [registerUser] = useRegisterMutation();
+    const [forgotPassword] = useForgotPasswordMutation();
+    const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
 
-  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Confirm password visibility
+    const switchMode = (next: FormMode) => { setMode(next); reset(); };
 
-  // Handle form submission
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    if (isForgotPassword) {
-      // Handle forgot password logic here
-      Swal.fire({
-        title: 'Sending Reset Code...',
-        text: 'Please wait while we process your request',
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading(),
-      });
-
-      const res = await forgotPassword({ email: data.email })
-      console.log(res?.data);
-
-      if(res?.data){
-        Swal.fire({
-          icon: 'success',
-          title: 'Reset Code Sent',
-          text: `Please check  ${data?.email} for the reset code.`,
-        });
-      }
-      else{
-        Swal.fire({
-          icon: 'error',
-          title: 'Reset Code Failed',
-          text: 'Please check your email for the reset code.',
-        });
-      }
-
-
-
-
-    } else if (isLogin) {
-      const loginData = { userName: data.userName, password: data.password };
-      Swal.fire({
-        title: 'Logging in...',
-        text: 'Please wait while we process your request',
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading(),
-      });
-
-      try {
-        const res = await login(loginData).unwrap();
-        dispatch(setUser({ user: res.data.data, tokens: res.data.tokens }));
-        if (res.success) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Login Successful',
-          });
-          navigate("/service");
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Login Failed',
-            text: res.message || 'Invalid credentials',
-          });
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        if (mode === 'forgot') {
+            Swal.fire({ title: 'Sending reset link…', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            const res = await forgotPassword({ email: data.email });
+            if (res?.data) {
+                Swal.fire({ icon: 'success', title: 'Reset Link Sent', text: `Check ${data.email} for the reset link.` });
+            } else {
+                Swal.fire({ icon: 'error', title: 'Failed', text: 'Could not find that email address.' });
+            }
+            return;
         }
-      } catch (error: any) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          text: error.data.error || 'Please check your credentials',
-        });
-      }
-    } else {
-      Swal.fire({
-        title: 'Registering....',
-        text: 'Please wait while we process your request',
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading(),
-      });
 
-      try {
-        const res = await registerUser(data).unwrap();
-        dispatch(setUser({ user: res.data.data, tokens: res.data.tokens }));
-
-        if (res.success) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Registration Successful',
-          });
-          navigate("/service");
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Registration Failed',
-            text: res.message || 'Invalid credentials',
-          });
+        if (mode === 'login') {
+            Swal.fire({ title: 'Signing in…', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            try {
+                const res = await login({ userName: data.userName, password: data.password }).unwrap();
+                dispatch(setUser({ user: res.data.data, tokens: res.data.tokens }));
+                Swal.fire({ icon: 'success', title: 'Welcome back!' });
+                navigate("/service");
+            } catch (error: any) {
+                Swal.fire({ icon: 'error', title: 'Login Failed', text: error?.data?.error || 'Invalid credentials' });
+            }
+            return;
         }
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Register Failed',
-          text: 'Please check your credentials',
-        });
-      }
-    }
-  };
 
-  return (
-    <Container>
-      <Link to="/" className="btn my-10 normal-case text-xl mb-4">Home</Link>
-      <div className="hero py-8">
-        <div className={`hero-content flex-col lg:flex-row-reverse bg-blue-600 rounded-xl`}>
-          <div className="text-center lg:text-left">
-            <h1 className="text-4xl font-bold text-white">
-              {isForgotPassword ? "Forgot Password" : isLogin ? "Login" : "Register"} now!
-            </h1>
-            <p className="py-6 text-white">
-              {isForgotPassword
-                ? "Enter your email to reset your password."
-                : isLogin
-                ? "Login to your account to get started with our services."
-                : "Create your account to get started with our services."
-              }
-            </p>
+        // register
+        Swal.fire({ title: 'Creating account…', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+        try {
+            const res = await registerUser(data).unwrap();
+            dispatch(setUser({ user: res.data.data, tokens: res.data.tokens }));
+            Swal.fire({ icon: 'success', title: 'Account Created!' });
+            navigate("/service");
+        } catch {
+            Swal.fire({ icon: 'error', title: 'Registration Failed', text: 'Please try again.' });
+        }
+    };
 
-            {/* Toggle between Login, Register, and Forgot Password forms */}
-            <div className="text-white">
-              {isForgotPassword ? (
-                <>
-                  <p>Remember your password?{" "}</p>
-                  <button onClick={() => { setIsForgotPassword(false); setIsLogin(true); }} className="link rounded link-hover text-white bg-red-700 p-2 my-2">Login here</button>
-                </>
-              ) : isLogin ? (
-                <>
-                  <p>Don't have an account?{" "}</p>
-                  <div className="flex gap-2 items-center py-3">
-                    <button onClick={() => setIsLogin(false)} className="link rounded link-hover text-white bg-red-700 p-2">Register here</button>
-                    <button onClick={() => setIsForgotPassword(true)} className="link rounded link-hover text-white underline">Forgot Password</button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <p>Already have an account?{" "}</p>
-                  <button onClick={() => setIsLogin(true)} className="link rounded link-hover text-white bg-red-700 p-2 my-2">Login here</button>
-                </>
-              )}
-            </div>
-          </div>
+    const titles: Record<FormMode, { heading: string; sub: string }> = {
+        login: { heading: 'Welcome back', sub: 'Sign in to access your dashboard and services.' },
+        register: { heading: 'Create an account', sub: 'Join thousands of customers growing with Li Service 24.' },
+        forgot: { heading: 'Reset password', sub: 'Enter your email and we\'ll send a reset link.' },
+    };
 
-          <div className="card w-full max-w-sm shadow-2xl bg-white rounded-lg">
-            <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
-              {isForgotPassword ? (
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Email</span>
-                  </label>
-                  <input type="email" {...register('email')} className="input input-bordered" required />
-                  <button type="submit" className="btn btn-primary mt-4">Send Code</button>
+    return (
+        <div className="min-h-screen bg-base-200/40 flex items-center justify-center px-4 py-12">
+            <div className="w-full max-w-md">
+                {/* Back to Home */}
+                <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-base-content/50 hover:text-base-content mb-6 transition-colors">
+                    <FiArrowLeft className="w-4 h-4" /> Back to home
+                </Link>
+
+                {/* Card */}
+                <div className="bg-base-100 rounded-2xl border border-base-200 shadow-xl overflow-hidden">
+                    {/* Top Brand Bar */}
+                    <div className="bg-linear-to-r from-indigo-600 to-indigo-800 px-6 py-5 flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center overflow-hidden">
+                            <img src={logo1} alt="Li Service 24" className="w-8 h-8 object-contain" />
+                        </div>
+                        <div>
+                            <p className="text-white font-bold text-sm">Li Service 24</p>
+                            <p className="text-white/50 text-xs">Premium SMM Panel</p>
+                        </div>
+                    </div>
+
+                    <div className="p-6">
+                        {/* Heading */}
+                        <div className="mb-6">
+                            <h1 className="text-xl font-bold">{titles[mode].heading}</h1>
+                            <p className="text-sm text-base-content/50 mt-1">{titles[mode].sub}</p>
+                        </div>
+
+                        {/* Tab Switcher (login / register only) */}
+                        {mode !== 'forgot' && (
+                            <div className="flex rounded-xl bg-base-200/60 p-1 mb-6">
+                                <button
+                                    onClick={() => switchMode('login')}
+                                    className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${mode === 'login' ? 'bg-base-100 shadow text-base-content' : 'text-base-content/50 hover:text-base-content'}`}
+                                >
+                                    Sign In
+                                </button>
+                                <button
+                                    onClick={() => switchMode('register')}
+                                    className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${mode === 'register' ? 'bg-base-100 shadow text-base-content' : 'text-base-content/50 hover:text-base-content'}`}
+                                >
+                                    Register
+                                </button>
+                            </div>
+                        )}
+
+                        {/* Form */}
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                            {/* Forgot Password: email only */}
+                            {mode === 'forgot' && (
+                                <div>
+                                    <label className="text-xs font-medium text-base-content/60 mb-1.5 block">Email Address</label>
+                                    <div className="relative">
+                                        <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/30" />
+                                        <input type="email" {...register('email')} placeholder="you@example.com" className="input input-bordered w-full pl-9 text-sm" required />
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Login + Register shared fields */}
+                            {mode !== 'forgot' && (
+                                <>
+                                    <div>
+                                        <label className="text-xs font-medium text-base-content/60 mb-1.5 block">Username</label>
+                                        <div className="relative">
+                                            <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/30" />
+                                            <input
+                                                type="text"
+                                                placeholder="your_username"
+                                                className="input input-bordered w-full pl-9 text-sm"
+                                                {...register("userName", { required: "Username is required" })}
+                                            />
+                                        </div>
+                                        {errors.userName?.message && <p className="text-error text-xs mt-1">{String(errors.userName.message)}</p>}
+                                    </div>
+
+                                    {mode === 'register' && (
+                                        <>
+                                            <div>
+                                                <label className="text-xs font-medium text-base-content/60 mb-1.5 block">Full Name</label>
+                                                <div className="relative">
+                                                    <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/30" />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Your Name"
+                                                        className="input input-bordered w-full pl-9 text-sm"
+                                                        {...register("name", { required: "Name is required" })}
+                                                    />
+                                                </div>
+                                                {errors.name?.message && <p className="text-error text-xs mt-1">{String(errors.name.message)}</p>}
+                                            </div>
+                                            <div>
+                                                <label className="text-xs font-medium text-base-content/60 mb-1.5 block">Email</label>
+                                                <div className="relative">
+                                                    <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/30" />
+                                                    <input
+                                                        type="email"
+                                                        placeholder="you@example.com"
+                                                        className="input input-bordered w-full pl-9 text-sm"
+                                                        {...register("email", { required: "Email is required" })}
+                                                    />
+                                                </div>
+                                                {errors.email?.message && <p className="text-error text-xs mt-1">{String(errors.email.message)}</p>}
+                                            </div>
+                                            <div>
+                                                <label className="text-xs font-medium text-base-content/60 mb-1.5 block">Phone</label>
+                                                <div className="relative">
+                                                    <FiPhone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/30" />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="+880..."
+                                                        className="input input-bordered w-full pl-9 text-sm"
+                                                        {...register("phone", { required: "Phone is required" })}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+
+                                    <div>
+                                        <label className="text-xs font-medium text-base-content/60 mb-1.5 block">Password</label>
+                                        <div className="relative">
+                                            <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/30" />
+                                            <input
+                                                type={showPassword ? "text" : "password"}
+                                                placeholder="••••••••"
+                                                className="input input-bordered w-full pl-9 pr-10 text-sm"
+                                                {...register("password", { required: "Password is required", minLength: { value: 6, message: "Min 6 characters" } })}
+                                            />
+                                            <button type="button" onClick={() => setShowPassword(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/30 hover:text-base-content transition-colors">
+                                                {showPassword ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
+                                            </button>
+                                        </div>
+                                        {errors.password?.message && <p className="text-error text-xs mt-1">{String(errors.password.message)}</p>}
+                                    </div>
+
+                                    {mode === 'register' && (
+                                        <div>
+                                            <label className="text-xs font-medium text-base-content/60 mb-1.5 block">Confirm Password</label>
+                                            <div className="relative">
+                                                <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/30" />
+                                                <input
+                                                    type={showConfirm ? "text" : "password"}
+                                                    placeholder="••••••••"
+                                                    className="input input-bordered w-full pl-9 pr-10 text-sm"
+                                                    {...register("confirmPassword", {
+                                                        required: "Please confirm your password",
+                                                        validate: v => v === watch("password") || "Passwords do not match",
+                                                    })}
+                                                />
+                                                <button type="button" onClick={() => setShowConfirm(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/30 hover:text-base-content transition-colors">
+                                                    {showConfirm ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
+                                                </button>
+                                            </div>
+                                            {errors.confirmPassword?.message && <p className="text-error text-xs mt-1">{String(errors.confirmPassword.message)}</p>}
+                                        </div>
+                                    )}
+                                </>
+                            )}
+
+                            <button type="submit" className="btn btn-primary w-full rounded-xl font-semibold mt-2">
+                                {mode === 'forgot' ? 'Send Reset Link' : mode === 'login' ? 'Sign In' : 'Create Account'}
+                            </button>
+                        </form>
+
+                        {/* Bottom Links */}
+                        <div className="mt-5 text-center text-xs text-base-content/40 space-y-2">
+                            {mode === 'login' && (
+                                <button onClick={() => switchMode('forgot')} className="hover:text-primary transition-colors">
+                                    Forgot your password?
+                                </button>
+                            )}
+                            {mode === 'forgot' && (
+                                <button onClick={() => switchMode('login')} className="hover:text-primary transition-colors">
+                                    Back to sign in
+                                </button>
+                            )}
+                        </div>
+                    </div>
                 </div>
-              ) : (
-                <>
-                  {/* Username Input */}
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Username</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="username"
-                      className="input input-bordered bg-gray-200 text-black"
-                      {...register("userName", { required: "Username is required" })}
-                    />
-                    {errors.userName?.message && <span className="text-red-500 text-sm">{String(errors.userName.message)}</span>}
-                  </div>
-
-                  {/* Name Input */}
-                  {!isLogin && (
-                    <div className="form-control">
-                      <label className="label">
-                        <span className="label-text">Name</span>
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="name"
-                        className="input input-bordered bg-gray-200 text-black"
-                        {...register("name", { required: "Name is required" })}
-                      />
-                      {errors.name && <span className="text-red-500 text-sm">{String(errors.name.message)}</span>}
-                    </div>
-                  )}
-
-                  {/* Email Input (only for register) */}
-                  {!isLogin && (
-                    <>
-                      <div className="form-control">
-                        <label className="label">
-                          <span className="label-text">Email</span>
-                        </label>
-                        <input
-                          type="email"
-                          placeholder="email"
-                          className="input input-bordered bg-gray-200 text-black"
-                          {...register("email", {
-                            required: "Email is required",
-                            pattern: {
-                              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                              message: "Invalid email address"
-                            }
-                          })}
-                        />
-                        {errors.email && <span className="text-red-500 text-sm">{String(errors.email.message)}</span>}
-                      </div>
-
-                      <div className="form-control">
-                        <label className="label">
-                          <span className="label-text">Phone</span>
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Phone"
-                          className="input input-bordered bg-gray-200 text-black"
-                          {...register("phone", {
-                            required: "phone Number is required",
-                          })}
-                        />
-                        {errors.email && <span className="text-red-500 text-sm">{String(errors.email.message)}</span>}
-                      </div>
-                    </>
-                  )}
-
-                  {/* Password Input */}
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Password</span>
-                    </label>
-                    <div className="relative">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="password"
-                        className="input input-bordered w-full bg-gray-200 text-black"
-                        {...register("password", {
-                          required: "Password is required",
-                          minLength: {
-                            value: 6,
-                            message: "Password must be at least 6 characters",
-                          },
-                        })}
-                      />
-                      <button
-                        type="button"
-                        className="absolute inset-y-0 right-3 flex items-center text-sm"
-                        onClick={() => setShowPassword((prev) => !prev)}
-                      >
-                        {showPassword ? "Hide" : "Show"}
-                      </button>
-                    </div>
-                    {errors.password && <span className="text-red-500 text-sm">{String(errors.password.message)}</span>}
-                  </div>
-
-                  {/* Confirm Password (only for register) */}
-                  {!isLogin && (
-                    <div className="form-control">
-                      <label className="label">
-                        <span className="label-text">Confirm Password</span>
-                      </label>
-                      <div className="relative">
-                        <input
-                          type={showConfirmPassword ? "text" : "password"}
-                          placeholder="confirm password"
-                          className="input input-bordered w-full bg-gray-200 text-black"
-                          {...register("confirmPassword", {
-                            required: "Please confirm your password",
-                            validate: (value) => value === watch("password") || "Passwords do not match",
-                          })}
-                        />
-                        <button
-                          type="button"
-                          className="absolute inset-y-0 right-3 flex items-center text-sm"
-                          onClick={() => setShowConfirmPassword((prev) => !prev)}
-                        >
-                          {showConfirmPassword ? "Hide" : "Show"}
-                        </button>
-                      </div>
-                      {errors.confirmPassword && <span className="text-red-500 text-sm">{String(errors.confirmPassword.message)}</span>}
-                    </div>
-                  )}
-
-                  {/* Submit Button */}
-                  <div className="form-control mt-6">
-                    <button className="btn btn-primary w-full" type="submit">
-                      {isLogin ? "Login" : "Register"}
-                    </button>
-                  </div>
-                </>
-              )}
-            </form>
-          </div>
+            </div>
         </div>
-      </div>
-    </Container>
-  );
+    );
 };
 
 export default Register;

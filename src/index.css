@@ -1,24 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: corporate --default, night;
+}
 
+html, body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 #whatsapp-widget {
   position: fixed;
-bottom: 20px;
-right: 20px;
-z-index: 99999999;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99999999;
 }
 
 #whatsapp-widget img {
   padding: 5px;
-width: 60px;
-height: 60px;
-cursor: pointer;
-border-radius: 50%;
-box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-transition: transform 0.3s ease;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
 }
+
 #whatsapp-widget img:hover {
   transform: scale(1.1);
 }

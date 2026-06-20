@@ -124,7 +124,7 @@ const ServiceCards = () => {
             {/* Services List */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-6">
                 {!data?.data?.length ? (
-                    <div className="flex flex-col items-center justify-center w-full h-[50vh] my-10">
+                    <div className="col-span-full flex flex-col items-center justify-center w-full h-[50vh] my-10">
                         <img src={"https://cdn.dribbble.com/users/721524/screenshots/4117132/untitled-1-_1_.png"} alt="No data found" className="h-60 mb-4" />
                         <h3 className="text-xl font-semibold mb-2">No Services Found</h3>
                         <p className="mb-6">We couldn't find any services matching your search. Please try a different category or check back later.</p>
