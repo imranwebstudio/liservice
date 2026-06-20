@@ -3,11 +3,6 @@ import SubscribeButton from './SubscribeButton';
 
 const WHATSAPP = 'https://wa.me/message/FI3L5HOJSGYBA1';
 
-const WRAP: React.CSSProperties = {
-  maxWidth: 1180,
-  margin: '0 auto',
-  padding: '0 32px',
-};
 
 /* ── Icon components ── */
 const PhoneIcon = () => (
