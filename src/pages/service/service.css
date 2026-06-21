@@ -487,11 +487,11 @@
 .svc-modal-btn-submit:disabled { opacity: 0.38; cursor: not-allowed; }
 
 /* ── RangeSlider overrides ── */
-.svc-range {
-  --range-slider-bg: rgba(255,255,255,0.08) !important;
+.svc-range .range-slider {
   height: 6px !important;
   border-radius: 99px !important;
   margin: 4px 0 !important;
+  background: rgba(255,255,255,0.08) !important;
 }
 .svc-range .range-slider__range { background: #1fbf6c !important; }
 .svc-range .range-slider__thumb {

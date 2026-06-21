@@ -397,14 +397,15 @@ const ServiceCards = () => {
                     }}
                     style={{ marginBottom: 10, marginTop: 7 }}
                   />
-                  <RangeSlider
-                    className="svc-range"
-                    value={[selectedService.min, quantity]}
-                    onInput={(value: number[]) => setQuantity(value[1])}
-                    min={selectedService.min}
-                    max={selectedService.max}
-                    thumbsDisabled={[true, false]}
-                  />
+                  <div className="svc-range">
+                    <RangeSlider
+                      value={[selectedService.min, quantity]}
+                      onInput={(value: number[]) => setQuantity(value[1])}
+                      min={selectedService.min}
+                      max={selectedService.max}
+                      thumbsDisabled={[true, false]}
+                    />
+                  </div>
                   <div className="svc-qty-hint">
                     <span>Min: {selectedService.min.toLocaleString()}</span>
                     <span>Max: {selectedService.max.toLocaleString()}</span>
