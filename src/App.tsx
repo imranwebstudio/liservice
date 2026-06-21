@@ -4,12 +4,14 @@ import Nav from "./components/Nav";
 const App = () => {
   const { pathname } = useLocation();
   const isHome = pathname === '/';
+  const isService = pathname === '/service';
+  const hideNav = isHome || isService;
 
   return (
     <div>
-      {!isHome && <Nav />}
+      {!hideNav && <Nav />}
       <div>
-        {!isHome && (
+        {!isHome && !isService && (
           <div id="whatsapp-widget">
             <a href="https://api.whatsapp.com/message/FI3L5HOJSGYBA1" target="_blank" rel="noreferrer">
               <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
