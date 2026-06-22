@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
-import { smmServerApi } from "../../baseApi";
+
+const smmServerApi = import.meta.env.VITE_SMM_SERVER_API;
+// console.log("SMM Server API:", smmServerApi);
 
 export const smmServiceApi = createApi({
   reducerPath: 'smmServiceApi',
