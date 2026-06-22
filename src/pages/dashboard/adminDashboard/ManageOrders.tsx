@@ -1,149 +1,231 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Container from "../../../utils/Container";
 import { useApproveServiceMutation, useGetPendingServicesQuery } from "../../../redux/features/service/service.api";
 import Loading from "../../../utils/Loading";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import "../dashboard.css";
+
+const getStatusBadge = (status: string) => {
+    if (status === "done" || status === "approved" || status === "Completed") return "d-badge d-badge-green";
+    if (status === "rejected" || status === "Failed") return "d-badge d-badge-red";
+    return "d-badge d-badge-amber";
+};
 
 const ManageOrders = () => {
-    // Fetching pending services data
     const { data, isLoading } = useGetPendingServicesQuery(undefined);
     const [updateServiceStatus, { isLoading: isUpdating }] = useApproveServiceMutation();
     const [searchQuery, setSearchQuery] = useState("");
 
-    // Filter data based on search query
     const filteredData = data?.data?.filter((service: any) =>
         service?.userId?.userName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         service?.serviceId?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         service?.link?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // Function to handle service status update
     const handleStatusUpdate = async (serviceId: string, status: string) => {
         Swal.fire({
-            title: 'processing...',
+            title: 'Processing...',
             text: 'Please wait while we process your request',
             allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
+            didOpen: () => { Swal.showLoading(); }
         });
         try {
-            const response = await updateServiceStatus({ id: serviceId, status }).unwrap();
-            console.log("Update success", response);
+            await updateServiceStatus({ id: serviceId, status }).unwrap();
             Swal.fire("Success", "Service status updated successfully", "success");
         } catch (error) {
-            console.error("Failed to update service status:", error);
             Swal.fire("Error", "Failed to update service status", "error");
         }
     };
 
-    // Show loading state while fetching data
     if (isLoading) return <Loading />;
 
-    // Render the orders management table
     return (
-        <Container>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                    <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-                        <h2 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Manage Promotion Orders</h2>
-                        <div className="relative w-full md:w-64">
-                            <input
-                                type="text"
-                                placeholder="Search orders..."
-                                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                            <FaSearch className="absolute left-3 top-3 text-gray-400" />
-                        </div>
+        <div className="d-page" style={{ background: 'transparent' }}>
+            <div className="d-card">
+                <div className="d-card-header">
+                    <div>
+                        <h2 className="d-card-title">Manage Promotion Orders</h2>
+                        <p className="d-card-sub">{filteredData?.length ?? 0} orders found</p>
                     </div>
+                    <div className="d-search-wrap" style={{ width: 260 }}>
+                        <span className="d-search-icon"><FaSearch size={13} /></span>
+                        <input
+                            type="text"
+                            placeholder="Search orders..."
+                            className="d-search-input"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
+                </div>
 
-                    {filteredData?.length === 0 ? (
-                        <div className="text-center py-8">
-                            <p className="text-gray-600 text-lg">No orders found</p>
-                        </div>
-                    ) : (
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <TableHeader />
-                                <TableBody data={filteredData} onStatusUpdate={handleStatusUpdate} isUpdating={isUpdating} />
+                {filteredData?.length === 0 ? (
+                    <div className="d-empty">
+                        <h3>No orders found</h3>
+                        <p>Try adjusting your search query.</p>
+                    </div>
+                ) : (
+                    <>
+                        {/* Desktop table */}
+                        <div className="mo-table-wrap d-table-wrap" style={{ borderRadius: 0, border: 'none', display: 'none' }}>
+                            <table className="d-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Customer</th>
+                                        <th>Service</th>
+                                        <th>Link</th>
+                                        <th>Qty</th>
+                                        <th>Cost</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredData?.map((service: any, index: number) => (
+                                        <tr key={service._id}>
+                                            <td>{index + 1}</td>
+                                            <td className="d-td-primary">{service?.userId?.userName}</td>
+                                            <td className="d-td-primary">{service?.serviceId?.name}</td>
+                                            <td style={{ maxWidth: 180 }}>
+                                                <a
+                                                    href={service?.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="d-link"
+                                                    style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 180 }}
+                                                >
+                                                    {service?.link}
+                                                </a>
+                                            </td>
+                                            <td>{service?.quantity}</td>
+                                            <td style={{ color: '#1fbf6c', fontWeight: 600 }}>${service?.price}</td>
+                                            <td>
+                                                <span className={getStatusBadge(service?.status)}>
+                                                    {service?.status}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div style={{ display: 'flex', gap: 6 }}>
+                                                    <ActionButtons
+                                                        status={service?.status}
+                                                        serviceId={service?._id}
+                                                        onStatusUpdate={handleStatusUpdate}
+                                                        isUpdating={isUpdating}
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
                             </table>
                         </div>
-                    )}
-                </div>
+
+                        {/* Mobile cards */}
+                        <div className="mo-cards" style={{ padding: 16 }}>
+                            {filteredData?.map((service: any, index: number) => (
+                                <div key={service._id} className="d-mobile-card">
+                                    <div className="d-mobile-card-row">
+                                        <span className="d-mobile-card-label">#{index + 1} Customer</span>
+                                        <span className="d-mobile-card-value" style={{ color: '#e8f5ec' }}>{service?.userId?.userName}</span>
+                                    </div>
+                                    <div className="d-mobile-card-row">
+                                        <span className="d-mobile-card-label">Service</span>
+                                        <span className="d-mobile-card-value">{service?.serviceId?.name}</span>
+                                    </div>
+                                    <div className="d-mobile-card-row">
+                                        <span className="d-mobile-card-label">Cost</span>
+                                        <span style={{ color: '#1fbf6c', fontWeight: 600, fontSize: 14 }}>${service?.price}</span>
+                                    </div>
+                                    <div className="d-mobile-card-row">
+                                        <span className="d-mobile-card-label">Status</span>
+                                        <span className={getStatusBadge(service?.status)}>{service?.status}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                                        <ActionButtons
+                                            status={service?.status}
+                                            serviceId={service?._id}
+                                            onStatusUpdate={handleStatusUpdate}
+                                            isUpdating={isUpdating}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
-        </Container>
+
+            <style>{`
+                .mo-table-wrap { display: none; }
+                .mo-cards { display: block; }
+                @media (min-width: 768px) {
+                    .mo-table-wrap { display: block; }
+                    .mo-cards { display: none; }
+                }
+            `}</style>
+        </div>
     );
 };
 
-// Component for table header
 const TableHeader = () => (
-    <thead className="bg-gray-50">
+    <thead>
         <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Link</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            <th>#</th>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Link</th>
+            <th>Amount</th>
+            <th>Cost</th>
+            <th>Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
 );
 
-// Component for table body
 const TableBody = ({ data, onStatusUpdate, isUpdating }: { data: any[]; onStatusUpdate: (id: string, status: string) => void; isUpdating: boolean }) => (
-    <tbody className="bg-white divide-y divide-gray-200">
+    <tbody>
         {data?.map((service, index) => (
             <TableRow key={service._id} service={service} index={index} onStatusUpdate={onStatusUpdate} isUpdating={isUpdating} />
         ))}
     </tbody>
 );
 
-// Component for each row in the table
 const TableRow = ({ service, index, onStatusUpdate, isUpdating }: { service: any; index: number; onStatusUpdate: (id: string, status: string) => void; isUpdating: boolean }) => (
-    <tr className="hover:bg-gray-50 transition-colors">
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{index + 1}</td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{service?.userId?.userName}</td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{service?.serviceId?.name}</td>
-        <td className="px-6 py-4 text-sm text-gray-900">
-            <a href={service?.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 truncate max-w-xs block">
+    <tr>
+        <td>{index + 1}</td>
+        <td className="d-td-primary">{service?.userId?.userName}</td>
+        <td className="d-td-primary">{service?.serviceId?.name}</td>
+        <td>
+            <a href={service?.link} target="_blank" rel="noopener noreferrer" className="d-link">
                 {service?.link}
             </a>
         </td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{service?.quantity}</td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${service?.price}</td>
-        <td className="px-6 py-4 whitespace-nowrap">
-            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                service?.status === "done" ? "bg-green-100 text-green-800" :
-                service?.status === "rejected" ? "bg-red-100 text-red-800" :
-                "bg-yellow-100 text-yellow-800"
-            }`}>
-                {service?.status}
-            </span>
+        <td>{service?.quantity}</td>
+        <td style={{ color: '#1fbf6c', fontWeight: 600 }}>${service?.price}</td>
+        <td>
+            <span className={getStatusBadge(service?.status)}>{service?.status}</span>
         </td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-            <ActionButtons status={service?.status} serviceId={service?._id} onStatusUpdate={onStatusUpdate} isUpdating={isUpdating} />
+        <td>
+            <div style={{ display: 'flex', gap: 6 }}>
+                <ActionButtons status={service?.status} serviceId={service?._id} onStatusUpdate={onStatusUpdate} isUpdating={isUpdating} />
+            </div>
         </td>
     </tr>
 );
 
-// Component for action buttons
 const ActionButtons = ({ status, serviceId, onStatusUpdate, isUpdating }: { status: string; serviceId: string; onStatusUpdate: (id: string, status: string) => void; isUpdating: boolean }) => (
     <>
         <button
-            className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="d-btn d-btn-primary d-btn-sm"
             onClick={() => onStatusUpdate(serviceId, "done")}
             disabled={isUpdating || status === "done"}
         >
             Approve
         </button>
         <button
-            className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="d-btn d-btn-danger d-btn-sm"
             onClick={() => onStatusUpdate(serviceId, "rejected")}
             disabled={isUpdating || status === "done"}
         >
@@ -152,4 +234,5 @@ const ActionButtons = ({ status, serviceId, onStatusUpdate, isUpdating }: { stat
     </>
 );
 
+export { TableHeader, TableBody, TableRow, ActionButtons };
 export default ManageOrders;

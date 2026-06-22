@@ -19,59 +19,49 @@ const AccountToggle = () => {
     };
 
     return (
-        <div className="pb-4 border-b border-base-200">
+        <div style={{ marginBottom: 16 }}>
             {/* User Card */}
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-base-200/50 mb-3">
-                <div className="avatar shrink-0">
-                    <div className="w-10 rounded-full ring-2 ring-primary/30 ring-offset-1 ring-offset-base-100">
-                        <img
-                            src={user?.avatar || 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'}
-                            alt="avatar"
-                        />
-                    </div>
+            <div className="d-account-card">
+                <img
+                    className="d-account-avatar"
+                    src={user?.avatar || 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'}
+                    alt="avatar"
+                />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                    <p className="d-account-name">{user?.name || 'User'}</p>
+                    <p className="d-account-email">{user?.email}</p>
                 </div>
-                <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold truncate leading-tight">{user?.name || 'User'}</p>
-                    <p className="text-xs text-base-content/40 truncate">{user?.email}</p>
-                </div>
-                <Link
-                    to="/dashboard/addBalance"
-                    className="badge badge-primary badge-sm font-bold shrink-0 cursor-pointer hover:badge-outline transition-all"
-                >
+                <Link to="/dashboard/addBalance" className="d-balance-badge">
                     ${data?.data?.balance ?? '0'}
                 </Link>
             </div>
 
-            {/* Quick Action Grid */}
-            <div className="grid grid-cols-2 gap-1">
-                <NavLink
-                    to="/"
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-base-content/60 hover:bg-base-200 hover:text-base-content transition-colors"
-                >
-                    <FiHome className="w-3.5 h-3.5" /> Home
+            {/* Quick Actions */}
+            <div className="d-quick-actions">
+                <NavLink to="/" className="d-quick-btn">
+                    <FiHome size={13} /> Home
                 </NavLink>
-                <NavLink
-                    to="/dashboard/profile"
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-base-content/60 hover:bg-base-200 hover:text-base-content transition-colors"
-                >
-                    <FiUser className="w-3.5 h-3.5" /> Profile
+                <NavLink to="/dashboard/profile" className="d-quick-btn">
+                    <FiUser size={13} /> Profile
                 </NavLink>
                 <button
                     onClick={handleLogout}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-error/70 hover:bg-error/10 hover:text-error transition-colors text-left"
+                    className="d-quick-btn d-quick-btn-danger"
                 >
-                    <BiLogOut className="w-3.5 h-3.5" /> Logout
+                    <BiLogOut size={13} /> Logout
                 </button>
                 <button
                     onClick={themeContext?.toggleTheme}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-base-content/60 hover:bg-base-200 hover:text-base-content transition-colors"
+                    className="d-quick-btn"
                 >
                     {themeContext?.theme === 'night'
-                        ? <><FiSun className="w-3.5 h-3.5" /> Light</>
-                        : <><FiMoon className="w-3.5 h-3.5" /> Dark</>
+                        ? <><FiSun size={13} /> Light</>
+                        : <><FiMoon size={13} /> Dark</>
                     }
                 </button>
             </div>
+
+            <div className="d-divider" />
         </div>
     );
 };

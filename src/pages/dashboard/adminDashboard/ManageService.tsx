@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-{/* Importing necessary components and libraries */ }
 import Swal from "sweetalert2";
 import { useDeleteServiceMutation, useGetServicesQuery, useUpdateServiceMutation } from "../../../redux/features/service/service.api";
-import Container from "../../../utils/Container";
 import Loading from "../../../utils/Loading";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FormValues } from "./AddServices";
 import { FaSearch } from "react-icons/fa";
+import { CgClose } from "react-icons/cg";
+import "../dashboard.css";
+
+const categories = ["feature", "facebook", "instagram", "youtube", "tiktok", "telegram", "linkedin"];
 
 const ManageService = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>();
@@ -17,10 +19,8 @@ const ManageService = () => {
     const [updateService] = useUpdateServiceMutation();
     const [searchQuery, setSearchQuery] = useState("");
 
-    // Filter services based on search query
     const filteredServices = data?.data?.filter((service: any) => {
         if (!service) return false;
-        
         const searchLower = searchQuery.toLowerCase();
         return (
             (service.name?.toLowerCase() || '').includes(searchLower) ||
@@ -54,8 +54,8 @@ const ManageService = () => {
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#149656',
+            cancelButtonColor: '#ef4444',
             confirmButtonText: 'Yes, delete it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
@@ -63,111 +63,77 @@ const ManageService = () => {
                     title: 'Deleting...',
                     text: 'Please wait',
                     allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
+                    didOpen: () => { Swal.showLoading(); }
                 });
-
                 try {
                     await deleteService(id).unwrap();
-
-                    Swal.fire(
-                        'Deleted!',
-                        'Service has been deleted.',
-                        'success'
-                    );
+                    Swal.fire('Deleted!', 'Service has been deleted.', 'success');
                 } catch (error) {
-                    console.log(error);
-                    Swal.fire(
-                        'Error!',
-                        'An error occurred while deleting the service.',
-                        'error'
-                    );
+                    Swal.fire('Error!', 'An error occurred while deleting the service.', 'error');
                 }
             }
         });
     };
 
-    const onSubmit: SubmitHandler<FormValues> = async (data) => {
-        setSelectedForUpdate(null);
+    const onSubmit: SubmitHandler<FormValues> = async (formData) => {
         const service = {
-            name: data.name,
-            image: data.image,
-            description: data.description,
-            price: Number(data.price),
-            category: data.category,
-            min: Number(data.min),
-            max: Number(data.max),
-            avgTime: data.avgTime,
+            name: formData.name,
+            image: formData.image,
+            description: formData.description,
+            price: Number(formData.price),
+            category: formData.category,
+            min: Number(formData.min),
+            max: Number(formData.max),
+            avgTime: formData.avgTime,
             isDeleted: false
         };
-
-
 
         Swal.fire({
             title: 'Processing Service...',
             text: 'Please wait while we process your Service',
             allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
+            didOpen: () => { Swal.showLoading(); }
         });
 
-        const dataToBeUpdated = {
-            id: selectedForUpdate._id,
-            service
-        }
+        const dataToBeUpdated = { id: selectedForUpdate._id, service };
         try {
             await updateService(dataToBeUpdated).unwrap();
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Service Updated Successfully!',
-                text: 'Your service has been successfully updated.',
-            });
+            setSelectedForUpdate(null);
+            Swal.fire({ icon: 'success', title: 'Service Updated Successfully!', text: 'Your service has been successfully updated.' });
         } catch (error) {
-            console.log(error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Update Failed',
-                text: 'There was an error processing your service. Please try again.',
-            });
+            Swal.fire({ icon: 'error', title: 'Update Failed', text: 'There was an error processing your service. Please try again.' });
         }
     };
-
-    const categories = ["feature", "facebook", "instagram", "youtube", "tiktok", "telegram", "linkedin"];
 
     if (isLoading) return <Loading />;
 
     return (
-        <Container>
-            <div className="sticky top-0 z-10">
-
-            <div className="bg-base-200 rounded-lg p-6">
-                <h1 className="text-3xl font-bold text-center text-primary">Manage Service</h1>
-                <p className="text-center text-gray-600 mt-2">Manage and update your services here</p>
-            </div>
-
-            {/* Search Box */}
-            <div className="mb-6 bg-white rounded-lg p-4">
-                <div className="relative">
-                    <input
-                        type="text"
-                        placeholder="Search services..."
-                        className="input input-bordered w-full pl-10 focus:border-primary focus:ring-1 focus:ring-primary"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <div className="d-page" style={{ background: 'transparent' }}>
+            {/* Header */}
+            <div className="d-card" style={{ marginBottom: 16 }}>
+                <div className="d-card-header">
+                    <div>
+                        <h1 className="d-card-title">Manage Services</h1>
+                        <p className="d-card-sub">Manage and update your services here</p>
+                    </div>
+                    <div className="d-search-wrap" style={{ width: 260 }}>
+                        <span className="d-search-icon"><FaSearch size={13} /></span>
+                        <input
+                            type="text"
+                            placeholder="Search services..."
+                            className="d-search-input"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
                 </div>
             </div>
-            </div>
 
-            {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto bg-white rounded-lg shadow-lg p-4">
-                <table className="table w-full">
+            {/* Desktop Table */}
+            <div className="ms-table-wrap d-table-wrap" style={{ display: 'none' }}>
+                <table className="d-table">
                     <thead>
-                        <tr className="bg-primary text-white">
+                        <tr>
                             <th>#</th>
                             <th>Name</th>
                             <th>Price</th>
@@ -180,29 +146,31 @@ const ManageService = () => {
                     </thead>
                     <tbody>
                         {filteredServices?.map((service: any, index: number) => (
-                            <tr key={service._id} className="hover:bg-base-200 transition-colors duration-200">
-                                <th className="font-bold">{index + 1}</th>
-                                <td className="font-medium">{service.name}</td>
-                                <td className="text-primary font-semibold">${service.price}</td>
+                            <tr key={service._id}>
+                                <td>{index + 1}</td>
+                                <td className="d-td-primary">{service.name}</td>
+                                <td style={{ color: '#1fbf6c', fontWeight: 600 }}>${service.price}</td>
                                 <td>
-                                    <span className="badge badge-primary">{service?.userIds?.length}</span>
+                                    <span className="d-badge d-badge-green">{service?.userIds?.length ?? 0}</span>
                                 </td>
                                 <td>{service.avgTime}</td>
                                 <td>{service.min}</td>
                                 <td>{service.max}</td>
-                                <td className="flex gap-2">
-                                    <button
-                                        className="btn btn-success btn-sm hover:scale-105 transition-transform duration-200"
-                                        onClick={() => setSelectedForUpdate(service)}
-                                    >
-                                        Update
-                                    </button>
-                                    <button
-                                        onClick={() => handleDeleteService(service._id)}
-                                        className="btn btn-error btn-sm hover:scale-105 transition-transform duration-200"
-                                    >
-                                        Delete
-                                    </button>
+                                <td>
+                                    <div style={{ display: 'flex', gap: 6 }}>
+                                        <button
+                                            className="d-btn d-btn-primary d-btn-sm"
+                                            onClick={() => setSelectedForUpdate(service)}
+                                        >
+                                            Update
+                                        </button>
+                                        <button
+                                            className="d-btn d-btn-danger d-btn-sm"
+                                            onClick={() => handleDeleteService(service._id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -211,175 +179,123 @@ const ManageService = () => {
             </div>
 
             {/* Mobile Card View */}
-            <div className="md:hidden space-y-4 p-4">
+            <div className="ms-cards">
                 {filteredServices?.map((service: any, index: number) => (
-                    <div key={service._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div className="card-body">
-                            <div className="flex justify-between items-start ">
-                                <div>
-                                    <h2 className="card-title text-xl text-primary">{service.name}</h2>
-                                    <p className="text-sm text-gray-500">Service #{index + 1}</p>
-                                </div>
-                                <div className="flex flex-col items-end basis-36">
-                                    <span className="text-2xl font-bold text-primary">${service.price}</span>
-                                    <span className="badge badge-primary mt-1 ">{service?.userIds?.length || 0} Sales</span>
-                                </div>
+                    <div key={service._id} className="d-mobile-card">
+                        <div className="d-mobile-card-row">
+                            <span className="d-mobile-card-label">#{index + 1}</span>
+                            <span className="d-badge d-badge-green">{service?.userIds?.length ?? 0} sales</span>
+                        </div>
+                        <div className="d-mobile-card-row">
+                            <span className="d-mobile-card-label">Name</span>
+                            <span className="d-mobile-card-value" style={{ color: '#e8f5ec', fontWeight: 500 }}>{service.name}</span>
+                        </div>
+                        <div className="d-mobile-card-row">
+                            <span className="d-mobile-card-label">Price</span>
+                            <span style={{ color: '#1fbf6c', fontWeight: 700, fontSize: 16 }}>${service.price}</span>
+                        </div>
+                        <div className="d-field-row" style={{ gap: 8, marginBottom: 10 }}>
+                            <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 10, padding: '8px 12px' }}>
+                                <p style={{ fontSize: 10, color: '#4d6455', marginBottom: 2, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Avg Time</p>
+                                <p style={{ color: '#1fbf6c', fontWeight: 600, fontSize: 13, margin: 0 }}>{service.avgTime}</p>
                             </div>
-                            <div className="divider my-2"></div>
-                            <div className="grid grid-cols-2 gap-4 mt-2">
-                                <div className="bg-base-200 p-3 rounded-lg">
-                                    <p className="text-sm text-gray-500">Average Time</p>
-                                    <p className="font-semibold text-primary">{service.avgTime}</p>
-                                </div>
-                                <div className="bg-base-200 p-3 rounded-lg">
-                                    <p className="text-sm text-gray-500">Min/Max</p>
-                                    <p className="font-semibold text-primary">{service.min}/{service.max}</p>
-                                </div>
+                            <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 10, padding: '8px 12px' }}>
+                                <p style={{ fontSize: 10, color: '#4d6455', marginBottom: 2, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Min / Max</p>
+                                <p style={{ color: '#1fbf6c', fontWeight: 600, fontSize: 13, margin: 0 }}>{service.min} / {service.max}</p>
                             </div>
-                            <div className="card-actions justify-end mt-4">
-                                <button
-                                    className="btn btn-success btn-sm hover:scale-105 transition-transform duration-200"
-                                    onClick={() => setSelectedForUpdate(service)}
-                                >
-                                    Update
-                                </button>
-                                <button
-                                    onClick={() => handleDeleteService(service._id)}
-                                    className="btn btn-error btn-sm hover:scale-105 transition-transform duration-200"
-                                >
-                                    Delete
-                                </button>
-                            </div>
+                        </div>
+                        <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+                            <button className="d-btn d-btn-primary d-btn-sm" onClick={() => setSelectedForUpdate(service)}>Update</button>
+                            <button className="d-btn d-btn-danger d-btn-sm" onClick={() => handleDeleteService(service._id)}>Delete</button>
                         </div>
                     </div>
                 ))}
             </div>
 
-            {/* DaisyUI Modal for Update Service */}
-            <dialog id="update_service_modal" className="modal" open={Boolean(selectedForUpdate)}>
-                <div className="modal-box">
-                    <h2 className="text-2xl font-bold my-4">Update Service</h2>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="form-control mb-4">
-                            <label className="label">
-                                <span className="label-text">Service Name</span>
-                            </label>
-                            <input
-                                type="text"
-                                className="input input-bordered"
-                                {...register("name", { required: "Service name is required" })}
-                            />
-                            {errors.name && (
-                                <span className="text-red-500 text-sm">{errors.name.message}</span>
-                            )}
-                        </div>
-                        <div className="form-control mb-4">
-                            <label className="label">
-                                <span className="label-text">Image URL</span>
-                            </label>
-                            <input
-                                type="text"
-                                className="input input-bordered"
-                                {...register("image")}
-                            />
-                        </div>
-                        <div className="form-control mb-4">
-                            <label className="label">
-                                <span className="label-text">Description</span>
-                            </label>
-                            <textarea
-                                className="textarea textarea-bordered"
-                                {...register("description", { required: "Description is required" })}
-                            />
-                            {errors.description && (
-                                <span className="text-red-500 text-sm">{errors.description.message}</span>
-                            )}
-                        </div>
-                        <div className="form-control mb-4">
-                            <label className="label">
-                                <span className="label-text">Category</span>
-                            </label>
-                            <select {...register("category", { required: "Category is required" })} className="select select-bordered w-full">
-                                <option disabled>Select Category</option>
-                                {categories.map((cat) => (
-                                    <option key={cat} value={cat}>{cat}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="form-control mb-4">
-                            <label className="label">
-                                <span className="label-text">Price</span>
-                            </label>
-                            <input
-                                type="text"
-                                className="input input-bordered"
-                                {...register("price", { required: "Price is required" })}
-                            />
-                        </div>
-
-                        {/* Min */}
-                        <div className="form-control mb-4">
-                            <label className="label">
-                                <span className="label-text">Min</span>
-                            </label>
-                            <input
-                                type="number"
-                                className="input input-bordered"
-                                {...register("min", {
-                                    required: "Minimum value is required",
-                                    min: { value: 10, message: "Must be at least 10" },
-                                })}
-                            />
-                            {errors.min && (
-                                <span className="text-red-500 text-sm">{errors.min.message}</span>
-                            )}
-                        </div>
-
-                        {/* Max */}
-                        <div className="form-control mb-4">
-                            <label className="label">
-                                <span className="label-text">Max</span>
-                            </label>
-                            <input
-                                type="number"
-                                className="input input-bordered"
-                                {...register("max", {
-                                    required: "Maximum value is required",
-                                    validate: (value) =>
-                                        value > 10 || "Maximum must be greater than 10",
-                                })}
-                            />
-                            {errors.max && (
-                                <span className="text-red-500 text-sm">{errors.max.message}</span>
-                            )}
-                        </div>
-
-                        {/* Average Time */}
-                        <div className="form-control mb-4">
-                            <label className="label">
-                                <span className="label-text">Average Time (in hours)</span>
-                            </label>
-                            <input
-                                type="text"
-                                className="input input-bordered"
-                                {...register("avgTime", {
-                                    required: "Average time is required",
-                                    min: { value: 1, message: "Time must be at least 1 hour" },
-                                })}
-                            />
-                            {errors.avgTime && (
-                                <span className="text-red-500 text-sm">{errors.avgTime.message}</span>
-                            )}
-                        </div>
-
-                        <div className="modal-action ">
-                            <button type="submit" className="btn btn-primary">Update Service</button>
-                            <button type="button" className="btn" onClick={() => setSelectedForUpdate(null)}>Close</button>
-                        </div>
-                    </form>
+            {(!filteredServices || filteredServices.length === 0) && (
+                <div className="d-empty">
+                    <h3>No services found</h3>
+                    <p>Try adjusting your search.</p>
                 </div>
-            </dialog>
-        </Container>
+            )}
+
+            {/* Update Modal */}
+            {selectedForUpdate && (
+                <div className="d-modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) setSelectedForUpdate(null); }}>
+                    <div className="d-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="d-modal-header">
+                            <h2 className="d-modal-title">Update Service</h2>
+                            <button className="d-modal-close" onClick={() => setSelectedForUpdate(null)}>
+                                <CgClose />
+                            </button>
+                        </div>
+                        <div className="d-modal-body">
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <div className="d-form-field">
+                                    <label className="d-label">Service Name</label>
+                                    <input type="text" className="d-input" {...register("name", { required: "Service name is required" })} />
+                                    {errors.name && <span className="d-error-text">{errors.name.message}</span>}
+                                </div>
+                                <div className="d-form-field">
+                                    <label className="d-label">Image URL</label>
+                                    <input type="text" className="d-input" {...register("image")} />
+                                </div>
+                                <div className="d-form-field">
+                                    <label className="d-label">Description</label>
+                                    <textarea className="d-textarea" {...register("description", { required: "Description is required" })} />
+                                    {errors.description && <span className="d-error-text">{errors.description.message}</span>}
+                                </div>
+                                <div className="d-form-field">
+                                    <label className="d-label">Category</label>
+                                    <select className="d-select" {...register("category", { required: "Category is required" })}>
+                                        <option disabled value="">Select Category</option>
+                                        {categories.map((cat) => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                        ))}
+                                    </select>
+                                    {errors.category && <span className="d-error-text">{errors.category.message}</span>}
+                                </div>
+                                <div className="d-form-field">
+                                    <label className="d-label">Price</label>
+                                    <input type="text" className="d-input" {...register("price", { required: "Price is required" })} />
+                                    {errors.price && <span className="d-error-text">{errors.price.message}</span>}
+                                </div>
+                                <div className="d-field-row">
+                                    <div className="d-form-field">
+                                        <label className="d-label">Min</label>
+                                        <input type="number" className="d-input" {...register("min", { required: "Minimum value is required", min: { value: 10, message: "Must be at least 10" } })} />
+                                        {errors.min && <span className="d-error-text">{errors.min.message}</span>}
+                                    </div>
+                                    <div className="d-form-field">
+                                        <label className="d-label">Max</label>
+                                        <input type="number" className="d-input" {...register("max", { required: "Maximum value is required", validate: (value) => value > 10 || "Maximum must be greater than 10" })} />
+                                        {errors.max && <span className="d-error-text">{errors.max.message}</span>}
+                                    </div>
+                                </div>
+                                <div className="d-form-field">
+                                    <label className="d-label">Average Time (in hours)</label>
+                                    <input type="text" className="d-input" {...register("avgTime", { required: "Average time is required", min: { value: 1, message: "Time must be at least 1 hour" } })} />
+                                    {errors.avgTime && <span className="d-error-text">{errors.avgTime.message}</span>}
+                                </div>
+                                <div className="d-modal-footer" style={{ padding: 0, marginTop: 8 }}>
+                                    <button type="button" className="d-btn d-btn-ghost" onClick={() => setSelectedForUpdate(null)}>Close</button>
+                                    <button type="submit" className="d-btn d-btn-primary">Update Service</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <style>{`
+                .ms-table-wrap { display: none; }
+                .ms-cards { display: block; }
+                @media (min-width: 768px) {
+                    .ms-table-wrap { display: block; }
+                    .ms-cards { display: none; }
+                }
+            `}</style>
+        </div>
     );
 };
 

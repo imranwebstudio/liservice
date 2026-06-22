@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useGetAllUsersQuery } from "../redux/features/auth/authApi";
 import { useGetPendingServicesQuery, useGetServicesQuery } from "../redux/features/service/service.api";
-import Container from "../utils/Container";
 import Loading from "../utils/Loading";
 import { useAppSelector } from "../redux/hooks";
 import { userRole } from "../redux/features/auth/authSlice";
@@ -18,6 +17,7 @@ import {
     ArcElement,
 } from 'chart.js';
 import { Line, Doughnut } from 'react-chartjs-2';
+import "../pages/dashboard/dashboard.css";
 
 ChartJS.register(
     CategoryScale,
@@ -34,34 +34,32 @@ interface StatCardProps {
     title: string;
     value: string | number;
     icon: React.ReactNode;
-    gradient: string;
-    iconBg: string;
+    statColor: string;
+    statGlow: string;
     to: string;
     trend?: string;
 }
 
-const StatCard = ({ title, value, icon, gradient, iconBg, to, trend }: StatCardProps) => (
+const StatCard = ({ title, value, icon, statColor, statGlow, to, trend }: StatCardProps) => (
     <Link
         to={to}
-        className={`relative overflow-hidden rounded-2xl p-5 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 ${gradient}`}
+        className="d-stat-card"
+        style={{ '--stat-color': statColor, '--stat-glow': statGlow } as React.CSSProperties}
     >
-        <div className="flex items-start justify-between">
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
             <div>
-                <p className="text-white/70 text-sm font-medium">{title}</p>
-                <p className="text-3xl font-bold mt-1">{value}</p>
+                <p className="d-stat-label">{title}</p>
+                <p className="d-stat-value">{value}</p>
                 {trend && (
-                    <p className="text-white/60 text-xs mt-2 flex items-center gap-1">
-                        <FiTrendingUp className="w-3 h-3" /> {trend}
+                    <p className="d-stat-trend">
+                        <FiTrendingUp size={11} /> {trend}
                     </p>
                 )}
             </div>
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 ${iconBg}`}>
+            <div className="d-stat-icon" style={{ color: statColor }}>
                 {icon}
             </div>
         </div>
-        {/* decorative circle */}
-        <div className="absolute -right-4 -bottom-4 w-24 h-24 rounded-full bg-white/10" />
-        <div className="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-white/5" />
     </Link>
 );
 
@@ -83,11 +81,11 @@ const State = () => {
             {
                 label: 'Orders',
                 data: [totalOrders - 200, totalOrders - 150, totalOrders - 100, totalOrders - 50, totalOrders - 25, totalOrders],
-                borderColor: 'rgb(99, 102, 241)',
+                borderColor: '#1fbf6c',
                 tension: 0.4,
                 fill: true,
-                backgroundColor: 'rgba(99, 102, 241, 0.08)',
-                pointBackgroundColor: 'rgb(99, 102, 241)',
+                backgroundColor: 'rgba(31,191,108,0.08)',
+                pointBackgroundColor: '#1fbf6c',
                 pointRadius: 4,
                 borderWidth: 2,
             },
@@ -100,14 +98,14 @@ const State = () => {
             {
                 data: [activeServices, totalOrders, totalUsers],
                 backgroundColor: [
-                    'rgba(99, 102, 241, 0.85)',
-                    'rgba(16, 185, 129, 0.85)',
-                    'rgba(245, 158, 11, 0.85)',
+                    'rgba(31,191,108,0.85)',
+                    'rgba(45,212,207,0.85)',
+                    'rgba(245,158,11,0.85)',
                 ],
                 borderColor: [
-                    'rgb(99, 102, 241)',
-                    'rgb(16, 185, 129)',
-                    'rgb(245, 158, 11)',
+                    'rgba(31,191,108,1)',
+                    'rgba(45,212,207,1)',
+                    'rgba(245,158,11,1)',
                 ],
                 borderWidth: 2,
                 hoverOffset: 6,
@@ -119,12 +117,25 @@ const State = () => {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: { position: 'top' as const },
+            legend: {
+                position: 'top' as const,
+                labels: {
+                    color: '#aebcb2',
+                    font: { family: 'Inter, sans-serif', size: 12 },
+                    boxWidth: 12,
+                },
+            },
             title: { display: false },
         },
         scales: {
-            x: { grid: { color: 'rgba(0,0,0,0.04)' } },
-            y: { grid: { color: 'rgba(0,0,0,0.04)' } },
+            x: {
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: { color: '#74877b', font: { family: 'Inter, sans-serif', size: 11 } },
+            },
+            y: {
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: { color: '#74877b', font: { family: 'Inter, sans-serif', size: 11 } },
+            },
         },
     };
 
@@ -132,27 +143,35 @@ const State = () => {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: { position: 'bottom' as const },
+            legend: {
+                position: 'bottom' as const,
+                labels: {
+                    color: '#aebcb2',
+                    font: { family: 'Inter, sans-serif', size: 12 },
+                    boxWidth: 12,
+                    padding: 16,
+                },
+            },
             title: { display: false },
         },
     };
 
     return (
-        <Container className="py-2">
+        <div className="d-page" style={{ background: 'transparent' }}>
             {/* Page Header */}
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-                <p className="text-base-content/50 text-sm mt-0.5">Welcome back! Here's an overview of your platform.</p>
+            <div className="d-page-header">
+                <h1 className="d-page-title">Dashboard</h1>
+                <p className="d-page-sub">Welcome back! Here&apos;s an overview of your platform.</p>
             </div>
 
             {/* Stat Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            <div className="d-grid-3" style={{ marginBottom: 24 }}>
                 <StatCard
                     title="Active Services"
                     value={`${activeServices}+`}
                     icon={<FiActivity />}
-                    gradient="bg-linear-to-br from-indigo-500 to-indigo-700"
-                    iconBg="bg-white/20"
+                    statColor="#1fbf6c"
+                    statGlow="rgba(31,191,108,0.3)"
                     to={role === "admin" ? "/dashboard/manageServices" : "/dashboard/services"}
                     trend="Growing steadily"
                 />
@@ -160,8 +179,8 @@ const State = () => {
                     title="Total Orders"
                     value={totalOrders}
                     icon={<FiShoppingBag />}
-                    gradient="bg-linear-to-br from-emerald-500 to-emerald-700"
-                    iconBg="bg-white/20"
+                    statColor="#2dd4cf"
+                    statGlow="rgba(45,212,207,0.3)"
                     to={role === "admin" ? "/dashboard/manageOrders" : "/dashboard/orderHistory"}
                     trend="All time"
                 />
@@ -170,8 +189,8 @@ const State = () => {
                         title="Total Users"
                         value={totalUsers}
                         icon={<FiUsers />}
-                        gradient="bg-linear-to-br from-amber-500 to-orange-600"
-                        iconBg="bg-white/20"
+                        statColor="#fbbf24"
+                        statGlow="rgba(245,158,11,0.3)"
                         to="/dashboard/manageUsers"
                         trend="Registered users"
                     />
@@ -179,27 +198,31 @@ const State = () => {
             </div>
 
             {/* Charts */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-base-100 rounded-2xl border border-base-200 shadow-sm p-5">
-                    <div className="mb-4">
-                        <h3 className="font-semibold text-base">Orders Trend</h3>
-                        <p className="text-xs text-base-content/40 mt-0.5">Last 6 months growth</p>
+            <div className="d-grid-2">
+                <div className="d-card">
+                    <div className="d-card-header">
+                        <div>
+                            <h3 className="d-card-title">Orders Trend</h3>
+                            <p className="d-card-sub">Last 6 months growth</p>
+                        </div>
                     </div>
-                    <div className="h-72">
+                    <div style={{ padding: '20px 20px', height: 280 }}>
                         <Line data={lineChartData} options={chartOptions} />
                     </div>
                 </div>
-                <div className="bg-base-100 rounded-2xl border border-base-200 shadow-sm p-5">
-                    <div className="mb-4">
-                        <h3 className="font-semibold text-base">Statistics Overview</h3>
-                        <p className="text-xs text-base-content/40 mt-0.5">Platform distribution</p>
+                <div className="d-card">
+                    <div className="d-card-header">
+                        <div>
+                            <h3 className="d-card-title">Statistics Overview</h3>
+                            <p className="d-card-sub">Platform distribution</p>
+                        </div>
                     </div>
-                    <div className="h-72">
+                    <div style={{ padding: '20px 20px', height: 280 }}>
                         <Doughnut data={doughnutChartData} options={doughnutOptions} />
                     </div>
                 </div>
             </div>
-        </Container>
+        </div>
     );
 };
 

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import "../dashboard.css";
 
 const AddBalance: React.FC = () => {
     const [method, setMethod] = useState<string>("");
@@ -13,105 +14,104 @@ const AddBalance: React.FC = () => {
         if (!parsedAmount || isNaN(parsedAmount)) return;
 
         setAmount(parsedAmount);
-        const calculatedFee = Math.round(parsedAmount * 126); 
+        const calculatedFee = Math.round(parsedAmount * 126);
         setTotal(calculatedFee);
     };
 
-
     return (
-        <div className="card bg-base-100 shadow-xl p-6">
-            <h2 className="text-2xl font-bold mb-4">Add Balance</h2>
-
-            {/* Payment Method */}
-            <div className="form-control mb-4">
-                <label className="label">
-                    <span className="label-text">Payment Method</span>
-                </label>
-                <select
-                required
-                    value={method}
-                    onChange={(e) => setMethod(e.target.value)}
-                    className="select select-bordered w-full"
-                >
-                    <option disabled value="">
-                        Pick your payment method
-                    </option>
-                    <option value="Binance">Binance</option>
-                    <option value="Bkash">Bkash</option>
-                    <option value="Nagad">Nagad</option>
-                    <option value="Rocket">Rocket</option>
-                    <option value="stc">STC Pay</option>
-                </select>
+        <div className="d-page" style={{ background: 'transparent' }}>
+            <div className="d-page-header">
+                <h1 className="d-page-title">Add Balance</h1>
+                <p className="d-page-sub">Choose your payment method and enter the amount to add.</p>
             </div>
 
-            {/* Amount */}
-            <div className="form-control mb-4">
-                <label className="label">
-                    <span className="label-text">Dollar Amount</span>
-                </label>
-                <input
-                    type="text"
-                    className="input input-bordered"
-                    placeholder="Enter amount in Dollar $"
-                    onChange={(e) => calculateTotal(e.target.value)}
-                />
-            </div>
+            <div className="d-card" style={{ maxWidth: 540 }}>
+                <div style={{ padding: '24px' }}>
 
-            {/* Extra Fee (1.85%) */}
-            <div className="form-control mb-4">
-                <label className="label">
-                    <span className="label-text line-through ">Extra Fee  (1.85%)</span>
-                </label>
-                <input
-                    // value={extraFee.toFixed(2)}
-                    placeholder="NO EXTRA FEE"
-                    readOnly
-                    type="text"
-                    className="input input-bordered"
-                />
-            </div>
+                    {/* Payment Method */}
+                    <div className="d-form-field">
+                        <label className="d-label">Payment Method</label>
+                        <select
+                            required
+                            value={method}
+                            onChange={(e) => setMethod(e.target.value)}
+                            className="d-select"
+                        >
+                            <option disabled value="">Pick your payment method</option>
+                            <option value="Binance">Binance</option>
+                            <option value="Bkash">Bkash</option>
+                            <option value="Nagad">Nagad</option>
+                            <option value="Rocket">Rocket</option>
+                            <option value="stc">STC Pay</option>
+                        </select>
+                    </div>
 
-            {/* Total */}
-            <div className="form-control mb-4">
-                <label className="label">
-                    <span className="label-text">Total Price in taka</span>
-                </label>
-                <input
-                    value={total.toFixed(2)}
-                    placeholder="Total Price in taka"
-                    readOnly
-                    type="text"
-                    className="input input-bordered"
-                />
-            </div>
+                    {/* Dollar Amount */}
+                    <div className="d-form-field">
+                        <label className="d-label">Dollar Amount</label>
+                        <input
+                            type="text"
+                            className="d-input"
+                            placeholder="Enter amount in Dollar $"
+                            onChange={(e) => calculateTotal(e.target.value)}
+                        />
+                    </div>
 
-            {/* Terms and Conditions */}
-            <div className="form-control mb-4">
-                <label className="label cursor-pointer justify-start gap-4">
-                    <input
-                        onChange={() => setAccepted(!accepted)}
-                        type="checkbox"
-                        className="checkbox checkbox-primary"
-                    />
-                    <span className="text-xl">Accept the terms and conditions</span>
-                </label>
-            </div>
+                    {/* Extra Fee */}
+                    <div className="d-form-field">
+                        <label className="d-label" style={{ textDecoration: 'line-through' }}>Extra Fee (1.85%)</label>
+                        <input
+                            placeholder="NO EXTRA FEE"
+                            readOnly
+                            type="text"
+                            className="d-input"
+                            style={{ opacity: 0.6 }}
+                        />
+                    </div>
 
-            {/* Submit Button */}
-            <div className="form-control mt-4">
-                {accepted && method && amount  ? (
-                    <Link
-                        to="/payment"
-                        state={{ method, amount,  total }} // Passing all values to the payment page
-                        className="btn btn-primary"
-                    >
-                        Go to Payment
-                    </Link>
-                ) : (
-                    <button className="btn btn-primary" disabled>
-                        Go to Payment
-                    </button>
-                )}
+                    {/* Total */}
+                    <div className="d-form-field">
+                        <label className="d-label">Total Price in Taka</label>
+                        <input
+                            value={total.toFixed(2)}
+                            placeholder="Total Price in taka"
+                            readOnly
+                            type="text"
+                            className="d-input"
+                            style={{ color: '#1fbf6c', fontWeight: 600 }}
+                        />
+                    </div>
+
+                    {/* Terms */}
+                    <div className="d-form-field">
+                        <label style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}>
+                            <input
+                                type="checkbox"
+                                className="d-checkbox"
+                                onChange={() => setAccepted(!accepted)}
+                            />
+                            <span style={{ fontSize: 14, color: '#aebcb2' }}>Accept the terms and conditions</span>
+                        </label>
+                    </div>
+
+                    {/* Submit */}
+                    <div style={{ marginTop: 8 }}>
+                        {accepted && method && amount ? (
+                            <Link
+                                to="/payment"
+                                state={{ method, amount, total }}
+                                className="d-btn d-btn-primary"
+                                style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+                            >
+                                Go to Payment
+                            </Link>
+                        ) : (
+                            <button className="d-btn d-btn-primary" disabled style={{ width: '100%' }}>
+                                Go to Payment
+                            </button>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );
