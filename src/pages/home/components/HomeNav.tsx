@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { logout, selectUser } from '../../../redux/features/auth/authSlice';
 import { useGetUserProfileQuery } from '../../../redux/features/auth/authApi';
 import SubscribeButton from './SubscribeButton';
-import logo from '../../../assets/logoglyff.jpeg';
 
 const NAV_LINKS = [
   { label: 'Home', to: '/' },
