@@ -8,7 +8,7 @@ const FAQS = [
   },
   {
     q: 'Why should I choose Li Service 24?',
-    a: 'High-quality, real engagement, fair prices, fast delivery, and a support team that\'s actually reachable on WhatsApp around the clock.',
+    a: "High-quality, real engagement, fair prices, fast delivery, and a support team that's actually reachable on WhatsApp around the clock.",
   },
   {
     q: 'Is it safe to use SMM services?',
@@ -29,24 +29,13 @@ function FaqItem({ q, a, defaultOpen }: { q: string; a: string; defaultOpen?: bo
       style={{ borderBottom: '1px solid #1d2c23', padding: '24px 4px' }}
     >
       <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 20,
-          cursor: 'pointer',
-        }}
-        onClick={() => setOpen((o) => !o)}
+        className="flex justify-between items-center gap-5 cursor-pointer"
+        onClick={() => setOpen(o => !o)}
       >
-        <h4
-          style={{
-            fontSize: 16,
-            fontWeight: 500,
-            color: '#f3fbf5',
-            fontFamily: "'Inter', sans-serif",
-            margin: 0,
-          }}
-        >
+        <h4 style={{
+          fontSize: 16, fontWeight: 500, color: '#f3fbf5',
+          fontFamily: "'Inter', sans-serif", margin: 0,
+        }}>
           {q}
         </h4>
         <div className="home-faq-chevron">+</div>
@@ -62,55 +51,34 @@ const revealUp = {
 };
 
 const FaqSection = () => (
-  <section id="faq" className="home-section" style={{ padding: '120px 0', background: '#070b09' }}>
-    <div className="home-wrap">
+  <section id="faq" className="py-30 max-[900px]:py-20 max-sm:py-16" style={{ background: '#070b09' }}>
+    <div className="max-w-295 mx-auto px-8 max-sm:px-5">
 
       {/* Section head */}
       <motion.div
-        variants={revealUp}
-        initial="hidden"
-        whileInView="visible"
+        variants={revealUp} initial="hidden" whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        style={{ textAlign: 'center', maxWidth: 560, margin: '0 auto 64px' }}
+        className="text-center max-w-140 mx-auto mb-16"
       >
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            fontSize: 12.5,
-            fontWeight: 600,
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase' as const,
-            color: '#34d97e',
-            marginBottom: 16,
-            fontFamily: "'Inter', sans-serif",
-          }}
-        >
-          <span style={{ width: 18, height: 1, background: '#34d97e', display: 'inline-block' }} />
+        <div className="inline-flex items-center gap-2 text-[12.5px] font-semibold tracking-widest uppercase text-[#34d97e] mb-4"
+          style={{ fontFamily: "'Inter', sans-serif" }}>
+          <span className="w-4.5 h-px bg-[#34d97e] inline-block" />
           FAQ
         </div>
-        <h2
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 42,
-            fontWeight: 600,
-            letterSpacing: '-0.025em',
-            lineHeight: 1.15,
-            color: '#f3fbf5',
-          }}
-        >
+        <h2 style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: 42, fontWeight: 600, letterSpacing: '-0.025em',
+          lineHeight: 1.15, color: '#f3fbf5',
+        }}>
           Questions, answered
         </h2>
       </motion.div>
 
       {/* FAQ list */}
       <motion.div
-        variants={revealUp}
-        initial="hidden"
-        whileInView="visible"
+        variants={revealUp} initial="hidden" whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
-        style={{ maxWidth: 760, margin: '0 auto' }}
+        className="max-w-190 mx-auto"
       >
         {FAQS.map((item, i) => (
           <FaqItem key={item.q} q={item.q} a={item.a} defaultOpen={i === 0} />

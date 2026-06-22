@@ -33,25 +33,26 @@ interface Props {
   onClick?: () => void;
   target?: string;
   rel?: string;
+  className?: string;
 }
 
-const SubscribeButton = ({ label, to, href, onClick, target, rel }: Props) => {
+const SubscribeButton = ({ label, to, href, onClick, target, rel, className = '' }: Props) => {
   if (to) {
     return (
-      <Link to={to} className="btn-subscribe">
+      <Link to={to} className={`btn-subscribe ${className}`}>
         <Inner label={label} />
       </Link>
     );
   }
   if (href) {
     return (
-      <a href={href} className="btn-subscribe" target={target} rel={rel}>
+      <a href={href} className={`btn-subscribe ${className}`} target={target} rel={rel}>
         <Inner label={label} />
       </a>
     );
   }
   return (
-    <button type="button" className="btn-subscribe" onClick={onClick}>
+    <button type="button" className={`btn-subscribe ${className}`} onClick={onClick}>
       <Inner label={label} />
     </button>
   );

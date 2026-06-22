@@ -18,7 +18,7 @@ const Dashboard = () => {
             )}
 
             <div id="whatsapp-widget">
-                <a href="https://api.whatsapp.com/message/FI3L5HOJSGYBA1" target="_blank" rel="noreferrer">
+                <a href="https://wa.link/oq18jw" target="_blank" rel="noreferrer">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
                 </a>
             </div>

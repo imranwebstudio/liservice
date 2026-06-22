@@ -9,40 +9,25 @@ const SERVICES: [string, string][] = [
   ['🔗', 'LinkedIn engagement'],
 ];
 
-/* Double the array so the CSS infinite loop is seamless */
 const DOUBLED = [...SERVICES, ...SERVICES];
 
 const TickerSection = () => (
   <section
-    style={{
-      padding: '60px 0',
-      borderTop: '1px solid #1d2c23',
-      borderBottom: '1px solid #1d2c23',
-      overflow: 'hidden',
-      background: '#070b09',
-    }}
+    className="py-15 overflow-hidden border-t border-b border-[#1d2c23]"
+    style={{ background: '#070b09' }}
   >
-    <div className="home-ticker-track">
+    <div
+      className="flex gap-3.5 w-max"
+      style={{ animation: 'home-scroll-x 32s linear infinite' }}
+    >
       {DOUBLED.map(([ic, label], i) => (
         <div
           key={i}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
-            border: '1px solid #28392d',
-            borderRadius: 999,
-            padding: '10px 20px',
-            fontSize: 14,
-            color: '#aebcb2',
-            whiteSpace: 'nowrap',
-            background: 'rgba(255,255,255,0.02)',
-            fontFamily: "'Inter', sans-serif",
-            flexShrink: 0,
-          }}
+          className="flex items-center gap-2.5 border border-[#28392d] rounded-full px-5 py-2.5 text-sm text-[#aebcb2] whitespace-nowrap bg-white/2 shrink-0"
+          style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          <span style={{ color: '#34d97e' }}>{ic}</span>
-          <b style={{ color: '#f3fbf5', fontWeight: 600 }}>{label}</b>
+          <span className="text-[#34d97e]">{ic}</span>
+          <b className="text-[#f3fbf5] font-semibold">{label}</b>
         </div>
       ))}
     </div>

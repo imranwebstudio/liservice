@@ -3,8 +3,6 @@ import SubscribeButton from './SubscribeButton';
 
 const WHATSAPP = 'https://wa.me/message/FI3L5HOJSGYBA1';
 
-
-/* ── Icon components ── */
 const PhoneIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.11 12 19.79 19.79 0 0 1 1.04 3.4 2 2 0 0 1 3 1.44h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
@@ -51,55 +49,43 @@ const WaIcon = () => (
   </svg>
 );
 
-/* ── Logo mark (shared with HomeNav) ── */
 const LogoMark = () => (
-  <Link
-    to="/"
-    style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: 10,
-      fontFamily: "'Space Grotesk', sans-serif",
-      fontWeight: 600,
-      fontSize: 19,
-      letterSpacing: '-0.02em',
-      textDecoration: 'none',
-      color: '#f3fbf5',
-    }}
-  >
-    <div
-      style={{
-        width: 34,
-        height: 34,
-        borderRadius: 10,
-        background: 'linear-gradient(155deg, #6ee7a8, #149656 60%, #2dd4cf)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: 16,
-        fontWeight: 700,
-        color: '#06150d',
-        boxShadow: '0 0 0 1px rgba(110,231,168,0.25), 0 8px 24px -8px rgba(31,191,108,0.6)',
-        flexShrink: 0,
-      }}
-    >
-      L
-    </div>
+  <Link to="/" style={{
+    display: 'inline-flex', alignItems: 'center', gap: 10,
+    fontFamily: "'Space Grotesk', sans-serif",
+    fontWeight: 600, fontSize: 19, letterSpacing: '-0.02em',
+    textDecoration: 'none', color: '#f3fbf5',
+  }}>
+    <div style={{
+      width: 34, height: 34, borderRadius: 10,
+      background: 'linear-gradient(155deg, #6ee7a8, #149656 60%, #2dd4cf)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontSize: 16, fontWeight: 700, color: '#06150d',
+      boxShadow: '0 0 0 1px rgba(110,231,168,0.25), 0 8px 24px -8px rgba(31,191,108,0.6)',
+      flexShrink: 0,
+    }}>L</div>
     Li Service<span style={{ color: '#34d97e' }}>24</span>
   </Link>
 );
 
+const contactIconCls = "w-8.5 h-8.5 rounded-lg border border-[#1a2e1f] bg-white/3 flex items-center justify-center shrink-0 text-[#74877b]";
+const socialLinkCls  = "w-9 h-9 rounded-lg border border-[#1a2e1f] bg-white/3 flex items-center justify-center text-[#74877b] no-underline transition-[color,border-color,background] duration-250 hover:text-[#34d97e] hover:border-[#28392d] hover:bg-[rgba(52,217,126,0.06)]";
+const colLinkCls     = "text-sm text-[#74877b] no-underline transition-colors duration-250 hover:text-[#34d97e]";
+const footLinkCls    = "text-[12.5px] text-[#74877b] no-underline transition-colors duration-250 hover:text-[#34d97e]";
+
 const HomeFooter = () => (
   <>
-    {/* ── Main footer mark section ── */}
-    <div className="footer-mark">
-      <div className="home-wrap">
-        <div className="footer-grid">
+    {/* Main footer */}
+    <div className="relative overflow-hidden [background:linear-gradient(180deg,#070b09_0%,#030605_100%)] pt-22 border-t border-[#1a2e1f]">
+      <div className="max-w-295 mx-auto px-8 max-sm:px-5">
 
-          {/* Brand column */}
-          <div className="footer-brand">
+        {/* Grid */}
+        <div className="grid grid-cols-[1.6fr_1fr_1fr_1.2fr] max-[900px]:grid-cols-2 max-sm:grid-cols-1 gap-[48px_32px] max-[900px]:gap-[40px_24px] pb-14 border-b border-[#1a2e1f]">
+
+          {/* Brand */}
+          <div className="max-[900px]:col-span-full">
             <LogoMark />
-            <p>
+            <p className="text-sm leading-[1.65] text-[#74877b] my-[18px]" style={{ fontFamily: "'Inter', sans-serif" }}>
               Li Service 24 is your trusted SMM panel for real growth — delivering
               likes, followers, views and engagement across every major platform.
             </p>
@@ -107,84 +93,90 @@ const HomeFooter = () => (
           </div>
 
           {/* Site map */}
-          <div className="footer-col">
-            <h4 className="footer-col-title">Site map</h4>
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/service">Services</Link></li>
-              <li><Link to="/service">Pricing</Link></li>
-              <li><Link to="/about">About us</Link></li>
-              <li><a href="#faq">FAQ</a></li>
+          <div>
+            <h4 className="text-[12px] font-semibold tracking-widest uppercase text-[#aebcb2] mb-5" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Site map
+            </h4>
+            <ul className="list-none p-0 m-0 flex flex-col gap-3">
+              <li><Link to="/" className={colLinkCls}>Home</Link></li>
+              <li><Link to="/service" className={colLinkCls}>Services</Link></li>
+              <li><Link to="/service" className={colLinkCls}>Pricing</Link></li>
+              <li><Link to="/about" className={colLinkCls}>About us</Link></li>
+              <li><a href="#faq" className={colLinkCls}>FAQ</a></li>
             </ul>
           </div>
 
           {/* Support */}
-          <div className="footer-col">
-            <h4 className="footer-col-title">Support</h4>
-            <ul>
-              <li><a href={WHATSAPP} target="_blank" rel="noreferrer">Help Center</a></li>
-              <li><a href="#">API Access</a></li>
-              <li><a href="#">Refund Policy</a></li>
-              <li><a href="#">Terms of Service</a></li>
-              <li><a href="#">Privacy Policy</a></li>
+          <div>
+            <h4 className="text-[12px] font-semibold tracking-widest uppercase text-[#aebcb2] mb-5" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Support
+            </h4>
+            <ul className="list-none p-0 m-0 flex flex-col gap-3">
+              <li><a href={WHATSAPP} target="_blank" rel="noreferrer" className={colLinkCls}>Help Center</a></li>
+              <li><a href="#" className={colLinkCls}>API Access</a></li>
+              <li><a href="#" className={colLinkCls}>Refund Policy</a></li>
+              <li><a href="#" className={colLinkCls}>Terms of Service</a></li>
+              <li><a href="#" className={colLinkCls}>Privacy Policy</a></li>
             </ul>
           </div>
 
           {/* Contact */}
-          <div className="footer-col">
-            <h4 className="footer-col-title">Contact us</h4>
+          <div>
+            <h4 className="text-[12px] font-semibold tracking-widest uppercase text-[#aebcb2] mb-5" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Contact us
+            </h4>
 
-            <div className="footer-contact-item">
-              <span className="footer-contact-icon"><PhoneIcon /></span>
+            <div className="flex items-start gap-3 mb-[18px]">
+              <span className={contactIconCls}><PhoneIcon /></span>
               <div>
-                <small>Phone</small>
-                <span>+880 1XXX-XXXXXX</span>
+                <small className="block text-[10px] uppercase tracking-[0.08em] text-[#74877b] mb-0.5" style={{ fontFamily: "'Inter', sans-serif" }}>Phone</small>
+                <span className="block text-sm text-[#aebcb2]" style={{ fontFamily: "'Inter', sans-serif" }}>+880 1XXX-XXXXXX</span>
               </div>
             </div>
 
-            <div className="footer-contact-item">
-              <span className="footer-contact-icon"><EmailIcon /></span>
+            <div className="flex items-start gap-3 mb-[18px]">
+              <span className={contactIconCls}><EmailIcon /></span>
               <div>
-                <small>Email</small>
-                <span>support@liservice24.com</span>
+                <small className="block text-[10px] uppercase tracking-[0.08em] text-[#74877b] mb-0.5" style={{ fontFamily: "'Inter', sans-serif" }}>Email</small>
+                <span className="block text-sm text-[#aebcb2]" style={{ fontFamily: "'Inter', sans-serif" }}>support@liservice24.com</span>
               </div>
             </div>
 
-            <div className="footer-contact-item">
-              <span className="footer-contact-icon"><LocationIcon /></span>
+            <div className="flex items-start gap-3 mb-[18px]">
+              <span className={contactIconCls}><LocationIcon /></span>
               <div>
-                <small>Location</small>
-                <span>Dhaka, Bangladesh</span>
+                <small className="block text-[10px] uppercase tracking-[0.08em] text-[#74877b] mb-0.5" style={{ fontFamily: "'Inter', sans-serif" }}>Location</small>
+                <span className="block text-sm text-[#aebcb2]" style={{ fontFamily: "'Inter', sans-serif" }}>Dhaka, Bangladesh</span>
               </div>
             </div>
 
-            <div className="footer-follow">
-              <small>Follow us</small>
-              <div className="footer-social">
-                <a href="#" className="footer-social-link" aria-label="Facebook"><FbIcon /></a>
-                <a href="#" className="footer-social-link" aria-label="Instagram"><IgIcon /></a>
-                <a href="#" className="footer-social-link" aria-label="LinkedIn"><LiIcon /></a>
-                <a href={WHATSAPP} target="_blank" rel="noreferrer" className="footer-social-link" aria-label="WhatsApp"><WaIcon /></a>
+            <div className="mt-1">
+              <small className="block text-[10px] uppercase tracking-[0.08em] text-[#74877b] mb-3" style={{ fontFamily: "'Inter', sans-serif" }}>Follow us</small>
+              <div className="flex gap-2">
+                <a href="#" className={socialLinkCls} aria-label="Facebook"><FbIcon /></a>
+                <a href="#" className={socialLinkCls} aria-label="Instagram"><IgIcon /></a>
+                <a href="#" className={socialLinkCls} aria-label="LinkedIn"><LiIcon /></a>
+                <a href={WHATSAPP} target="_blank" rel="noreferrer" className={socialLinkCls} aria-label="WhatsApp"><WaIcon /></a>
               </div>
             </div>
           </div>
-
         </div>
 
-        {/* ── Watermark ── */}
-        <div className="footer-mark-inner">
+        {/* Watermark */}
+        <div className="w-full text-center [line-height:0.78] overflow-hidden whitespace-nowrap pb-[18px] mt-10">
           <span className="footer-mark-text">LISERVICE24</span>
         </div>
       </div>
     </div>
 
-    {/* ── Copyright bar ── */}
-    <div className="home-footer-bar">
-      <p>© 2026 Li Service 24. All rights reserved.</p>
-      <div className="foot-links">
-        <a href="#">Terms</a>
-        <a href="#">Privacy</a>
-        <a href={WHATSAPP} target="_blank" rel="noreferrer">Contact</a>
+    {/* Copyright bar */}
+    <div className="px-8 py-[18px] border-t border-[#1a2e1f] bg-[#030605] flex items-center justify-between max-sm:flex-col max-sm:gap-3 max-sm:text-center"
+      style={{ fontFamily: "'Inter', sans-serif" }}>
+      <p className="text-[12.5px] text-[#74877b] m-0">© 2026 Li Service 24. All rights reserved.</p>
+      <div className="flex gap-6">
+        <a href="#" className={footLinkCls}>Terms</a>
+        <a href="#" className={footLinkCls}>Privacy</a>
+        <a href={WHATSAPP} target="_blank" rel="noreferrer" className={footLinkCls}>Contact</a>
       </div>
     </div>
   </>
