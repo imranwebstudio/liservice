@@ -4,9 +4,9 @@ import { RootState } from "../store";
 import { setUser } from "../features/auth/authSlice";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { BaseApi } from "../baseApi";
 
-
+const BaseApi = import.meta.env.VITE_BASE_API;
+console.log("BaseApi:", BaseApi);
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BaseApi}/api/v1`,
   credentials: "include",
