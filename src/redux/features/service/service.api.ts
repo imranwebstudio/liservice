@@ -10,11 +10,10 @@ const serviceApi = baseApi.injectEndpoints({
             })
         }),
         getServices: build.query({
-            query: ({ category }) => ({
-                url: `/service/getAll?category=${category}`,
+            query: ({ category, page = 1, limit = 20 }) => ({
+                url: `/service/getAll?category=${category ?? ''}&page=${page}&limit=${limit}`,
                 method: "GET"
             }),
-
             providesTags: ["services"],
         }),
 
@@ -77,6 +76,14 @@ const serviceApi = baseApi.injectEndpoints({
             invalidatesTags: ["services"],
         }),
 
+        getAllServices: build.query({
+            query: ({ page = 1, limit = 20 }: { page?: number; limit?: number } = {}) => ({
+                url: `/service/getAll?page=${page}&limit=${limit}`,
+                method: 'GET',
+            }),
+            providesTags: ['services'],
+        }),
+
     })
 })
 
@@ -88,5 +95,6 @@ export const {
     useApproveServiceMutation,
     useGetPendingServiceByUserIdQuery,
     useDeleteServiceMutation,
-    useUpdateServiceMutation
+    useUpdateServiceMutation,
+    useGetAllServicesQuery,
 } = serviceApi;
