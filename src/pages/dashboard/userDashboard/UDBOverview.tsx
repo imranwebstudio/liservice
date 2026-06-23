@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
 
 /* ── helpers ─────────────────────────────────────────────────── */
 function easeOutExpo(t: number) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
@@ -115,7 +114,7 @@ const RecentRow = ({ o, i, total }: { o: any; i: number; total: number }) => {
 /* ── Main ────────────────────────────────────────────────────── */
 interface Props { orders: any[]; balance: number; servicesTotal: number; onViewOrders: () => void; onAddBalance: () => void; }
 
-const UDBOverview = ({ orders, balance, servicesTotal, onViewOrders, onAddBalance }: Props) => {
+const UDBOverview = ({ orders, balance, servicesTotal, onViewOrders }: Props) => {
   const statsRef = useRef<HTMLDivElement>(null);
   const lineRef  = useRef<SVGPathElement>(null);
   const [statsActive, setStatsActive] = useState(false);
