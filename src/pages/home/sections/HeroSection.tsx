@@ -46,7 +46,7 @@ function StatBlock({ target, label, isStatic, staticVal }: {
       }}>
         {isStatic ? staticVal : display}
       </b>
-      <span style={{ fontSize: 13, color: '#74877b', fontFamily: "'Inter', sans-serif" }}>
+      <span style={{ fontSize: 13, color: 'var(--site-t2)', fontFamily: "'Inter', sans-serif" }}>
         {label}
       </span>
     </div>
@@ -58,7 +58,7 @@ const lineVar = (delay: number) => ({
   visible: { opacity: 1, y: '0%', transition: { duration: 0.9, delay, ease: [0.2, 0.8, 0.2, 1] as const } },
 });
 
-const Div = () => <div style={{ width: 1, background: '#28392d', alignSelf: 'stretch' }} />;
+const Div = () => <div style={{ width: 1, background: 'var(--site-border)', alignSelf: 'stretch' }} />;
 
 const HeroSection = () => {
   const user = useAppSelector(selectUser);
@@ -66,7 +66,7 @@ const HeroSection = () => {
   return (
     <section
       className="relative overflow-hidden pt-[168px] max-[768px]:pt-[110px] max-sm:pt-24"
-      style={{ background: '#070b09' }}
+      style={{ background: 'var(--site-bg)' }}
     >
       {/* Mesh blobs */}
       <div className="absolute -top-1/5 -left-[10%] -right-[10%] h-[1000px] z-0 pointer-events-none blur-[70px] opacity-85">
@@ -109,7 +109,7 @@ const HeroSection = () => {
         <h1 style={{
           fontFamily: "'Space Grotesk', sans-serif",
           fontSize: 'clamp(42px, 6vw, 74px)', lineHeight: 1.02,
-          letterSpacing: '-0.035em', fontWeight: 700, marginBottom: 26, color: '#f3fbf5',
+          letterSpacing: '-0.035em', fontWeight: 700, marginBottom: 26, color: 'var(--site-t0)',
         }}>
           <div className="overflow-hidden">
             <motion.span className="inline-block" variants={lineVar(0.2)} initial="hidden" animate="visible">The most&nbsp;</motion.span>
@@ -176,7 +176,7 @@ const HeroSection = () => {
           {['bKash', 'Nagad', 'Rocket', 'Binance', 'STC Pay'].map(name => (
             <span key={name} style={{
               fontFamily: "'Space Grotesk', sans-serif",
-              fontWeight: 600, fontSize: 17, color: '#aebcb2', letterSpacing: '-0.01em',
+              fontWeight: 600, fontSize: 17, color: 'var(--site-t1)', letterSpacing: '-0.01em',
             }}>
               {name}
             </span>

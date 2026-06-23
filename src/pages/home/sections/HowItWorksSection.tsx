@@ -13,7 +13,7 @@ const revealUp = (delay: number) => ({
 });
 
 const HowItWorksSection = () => (
-  <section className="py-30 max-[900px]:py-20 max-sm:py-16" style={{ background: '#070b09' }}>
+  <section className="py-30 max-[900px]:py-20 max-sm:py-16" style={{ background: 'var(--site-bg)' }}>
     <div className="max-w-295 mx-auto px-8 max-sm:px-5">
 
       {/* Section head */}
@@ -30,7 +30,7 @@ const HowItWorksSection = () => (
         <h2 style={{
           fontFamily: "'Space Grotesk', sans-serif",
           fontSize: 42, fontWeight: 600, letterSpacing: '-0.025em',
-          lineHeight: 1.15, color: '#f3fbf5',
+          lineHeight: 1.15, color: 'var(--site-t0)',
         }}>
           Order to result, in four steps
         </h2>
@@ -58,7 +58,7 @@ const HowItWorksSection = () => (
               style={{
                 fontFamily: "'Space Grotesk', sans-serif",
                 fontWeight: 600, fontSize: 16,
-                background: '#070b09', color: '#6ee7a8',
+                background: 'var(--site-bg)', color: '#6ee7a8',
               }}>
               {step.num}
             </div>

@@ -14,7 +14,7 @@ const DOUBLED = [...SERVICES, ...SERVICES];
 const TickerSection = () => (
   <section
     className="py-15 overflow-hidden border-t border-b border-[#1d2c23]"
-    style={{ background: '#070b09' }}
+    style={{ background: 'var(--site-bg)' }}
   >
     <div
       className="flex gap-3.5 w-max"

@@ -1,8 +1,8 @@
 /* ── Services page scoped styles ── */
 
 .svc-page {
-  background: #070b09;
-  color: #f3fbf5;
+  background: var(--site-bg);
+  color: var(--site-t0);
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
@@ -506,6 +506,65 @@
   height: 0 !important;
   opacity: 0 !important;
 }
+
+/* ═══════════════════════════════════════════════ */
+/* LIGHT MODE                                      */
+/* ═══════════════════════════════════════════════ */
+html:not(.dark) .svc-search input {
+  background: rgba(0,0,0,0.04);
+  border-color: var(--site-border);
+  color: var(--site-t0);
+}
+html:not(.dark) .svc-search input::placeholder { color: var(--site-t2); }
+html:not(.dark) .svc-tab {
+  background: rgba(0,0,0,0.04);
+  border-color: var(--site-border);
+  color: var(--site-t1);
+}
+html:not(.dark) .svc-tab:hover { color: var(--site-t0); border-color: var(--site-t2); }
+html:not(.dark) .svc-card {
+  background: var(--site-bg2);
+  border-color: var(--site-border);
+}
+html:not(.dark) .svc-card:hover { border-color: rgba(31,191,108,0.4); }
+html:not(.dark) .svc-title { color: var(--site-t0); }
+html:not(.dark) .svc-divider { background: var(--site-border); }
+html:not(.dark) .svc-meta { background: rgba(0,0,0,0.05); }
+html:not(.dark) .svc-meta-label { color: var(--site-t2); }
+html:not(.dark) .svc-meta-val { color: var(--site-t0); }
+html:not(.dark) .svc-price-per { color: var(--site-t2); }
+html:not(.dark) .svc-empty h3 { color: var(--site-t0); }
+html:not(.dark) .svc-empty p  { color: var(--site-t2); }
+html:not(.dark) .svc-load-more {
+  border-color: var(--site-border);
+  background: rgba(0,0,0,0.04);
+  color: var(--site-t1);
+}
+html:not(.dark) .svc-load-more:hover { color: var(--site-t0); }
+html:not(.dark) .svc-modal { background: var(--site-bg2); border-color: var(--site-border); }
+html:not(.dark) .svc-modal-header { border-color: var(--site-border); }
+html:not(.dark) .svc-modal-title { color: var(--site-t0); }
+html:not(.dark) .svc-modal-sub { color: var(--site-t2); }
+html:not(.dark) .svc-modal-close {
+  background: rgba(0,0,0,0.05);
+  border-color: var(--site-border);
+  color: var(--site-t2);
+}
+html:not(.dark) .svc-modal-close:hover { background: rgba(0,0,0,0.09); color: var(--site-t0); }
+html:not(.dark) .svc-input {
+  background: rgba(0,0,0,0.04);
+  border-color: var(--site-border);
+  color: var(--site-t0);
+}
+html:not(.dark) .svc-input::placeholder { color: var(--site-t2); }
+html:not(.dark) .svc-total-strip { background: rgba(0,0,0,0.05); border-color: var(--site-border); }
+html:not(.dark) .svc-total-lbl { color: var(--site-t2); }
+html:not(.dark) .svc-modal-btn-cancel {
+  background: rgba(0,0,0,0.05);
+  border-color: var(--site-border);
+  color: var(--site-t1);
+}
+html:not(.dark) .svc-modal-btn-cancel:hover { background: rgba(0,0,0,0.09); color: var(--site-t0); }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {

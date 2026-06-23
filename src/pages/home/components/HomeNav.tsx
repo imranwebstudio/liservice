@@ -3,7 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { logout, selectUser } from '../../../redux/features/auth/authSlice';
 import { useGetUserProfileQuery } from '../../../redux/features/auth/authApi';
+import { useTheme } from '../../../utils/ThemeContext';
 import SubscribeButton from './SubscribeButton';
+import ThemeToggle from '../../../components/ThemeToggle';
 
 const NAV_LINKS = [
   { label: 'Home', to: '/' },
@@ -18,6 +20,7 @@ const HomeNav = () => {
   const { data } = useGetUserProfileQuery(undefined, { skip: !user, pollingInterval: 5000 });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -45,10 +48,12 @@ const HomeNav = () => {
         top: 0, left: 0, right: 0,
         zIndex: 100,
         padding: '12px 0',
-        background: scrolled || mobileOpen ? 'rgba(7,11,9,0.97)' : 'rgba(7,11,9,0.55)',
+        background: scrolled || mobileOpen
+          ? (isDark ? 'rgba(7,11,9,0.97)' : 'rgba(240,247,243,0.97)')
+          : (isDark ? 'rgba(7,11,9,0.55)' : 'rgba(240,247,243,0.75)'),
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
-        borderBottom: scrolled ? '1px solid #1d2c23' : '1px solid transparent',
+        borderBottom: scrolled ? `1px solid ${isDark ? '#1d2c23' : '#c8dbd0'}` : '1px solid transparent',
         transition: 'border-color 0.4s ease, background 0.4s ease',
         fontFamily: "'Inter', sans-serif",
       }}
@@ -64,7 +69,7 @@ const HomeNav = () => {
             display: 'flex', alignItems: 'center', gap: 10,
             fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 600, fontSize: 19, letterSpacing: '-0.02em',
-            textDecoration: 'none', color: '#f3fbf5',
+            textDecoration: 'none', color: 'var(--site-t0)',
           }}
         >
           <div style={{
@@ -91,11 +96,13 @@ const HomeNav = () => {
 
         {/* Desktop right actions */}
         <div className="hidden md:flex items-center gap-3.5">
+           <ThemeToggle />
           {user && (
-            <div style={{
+            <div className="home-balance" onClick={() => navigate('/dashboard', { state: { view: 'addBalance' } })} style={{
               display: 'flex', alignItems: 'center', gap: 6,
-              border: '1px solid #28392d', borderRadius: 999,
-              padding: '8px 16px', fontSize: 13.5, fontWeight: 500, color: '#aebcb2',
+              border: '1px solid var(--site-border)', borderRadius: 999,
+              padding: '8px 16px', fontSize: 13.5, fontWeight: 500, color: 'var(--site-t1)',
+              cursor: 'pointer',
             }}>
               $ {data?.data?.balance ?? '0.00'}
             </div>
@@ -104,6 +111,7 @@ const HomeNav = () => {
             ? <SubscribeButton label="Logout" onClick={handleLogout} />
             : <SubscribeButton label="Sign in" to="/register" />
           }
+         
         </div>
 
         {/* Hamburger — mobile only */}
@@ -147,9 +155,13 @@ const HomeNav = () => {
 
           <div className="flex flex-col gap-3.5">
             {user && (
-              <div className="flex justify-between items-center px-3.5 py-2.5 border border-[#1d2c23] rounded-[10px] text-sm">
+              <div
+                className="flex justify-between items-center px-3.5 py-2.5 border border-[#1d2c23] rounded-[10px] text-sm"
+                onClick={() => { navigate('/dashboard', { state: { view: 'addBalance' } }); closeMobile(); }}
+                style={{ cursor: 'pointer' }}
+              >
                 <span style={{ color: '#34d97e', fontWeight: 600 }}>Balance</span>
-                <span style={{ color: '#f3fbf5', fontWeight: 600 }}>$ {data?.data?.balance ?? '0.00'}</span>
+                <span style={{ color: 'var(--site-t0)', fontWeight: 600 }}>$ {data?.data?.balance ?? '0.00'}</span>
               </div>
             )}
             {user

@@ -17,6 +17,7 @@ interface User {
     createdAt: string;
     isDeleted: boolean;
     isBlocked: boolean;
+    role: string;
 }
 
 const ManageUser = () => {
@@ -82,6 +83,28 @@ const ManageUser = () => {
         setSelectedUser(null);
     };
 
+    const handleRoleChange = async (user: User) => {
+        const newRole = user.role === 'admin' ? 'user' : 'admin';
+        const result = await Swal.fire({
+            title: `Make ${user.name} an ${newRole}?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#149656',
+            cancelButtonColor: '#ef4444',
+            confirmButtonText: `Yes, make ${newRole}`,
+            background: '#0c1310',
+            color: '#f3fbf5',
+        });
+        if (!result.isConfirmed) return;
+        try {
+            await blockUser({ id: user._id, ...user, role: newRole }).unwrap();
+            refetch();
+            Swal.fire({ icon: 'success', title: 'Role updated!', text: `${user.name} is now ${newRole}.`, background: '#0c1310', color: '#f3fbf5', iconColor: '#34d97e', confirmButtonColor: '#34d97e' });
+        } catch {
+            Swal.fire({ icon: 'error', title: 'Failed', text: 'Could not update role.', background: '#0c1310', color: '#f3fbf5' });
+        }
+    };
+
     const filteredUsers = data?.data?.filter((user: User) =>
         Object.keys(user).some((key) =>
             typeof user[key as keyof User] === 'string' &&
@@ -121,7 +144,7 @@ const ManageUser = () => {
             ) : (
                 <>
                     {/* Desktop table */}
-                    <div className="mu-table-wrap d-table-wrap" style={{ display: 'none' }}>
+                    <div className="mu-table-wrap d-table-wrap">
                         <table className="d-table">
                             <thead>
                                 <tr>
@@ -131,6 +154,7 @@ const ManageUser = () => {
                                     <th>Email</th>
                                     <th>Balance</th>
                                     <th>Join Date</th>
+                                    <th>Role</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -147,6 +171,12 @@ const ManageUser = () => {
                                             {moment(user.createdAt).format("MMM Do YYYY, h:mm a")}
                                         </td>
                                         <td>
+                                            {user.role === 'admin'
+                                                ? <span className="d-badge" style={{ background: 'rgba(45,212,207,0.12)', color: '#2dd4cf', border: '1px solid rgba(45,212,207,0.25)' }}>Admin</span>
+                                                : <span className="d-badge d-badge-green">User</span>
+                                            }
+                                        </td>
+                                        <td>
                                             {user.isDeleted
                                                 ? <span className="d-badge d-badge-red">Blocked</span>
                                                 : <span className="d-badge d-badge-green">Active</span>
@@ -159,6 +189,13 @@ const ManageUser = () => {
                                                     onClick={() => handleRechargeClick(user)}
                                                 >
                                                     Recharge
+                                                </button>
+                                                <button
+                                                    className="d-btn d-btn-sm"
+                                                    style={{ background: 'rgba(45,212,207,0.1)', color: '#2dd4cf', border: '1px solid rgba(45,212,207,0.2)' }}
+                                                    onClick={() => handleRoleChange(user)}
+                                                >
+                                                    {user.role === 'admin' ? 'Make User' : 'Make Admin'}
                                                 </button>
                                                 <button
                                                     className={`d-btn d-btn-sm ${user.isDeleted ? 'd-btn-ghost' : 'd-btn-amber'}`}
@@ -195,19 +232,33 @@ const ManageUser = () => {
                                     <span style={{ color: '#1fbf6c', fontWeight: 600, fontSize: 14 }}>${user.balance}</span>
                                 </div>
                                 <div className="d-mobile-card-row">
+                                    <span className="d-mobile-card-label">Role</span>
+                                    {user.role === 'admin'
+                                        ? <span className="d-badge" style={{ background: 'rgba(45,212,207,0.12)', color: '#2dd4cf', border: '1px solid rgba(45,212,207,0.25)' }}>Admin</span>
+                                        : <span className="d-badge d-badge-green">User</span>
+                                    }
+                                </div>
+                                <div className="d-mobile-card-row">
                                     <span className="d-mobile-card-label">Status</span>
                                     {user.isDeleted
                                         ? <span className="d-badge d-badge-red">Blocked</span>
                                         : <span className="d-badge d-badge-green">Active</span>
                                     }
                                 </div>
-                                <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                                <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
                                     <button
                                         className="d-btn d-btn-primary d-btn-sm"
                                         style={{ flex: 1 }}
                                         onClick={() => handleRechargeClick(user)}
                                     >
                                         Recharge
+                                    </button>
+                                    <button
+                                        className="d-btn d-btn-sm"
+                                        style={{ flex: 1, background: 'rgba(45,212,207,0.1)', color: '#2dd4cf', border: '1px solid rgba(45,212,207,0.2)' }}
+                                        onClick={() => handleRoleChange(user)}
+                                    >
+                                        {user.role === 'admin' ? 'Make User' : 'Make Admin'}
                                     </button>
                                     <button
                                         className={`d-btn d-btn-sm ${user.isDeleted ? 'd-btn-ghost' : 'd-btn-amber'}`}

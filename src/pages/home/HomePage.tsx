@@ -1,5 +1,5 @@
 import "./home.css";
-
+import { useTheme } from "../../utils/ThemeContext";
 import HomeNav from "./components/HomeNav";
 import HomeFooter from "./components/HomeFooter";
 import HeroSection from "./sections/HeroSection";
@@ -9,38 +9,36 @@ import HowItWorksSection from "./sections/HowItWorksSection";
 import FaqSection from "./sections/FaqSection";
 import CtaSection from "./sections/CtaSection";
 
-const HomePage = () => (
-  <div
-    className="home-page"
-    style={{
-      background: "#070b09",
-      color: "#f3fbf5",
-      fontFamily: "'Inter', sans-serif",
-      overflowX: "hidden",
-      minHeight: "100vh",
-    }}
-  >
-    <div id="whatsapp-widget">
-      <a
-        href="https://wa.link/oq18jw"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-          alt="WhatsApp"
-        />
-      </a>
+const HomePage = () => {
+  const { isDark } = useTheme();
+
+  return (
+    <div
+      className={`home-page${isDark ? "" : " home-light"}`}
+      style={{
+        background: "var(--site-bg)",
+        color: "var(--site-t0)",
+        fontFamily: "'Inter', sans-serif",
+        overflowX: "hidden",
+        minHeight: "100vh",
+        transition: "background 0.3s ease, color 0.3s ease",
+      }}
+    >
+      <div id="whatsapp-widget">
+        <a href="https://wa.link/oq18jw" target="_blank" rel="noreferrer">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+        </a>
+      </div>
+      <HomeNav />
+      <HeroSection />
+      <TickerSection />
+      <WhyUsSection />
+      <HowItWorksSection />
+      <FaqSection />
+      <CtaSection />
+      <HomeFooter />
     </div>
-    <HomeNav />
-    <HeroSection />
-    <TickerSection />
-    <WhyUsSection />
-    <HowItWorksSection />
-    <FaqSection />
-    <CtaSection />
-    <HomeFooter />
-  </div>
-);
+  );
+};
 
 export default HomePage;

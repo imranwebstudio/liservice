@@ -26,14 +26,14 @@ function FaqItem({ q, a, defaultOpen }: { q: string; a: string; defaultOpen?: bo
   return (
     <div
       className={`home-faq-item${open ? ' open' : ''}`}
-      style={{ borderBottom: '1px solid #1d2c23', padding: '24px 4px' }}
+      style={{ borderBottom: '1px solid var(--site-border)', padding: '24px 4px' }}
     >
       <div
         className="flex justify-between items-center gap-5 cursor-pointer"
         onClick={() => setOpen(o => !o)}
       >
         <h4 style={{
-          fontSize: 16, fontWeight: 500, color: '#f3fbf5',
+          fontSize: 16, fontWeight: 500, color: 'var(--site-t0)',
           fontFamily: "'Inter', sans-serif", margin: 0,
         }}>
           {q}
@@ -51,7 +51,7 @@ const revealUp = {
 };
 
 const FaqSection = () => (
-  <section id="faq" className="py-30 max-[900px]:py-20 max-sm:py-16" style={{ background: '#070b09' }}>
+  <section id="faq" className="py-30 max-[900px]:py-20 max-sm:py-16" style={{ background: 'var(--site-bg)' }}>
     <div className="max-w-295 mx-auto px-8 max-sm:px-5">
 
       {/* Section head */}
@@ -68,7 +68,7 @@ const FaqSection = () => (
         <h2 style={{
           fontFamily: "'Space Grotesk', sans-serif",
           fontSize: 42, fontWeight: 600, letterSpacing: '-0.025em',
-          lineHeight: 1.15, color: '#f3fbf5',
+          lineHeight: 1.15, color: 'var(--site-t0)',
         }}>
           Questions, answered
         </h2>
