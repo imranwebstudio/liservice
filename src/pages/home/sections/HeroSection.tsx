@@ -69,17 +69,17 @@ const HeroSection = () => {
       style={{ background: '#070b09' }}
     >
       {/* Mesh blobs */}
-      <div className="absolute -top-1/5 -left-[10%] -right-[10%] h-[1000px] z-0 pointer-events-none blur-[70px] opacity-85">
-        <div className="home-blob-a absolute w-[560px] h-[560px] left-[6%] top-0 rounded-full"
+      <div className="absolute md:fixed -top-1/5 -left-[10%] -right-[10%] h-[1000px] z-0 pointer-events-none blur-[70px] opacity-85">
+        <div className="home-blob-a fixed w-140 h-140 left-[6%] top-0 rounded-full"
           style={{ background: 'radial-gradient(circle at 30% 30%, rgba(52,217,126,0.55), transparent 70%)', mixBlendMode: 'screen' }} />
-        <div className="home-blob-b absolute w-[480px] h-[480px] right-[2%] top-[120px] rounded-full"
+        <div className="home-blob-b fixed w-120 h-120 right-[2%] top-30 rounded-full"
           style={{ background: 'radial-gradient(circle at 60% 40%, rgba(45,212,207,0.45), transparent 70%)', mixBlendMode: 'screen' }} />
-        <div className="home-blob-c absolute w-[420px] h-[420px] left-[38%] top-[260px] rounded-full"
+        <div className="home-blob-c fixed w-[420px] h-[420px] left-[38%] top-[260px] rounded-full"
           style={{ background: 'radial-gradient(circle at 50% 50%, rgba(31,191,108,0.4), transparent 70%)', mixBlendMode: 'screen' }} />
       </div>
 
       {/* Grid fade overlay */}
-      <div className="absolute inset-0 z-1 pointer-events-none"
+      <div className="fixed inset-0 z-1 pointer-events-none"
         style={{
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
           backgroundSize: '64px 64px',
