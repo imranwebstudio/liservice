@@ -92,8 +92,8 @@ const ServiceCards = () => {
   }, [quantity, selectedService]);
 
   const filtered = useMemo<IService[]>(() => {
-    if (!data?.data) return [];
-    let list = data.data as IService[];
+    if (!data?.data?.services) return [];
+    let list = data.data.services as IService[];
     if (activePlatform !== 'all') {
       list = list.filter(s => getPlatformKey(s) === activePlatform);
     }

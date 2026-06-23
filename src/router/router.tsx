@@ -5,13 +5,7 @@ import Register from "../pages/Register";
 import ServiceCards from "../pages/service/Service";
 import Dashboard from "../layout/Dashboard";
 import AddServices from "../pages/dashboard/adminDashboard/AddServices";
-import SingleOrder from "../pages/dashboard/userDashboard/SingleOrder";
-import AddBalance from "../pages/dashboard/userDashboard/AddBalance";
-import State from "../components/State";
 import AboutUs from "../pages/aboutUs/AboutUs";
-import OrderHistory from "../pages/dashboard/userDashboard/OrderHistory";
-import PaymentPage from "../pages/dashboard/userDashboard/PaymentPage";
-import RechargeHistory from "../pages/dashboard/userDashboard/RechargeHistory";
 import ManageService from "../pages/dashboard/adminDashboard/ManageService";
 import ManageUser from "../pages/dashboard/adminDashboard/ManageUser";
 import ManageOrders from "../pages/dashboard/adminDashboard/ManageOrders";
@@ -19,6 +13,7 @@ import ManageRecharges from "../pages/dashboard/adminDashboard/ManageRecharge";
 import UserProfile from "../pages/user/UserProfile";
 import PrivateRoute from "../privetRoutes/PrivateRoute";
 import ResetPassword from "../pages/user/ResetPassword";
+import UserDashboard from "../pages/dashboard/userDashboard/UserDashboard";
 
 const router = createBrowserRouter([
     {
@@ -38,10 +33,6 @@ const router = createBrowserRouter([
                 element: <AboutUs />
             },
             {
-                path: '/payment',
-                element: <PrivateRoute><PaymentPage /></PrivateRoute> 
-            },
-            {
                 path: '/profile',
                 element: <UserProfile />
             },
@@ -53,59 +44,38 @@ const router = createBrowserRouter([
     },
     {
         path: "/dashboard",
-        element: <PrivateRoute><Dashboard/></PrivateRoute>,
         children: [
             {
                 index: true,
-                element: <State />
+                element: <PrivateRoute><UserDashboard /></PrivateRoute>
             },
             {
-                path: 'profile',
-                element: <UserProfile />
-            },
-            {
-                path: "addService",
-                element: <PrivateRoute><AddServices /></PrivateRoute>, 
-            },
-            {
-                path: "manageOrders",
-                element: <PrivateRoute><ManageOrders /></PrivateRoute>, 
-            },
-            {
-                path: "manageServices",
-                element: <PrivateRoute><ManageService /></PrivateRoute>,
-            },
-            {
-                path: "manageUsers",
-                element: <PrivateRoute><ManageUser /></PrivateRoute>, 
-            },
-            {
-                path: "manageRecharges",
-                element: <PrivateRoute><ManageRecharges /></PrivateRoute>,
-            },
-            {
-                path: "services",
-                element: <ServiceCards />
-            },
-            {
-                path: "orderHistory",
-                element:  <OrderHistory />
-            },
-            {
-                path: "rechargeHistory",
-                element: <RechargeHistory />
-            },
-            {
-                path: "singleOrder",
-                element: <SingleOrder />
-            },
-            {
-                path: "addBalance",
-                element: <AddBalance />
+                element: <PrivateRoute><Dashboard /></PrivateRoute>,
+                children: [
+                    {
+                        path: "addService",
+                        element: <AddServices />,
+                    },
+                    {
+                        path: "manageOrders",
+                        element: <ManageOrders />,
+                    },
+                    {
+                        path: "manageServices",
+                        element: <ManageService />,
+                    },
+                    {
+                        path: "manageUsers",
+                        element: <ManageUser />,
+                    },
+                    {
+                        path: "manageRecharges",
+                        element: <ManageRecharges />,
+                    },
+                ]
             }
         ]
-    }
-    ,
+    },
     {
         path: "/register",
         element: <Register />

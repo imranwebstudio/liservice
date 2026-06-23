@@ -1,0 +1,177 @@
+/* ── CSS custom properties (dark – default) ──────────────────── */
+.db-root {
+  --db-bg0: #070b09; --db-bg1: #0c1310; --db-bg2: #101a15;
+  --db-line: #1d2c23; --db-line2: #28392d;
+  --db-t0: #f3fbf5;  --db-t1: #aebcb2; --db-t2: #74877b;
+  --db-g3: #6ee7a8;  --db-g4: #34d97e; --db-g5: #1fbf6c; --db-g6: #149656;
+  --db-teal: #2dd4cf; --db-gold: #f0c869; --db-red: #f4677a;
+  --db-input: rgba(255,255,255,0.03);
+}
+.db-root.light {
+  --db-bg0:#eef2ef; --db-bg1:#ffffff; --db-bg2:#e6ede8;
+  --db-line:#dde6e0; --db-line2:#ccd8d0;
+  --db-t0:#0d1a13; --db-t1:#47584e; --db-t2:#7a8a80;
+  --db-input:rgba(13,26,19,0.035);
+}
+
+/* ── Blob keyframes ──────────────────────────────────────────── */
+@keyframes db-float1 { 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(40px,40px) scale(1.08); } }
+@keyframes db-float2 { 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(-50px,30px) scale(0.95); } }
+@keyframes db-float3 { 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(20px,-40px) scale(1.05); } }
+.db-blob-a {
+  animation:db-float1 18s ease-in-out infinite;
+  top:-180px; left:-120px;
+  background:radial-gradient(circle, rgba(52,217,126,0.22) 0%, rgba(31,191,108,0.12) 38%, transparent 68%);
+  filter:blur(48px);
+}
+.db-blob-b {
+  animation:db-float2 21s ease-in-out infinite;
+  bottom:-100px; right:-80px;
+  background:radial-gradient(circle, rgba(45,212,207,0.18) 0%, rgba(31,191,108,0.09) 40%, transparent 68%);
+  filter:blur(56px);
+}
+.db-blob-c {
+  animation:db-float3 16s ease-in-out infinite;
+  top:40%; left:30%;
+  background:radial-gradient(circle, rgba(52,217,126,0.10) 0%, rgba(45,212,207,0.05) 45%, transparent 70%);
+  filter:blur(80px);
+}
+
+/* ── Gradient text keyframe ──────────────────────────────────── */
+@keyframes db-shine { to { background-position:200% center; } }
+.db-grad-text {
+  background:linear-gradient(120deg,#6ee7a8,#2dd4cf 55%,#1fbf6c);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  background-size:200% auto; animation:db-shine 7s linear infinite;
+}
+
+/* ── Nav active ::before indicator (pseudo-element) ──────────── */
+.db-nav-btn { position:relative; }
+.db-nav-btn.active::before {
+  content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+  width:3px; height:22px; border-radius:0 3px 3px 0;
+  background:linear-gradient(180deg,#6ee7a8,#2dd4cf);
+  box-shadow:0 0 12px 1px rgba(52,217,126,0.7);
+}
+
+/* ── Stat card — color-mix() hover (can't in Tailwind) ───────── */
+.db-stat-card { transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .4s ease; }
+.db-stat-card:hover { transform:translateY(-5px); border-color:color-mix(in srgb,var(--accent,#34d97e) 50%,var(--db-line)); }
+.db-stat-glow { transition:opacity .45s ease; }
+.db-stat-card:hover .db-stat-glow { opacity:1 !important; }
+
+/* stat num gradient with color-mix */
+.db-stat-num {
+  background:linear-gradient(180deg,#fff,color-mix(in srgb,var(--accent,#34d97e) 45%,#fff));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.db-root.light .db-stat-num {
+  background:linear-gradient(180deg,#0d1a13,color-mix(in srgb,var(--accent,#34d97e) 55%,#0d1a13));
+  -webkit-background-clip:text; background-clip:text;
+}
+
+/* stat icon color-mix */
+.db-stat-ic {
+  background:color-mix(in srgb,var(--accent,#34d97e) 14%,transparent);
+  border:1px solid color-mix(in srgb,var(--accent,#34d97e) 30%,transparent);
+  color:var(--accent,#34d97e);
+}
+
+/* ── Service card ─────────────────────────────────────────────── */
+.svc-card {
+  background:linear-gradient(168deg,rgba(255,255,255,0.045),rgba(255,255,255,0.012));
+  transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .4s ease;
+}
+.svc-card:hover { transform:translateY(-6px); border-color:color-mix(in srgb,var(--accent,#34d97e) 55%,var(--db-line)); }
+
+.svc-glow {
+  background:radial-gradient(circle,var(--glow,rgba(52,217,126,0.45)),transparent 68%);
+  opacity:0.55; transition:opacity .45s ease;
+}
+.svc-card:hover .svc-glow { opacity:1; }
+
+.svc-pattern {
+  background-image:radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1.6px);
+  background-size:16px 16px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 75%);
+  opacity:0; transition:opacity .45s ease;
+}
+.svc-card:hover .svc-pattern { opacity:1; }
+
+.svc-sheen {
+  background:linear-gradient(180deg,rgba(255,255,255,0.12),transparent);
+  mask-image:radial-gradient(ellipse 90% 100% at 50% 0%,black 45%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 100% at 50% 0%,black 45%,transparent 75%);
+}
+.svc-orb { background:#fff; box-shadow:0 0 14px 3px rgba(255,255,255,0.55); opacity:0.55; }
+
+/* ── Service card CTA button with sweep animation ─────────────── */
+.svc-cta-btn {
+  position:relative; overflow:hidden;
+  color:#fff; font-weight:700; cursor:pointer;
+  background:linear-gradient(90deg, color-mix(in srgb,var(--accent,#188A50) 78%,#000), var(--accent,#06B913));
+  box-shadow:inset 0 5px 7px -2px rgba(255,255,255,0.06);
+  transition:color .4s ease .05s, transform .15s ease;
+}
+.svc-cta-btn::before {
+  content:''; position:absolute; top:0; right:0; bottom:0; width:100%;
+  background:#eef2ef; border-radius:9px;
+  transform:scaleX(0); transform-origin:right center;
+  transition:transform .45s cubic-bezier(.65,0,.35,1); z-index:0;
+}
+.svc-cta-btn:hover::before { transform:scaleX(1); }
+.svc-cta-btn:hover { color:color-mix(in srgb,var(--accent,#188A50) 70%,#000); }
+.svc-cta-btn:active { transform:scale(0.98); }
+.svc-cta-label { position:relative; z-index:1; }
+.svc-cta-circle {
+  position:relative; z-index:1; flex-shrink:0;
+  background:rgba(255,255,255,0.92); transition:background .4s ease;
+}
+.svc-cta-btn:hover .svc-cta-circle { background:transparent; }
+.svc-cta-circle svg circle { transition:fill .4s ease; fill:var(--accent,#06B913); }
+.svc-cta-btn:hover .svc-cta-circle svg circle { fill:color-mix(in srgb,var(--accent,#188A50) 70%,#000); }
+
+/* ── Chip active gradient ────────────────────────────────────── */
+.db-chip { cursor:pointer; transition:color .2s,background .2s,border-color .2s; }
+.db-chip.active {
+  color:#06160e !important; font-weight:600 !important; border-color:transparent !important;
+  background:linear-gradient(135deg,#6ee7a8,#1fbf6c 60%,#2dd4cf) !important;
+  box-shadow:0 8px 22px -12px rgba(34,211,142,.6);
+}
+
+/* ── Filter collapse animation ───────────────────────────────── */
+.db-filters { overflow:hidden; transition:max-height .38s cubic-bezier(.4,0,.2,1),opacity .3s ease; }
+.db-filters.open { max-height:500px; opacity:1; }
+.db-filters.collapsed { max-height:0; opacity:0; }
+
+/* ── Donut track (SVG stroke) ────────────────────────────────── */
+.db-donut-track { stroke:rgba(255,255,255,0.04); }
+.db-root.light .db-donut-track { stroke:rgba(13,26,19,0.07); }
+
+/* ── Selection colour ────────────────────────────────────────── */
+.db-root ::selection { background:#1fbf6c; color:#06150d; }
+
+/* ── Scrollbar ───────────────────────────────────────────────── */
+.db-root ::-webkit-scrollbar { width:8px; height:8px; }
+.db-root ::-webkit-scrollbar-thumb { background:var(--db-line2); border-radius:8px; border:2px solid var(--db-bg0); }
+.db-root ::-webkit-scrollbar-thumb:hover { background:var(--db-g6); }
+
+/* ── Check row checked state ─────────────────────────────────── */
+.db-check-box svg { opacity:0; transform:scale(.5); transition:opacity .2s,transform .2s; }
+.db-check-row.checked .db-check-box { background:#34d97e !important; border-color:#34d97e !important; }
+.db-check-row.checked .db-check-box svg { opacity:1 !important; transform:scale(1) !important; }
+
+/* ── Sidebar: always transition, hidden on mobile until .open ─── */
+.db-sidebar {
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+@media (max-width:767px) {
+  .db-sidebar {
+    transform: translateX(-100%);
+  }
+  .db-sidebar.open {
+    transform: translateX(0);
+    box-shadow: 8px 0 40px rgba(0,0,0,0.55);
+  }
+}
