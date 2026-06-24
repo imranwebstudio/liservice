@@ -93,7 +93,7 @@ const CtaSection = () => {
           {/* Card deck */}
           <div
             className="relative flex flex-col items-center gap-7 mb-15"
-            onMouseEnter={startCycle} onMouseLeave={stopCycle}
+            onMouseEnter={startCycle}
           >
             <div className={`relative w-42.5 h-52.5 cursor-default${fanned ? ' fanned' : ''}`}>
               {CARDS.map((card, cardIdx) => {
