@@ -86,16 +86,11 @@ const HowItWorksSection = () => (
           <span className="w-4.5 h-px bg-[#34d97e] inline-block" />
           How it works
         </div>
-        <h2
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 42,
-            fontWeight: 600,
-            letterSpacing: "-0.025em",
-            lineHeight: 1.15,
-            color: "#f3fbf5",
-          }}
-        >
+        <h2 style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: 42, fontWeight: 600, letterSpacing: '-0.025em',
+          lineHeight: 1.15, color: 'var(--site-t0)',
+        }}>
           Order to result, in four steps
         </h2>
       </motion.div>
@@ -125,12 +120,9 @@ const HowItWorksSection = () => (
               className="w-11.5 h-11.5 rounded-full mx-auto mb-5.5 flex items-center justify-center relative z-1 border border-[#149656]"
               style={{
                 fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 600,
-                fontSize: 16,
-                background: "#070b09",
-                color: "#6ee7a8",
-              }}
-            >
+                fontWeight: 600, fontSize: 16,
+                background: 'var(--site-bg)', color: '#6ee7a8',
+              }}>
               {step.num}
             </div>
             <h4

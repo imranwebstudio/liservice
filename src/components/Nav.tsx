@@ -7,6 +7,7 @@ import logoBlack from '../assets/logoBlack.png';
 import { useTheme } from "../utils/ThemeContext";
 import { useGetUserProfileQuery } from "../redux/features/auth/authApi";
 import { FiSun, FiMoon, FiUser, FiLogOut, FiGrid, FiMenu, FiX } from "react-icons/fi";
+import ThemeToggle from "./ThemeToggle";
 
 const Nav = () => {
     const user = useAppSelector(selectUser);
@@ -78,13 +79,7 @@ const Nav = () => {
                     )}
 
                     {/* Theme toggle */}
-                    <button
-                        onClick={themeContext?.toggleTheme}
-                        className="btn btn-ghost btn-sm btn-circle text-base-content/60 hover:text-base-content"
-                        aria-label="Toggle theme"
-                    >
-                        {isDark ? <FiSun className="w-4 h-4" /> : <FiMoon className="w-4 h-4" />}
-                    </button>
+                   <ThemeToggle />
 
                     {/* Desktop: avatar dropdown */}
                     {user ? (

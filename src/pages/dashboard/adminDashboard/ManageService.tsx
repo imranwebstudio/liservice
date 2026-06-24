@@ -130,7 +130,7 @@ const ManageService = () => {
             </div>
 
             {/* Desktop Table */}
-            <div className="ms-table-wrap d-table-wrap" style={{ display: 'none' }}>
+            <div className="ms-table-wrap d-table-wrap">
                 <table className="d-table">
                     <thead>
                         <tr>

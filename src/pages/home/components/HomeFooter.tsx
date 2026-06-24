@@ -54,7 +54,7 @@ const LogoMark = () => (
     display: 'inline-flex', alignItems: 'center', gap: 10,
     fontFamily: "'Space Grotesk', sans-serif",
     fontWeight: 600, fontSize: 19, letterSpacing: '-0.02em',
-    textDecoration: 'none', color: '#f3fbf5',
+    textDecoration: 'none', color: 'var(--site-t0)',
   }}>
     <div style={{
       width: 34, height: 34, borderRadius: 10,
@@ -76,7 +76,7 @@ const footLinkCls    = "text-[12.5px] text-[#74877b] no-underline transition-col
 const HomeFooter = () => (
   <>
     {/* Main footer */}
-    <div className="relative overflow-hidden [background:linear-gradient(180deg,#070b09_0%,#030605_100%)] pt-22 border-t border-[#1a2e1f]">
+    <div className="relative overflow-hidden pt-22 border-t border-[#1a2e1f]" style={{ background: 'linear-gradient(180deg,var(--site-bg) 0%,var(--site-bg2) 100%)' }}>
       <div className="max-w-295 mx-auto px-8 max-sm:px-5">
 
         {/* Grid */}
@@ -170,7 +170,7 @@ const HomeFooter = () => (
     </div>
 
     {/* Copyright bar */}
-    <div className="px-8 py-[18px] border-t border-[#1a2e1f] bg-[#030605] flex items-center justify-between max-sm:flex-col max-sm:gap-3 max-sm:text-center"
+    <div className="px-8 py-[18px] border-t border-[#1a2e1f] flex items-center justify-between max-sm:flex-col max-sm:gap-3 max-sm:text-center" style={{ background: 'var(--site-bg2)' }}
       style={{ fontFamily: "'Inter', sans-serif" }}>
       <p className="text-[12.5px] text-[#74877b] m-0">© 2026 Li Service 24. All rights reserved.</p>
       <div className="flex gap-6">

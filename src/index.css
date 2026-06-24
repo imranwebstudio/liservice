@@ -3,10 +3,42 @@
   themes: corporate --default, night;
 }
 
+/* ── Global theme tokens ─────────────────────────────── */
+:root {
+  --site-bg:        #070b09;
+  --site-bg2:       #0c1310;
+  --site-surface:   #111a14;
+  --site-border:    #1d2c23;
+  --site-t0:        #f3fbf5;
+  --site-t1:        #aebcb2;
+  --site-t2:        #74877b;
+  --site-green:     #34d97e;
+  --site-teal:      #2dd4cf;
+  --nav-bg-scroll:  rgba(7,11,9,0.97);
+  --nav-bg:         rgba(7,11,9,0.55);
+  --nav-border:     #1d2c23;
+}
+
+html:not(.dark) {
+  --site-bg:        #f0f7f3;
+  --site-bg2:       #ffffff;
+  --site-surface:   #e8f2eb;
+  --site-border:    #c8dbd0;
+  --site-t0:        #0a1e12;
+  --site-t1:        #2e4a38;
+  --site-t2:        #5a7a66;
+  --nav-bg-scroll:  rgba(240,247,243,0.97);
+  --nav-bg:         rgba(240,247,243,0.75);
+  --nav-border:     #c8dbd0;
+}
+
 html, body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--site-bg);
+  color: var(--site-t0);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 #whatsapp-widget {

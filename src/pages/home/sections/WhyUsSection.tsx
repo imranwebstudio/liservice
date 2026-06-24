@@ -15,7 +15,7 @@ const revealUp = (delay: number) => ({
 });
 
 const WhyUsSection = () => (
-  <section id="services" className="py-30 max-[900px]:py-20 max-sm:py-16" style={{ background: '#070b09' }}>
+  <section id="services" className="py-30 max-[900px]:py-20 max-sm:py-16" style={{ background: 'var(--site-bg)' }}>
     <div className="max-w-295 mx-auto px-8 max-sm:px-5">
 
       {/* Section head */}
@@ -32,7 +32,7 @@ const WhyUsSection = () => (
         <h2 style={{
           fontFamily: "'Space Grotesk', sans-serif",
           fontSize: 42, fontWeight: 600, letterSpacing: '-0.025em',
-          marginBottom: 16, lineHeight: 1.15, color: '#f3fbf5',
+          marginBottom: 16, lineHeight: 1.15, color: 'var(--site-t0)',
         }}>
           Built to be the safe choice
         </h2>
@@ -64,7 +64,7 @@ const WhyUsSection = () => (
             <h3 style={{
               fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 18.5, fontWeight: 600, marginBottom: 10,
-              letterSpacing: '-0.01em', color: '#f3fbf5',
+              letterSpacing: '-0.01em', color: 'var(--site-t0)',
             }}>
               {f.title}
             </h3>

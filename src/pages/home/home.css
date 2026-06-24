@@ -93,7 +93,7 @@
 /* ── Nav link underline hover ────────────────────── */
 .home-nav-link {
   position: relative;
-  color: #aebcb2;
+  color: var(--site-t1);
   text-decoration: none;
   font-size: 14.5px;
   font-weight: 500;
@@ -110,7 +110,7 @@
   transform-origin: left;
   transition: transform 0.3s ease;
 }
-.home-nav-link:hover { color: #f3fbf5; }
+.home-nav-link:hover { color: var(--site-t0); }
 .home-nav-link:hover::after { transform: scaleX(1); }
 
 /* ── FAQ accordion (compound selectors) ──────────── */
@@ -118,7 +118,7 @@
   max-height: 0;
   overflow: hidden;
   opacity: 0;
-  color: #aebcb2;
+  color: var(--site-t1);
   font-size: 14.5px;
   line-height: 1.7;
   transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.4s ease;
@@ -127,11 +127,11 @@
 .home-faq-chevron {
   width: 28px; height: 28px;
   border-radius: 50%;
-  border: 1px solid #28392d;
+  border: 1px solid var(--site-border);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   transition: transform 0.35s ease, background 0.3s ease, border-color 0.3s ease;
-  color: #aebcb2; font-size: 14px; cursor: pointer;
+  color: var(--site-t1); font-size: 14px; cursor: pointer;
 }
 .home-faq-item.open .home-faq-chevron {
   transform: rotate(135deg);
@@ -165,7 +165,7 @@
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(48px, 7vw, 96px);
   font-weight: 800; letter-spacing: -0.03em;
-  line-height: 1.0; color: #f3fbf5; margin-bottom: 20px;
+  line-height: 1.0; color: var(--site-t0); margin-bottom: 20px;
 }
 @media (max-width: 900px) { .cta-box { padding: 64px 24px 56px; } }
 @media (max-width: 640px) {
@@ -175,6 +175,99 @@
 
 /* ── Deck fanned state (parent.state compound) ───── */
 .deck.fanned .deck-card { box-shadow: 0 24px 60px -16px rgba(0,0,0,0.7); }
+
+/* ═══════════════════════════════════════════════════
+   LIGHT MODE OVERRIDES  (html:not(.dark) scope)
+   Both Tailwind utility classes AND inline styles
+═══════════════════════════════════════════════════ */
+
+/* ── Transition on theme switch ───────────────────── */
+html:not(.dark) .home-page * {
+  transition: background 0.3s ease, background-color 0.3s ease,
+              color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ── Nav ─────────────────────────────────────────── */
+html:not(.dark) .home-page .home-nav-link { color: var(--site-t1); }
+html:not(.dark) .home-page .home-nav-link:hover { color: var(--site-t0); }
+
+/* ── Tailwind text color classes ─────────────────── */
+html:not(.dark) .home-page .text-\[\#f3fbf5\]  { color: var(--site-t0) !important; }
+html:not(.dark) .home-page .text-\[\#aebcb2\]  { color: var(--site-t1) !important; }
+html:not(.dark) .home-page .text-\[\#74877b\]  { color: var(--site-t2) !important; }
+html:not(.dark) .home-page .text-\[\#e2efe6\]  { color: var(--site-t0) !important; }
+html:not(.dark) .home-page .text-\[\#c2dcc9\]  { color: var(--site-t1) !important; }
+
+/* ── Tailwind border color classes ───────────────── */
+html:not(.dark) .home-page .border-\[\#1d2c23\] { border-color: var(--site-border) !important; }
+html:not(.dark) .home-page .border-\[\#28392d\] { border-color: var(--site-border) !important; }
+html:not(.dark) .home-page .border-\[\#1a2e1f\] { border-color: var(--site-border) !important; }
+html:not(.dark) .home-page .border-\[\#149656\] { border-color: var(--site-green) !important; }
+
+/* ── Tailwind bg opacity helpers ─────────────────── */
+html:not(.dark) .home-page .bg-white\/\[0\.03\],
+html:not(.dark) .home-page .bg-white\/2,
+html:not(.dark) .home-page .bg-white\/3       { background-color: rgba(0,0,0,0.045) !important; }
+
+/* ── Headings & body text (generic) ─────────────── */
+html:not(.dark) .home-page h1,
+html:not(.dark) .home-page h2,
+html:not(.dark) .home-page h3,
+html:not(.dark) .home-page h4 { color: var(--site-t0) !important; }
+
+html:not(.dark) .home-page p { color: var(--site-t1); }
+
+/* ── Inline style overrides (color) ─────────────── */
+html:not(.dark) .home-page [style*="color: #f3fbf5"],
+html:not(.dark) .home-page [style*="color:#f3fbf5"]   { color: var(--site-t0) !important; }
+html:not(.dark) .home-page [style*="color: #aebcb2"],
+html:not(.dark) .home-page [style*="color:#aebcb2"]   { color: var(--site-t1) !important; }
+html:not(.dark) .home-page [style*="color: #74877b"],
+html:not(.dark) .home-page [style*="color:#74877b"]   { color: var(--site-t2) !important; }
+html:not(.dark) .home-page [style*="color: #e8f5ec"],
+html:not(.dark) .home-page [style*="color:#e8f5ec"]   { color: var(--site-t0) !important; }
+
+/* ── Inline style overrides (background) ─────────── */
+html:not(.dark) .home-page [style*="background: #070b09"],
+html:not(.dark) .home-page [style*="background:#070b09"]  { background: var(--site-bg) !important; }
+html:not(.dark) .home-page [style*="background: #030605"],
+html:not(.dark) .home-page [style*="background:#030605"]  { background: var(--site-bg2) !important; }
+
+/* ── Inline border overrides ─────────────────────── */
+html:not(.dark) .home-page [style*="border-bottom: 1px solid #1d2c23"]  { border-bottom-color: var(--site-border) !important; }
+html:not(.dark) .home-page [style*="borderBottom: '1px solid #1d2c23'"] { border-bottom-color: var(--site-border) !important; }
+
+/* ── Feature cards on home ────────────────────────── */
+html:not(.dark) .home-page [class*="border-"][class*="1d2c23"],
+html:not(.dark) .home-page [class*="bg-"][class*="rgba(255,255,255,0.025)"] {
+  border-color: var(--site-border) !important;
+  background: var(--site-surface) !important;
+}
+
+/* ── Ticker chips ────────────────────────────────── */
+html:not(.dark) .home-page .border-\[\#28392d\].rounded-full {
+  background: rgba(0,0,0,0.05) !important;
+  border-color: var(--site-border) !important;
+}
+
+/* ── FAQ ─────────────────────────────────────────── */
+html:not(.dark) .home-page .home-faq-answer { color: var(--site-t1); }
+html:not(.dark) .home-page .home-faq-chevron { border-color: var(--site-border); color: var(--site-t1); }
+
+/* ── CTA box ─────────────────────────────────────── */
+html:not(.dark) .home-page .cta-box {
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 78px, rgba(0,0,0,0.04) 78px, rgba(0,0,0,0.04) 79px),
+    repeating-linear-gradient(90deg, transparent, transparent 78px, rgba(0,0,0,0.04) 78px, rgba(0,0,0,0.04) 79px),
+    radial-gradient(ellipse at 50% 0%, #c8f0db, #f0f7f3 65%) !important;
+  border-color: rgba(52, 217, 126, 0.25) !important;
+}
+
+/* ── Footer ─────────────────────────────────────── */
+html:not(.dark) .home-page .footer-mark-text {
+  -webkit-text-stroke: 1px rgba(10,100,50,0.2) !important;
+  text-stroke: 1px rgba(10,100,50,0.2) !important;
+}
 
 /* ── Footer watermark (-webkit-text-stroke) ─────── */
 .footer-mark-text {
