@@ -105,6 +105,8 @@ const AddServices: React.FC = () => {
 
     return (
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
+            <style>{`.asvc-field:focus { border-color: #34d97e !important; }`}</style>
+
             {/* Card */}
             <div style={{
                 background: 'linear-gradient(160deg, var(--db-bg1) 0%, var(--db-bg0) 100%)',
@@ -149,9 +151,8 @@ const AddServices: React.FC = () => {
                         <input
                             type="text"
                             placeholder="e.g. Instagram Followers – Real & Active"
+                            className="asvc-field"
                             style={fieldBase}
-                            onFocus={e => (e.target.style.borderColor = '#34d97e')}
-                            onBlur={e => (e.target.style.borderColor = 'var(--db-line2)')}
                             {...register("name", { required: "Service name is required" })}
                         />
                         {errors.name && <p style={{ margin: '5px 0 0', fontSize: 12.5, color: 'var(--db-red)' }}>{errors.name.message}</p>}
@@ -163,9 +164,8 @@ const AddServices: React.FC = () => {
                         <input
                             type="text"
                             placeholder="https://..."
+                            className="asvc-field"
                             style={fieldBase}
-                            onFocus={e => (e.target.style.borderColor = '#34d97e')}
-                            onBlur={e => (e.target.style.borderColor = 'var(--db-line2)')}
                             {...register("image")}
                         />
                     </div>
@@ -176,9 +176,8 @@ const AddServices: React.FC = () => {
                         <textarea
                             rows={3}
                             placeholder="Describe what this service provides…"
+                            className="asvc-field"
                             style={{ ...fieldBase, resize: 'vertical', minHeight: 88, lineHeight: 1.6 }}
-                            onFocus={e => (e.target.style.borderColor = '#34d97e')}
-                            onBlur={e => (e.target.style.borderColor = 'var(--db-line2)')}
                             {...register("description", { required: "Description is required" })}
                         />
                         {errors.description && <p style={{ margin: '5px 0 0', fontSize: 12.5, color: 'var(--db-red)' }}>{errors.description.message}</p>}
@@ -188,9 +187,8 @@ const AddServices: React.FC = () => {
                     <div>
                         <label style={labelBase}>Category <span style={{ color: 'var(--db-red)' }}>*</span></label>
                         <select
+                            className="asvc-field"
                             style={{ ...fieldBase, cursor: 'pointer' }}
-                            onFocus={e => (e.target.style.borderColor = '#34d97e')}
-                            onBlur={e => (e.target.style.borderColor = 'var(--db-line2)')}
                             {...register("category", { required: "Category is required" })}
                         >
                             <option value="" disabled>Select a category…</option>
@@ -214,9 +212,8 @@ const AddServices: React.FC = () => {
                                 type="number"
                                 step="0.01"
                                 placeholder="0.00"
+                                className="asvc-field"
                                 style={fieldBase}
-                                onFocus={e => (e.target.style.borderColor = '#34d97e')}
-                                onBlur={e => (e.target.style.borderColor = 'var(--db-line2)')}
                                 {...register("price", { required: "Price is required", min: { value: 0, message: "Must be positive" } })}
                             />
                             {errors.price && <p style={{ margin: '5px 0 0', fontSize: 12.5, color: 'var(--db-red)' }}>{errors.price.message}</p>}
@@ -226,9 +223,8 @@ const AddServices: React.FC = () => {
                             <input
                                 type="number"
                                 placeholder="e.g. 24"
+                                className="asvc-field"
                                 style={fieldBase}
-                                onFocus={e => (e.target.style.borderColor = '#34d97e')}
-                                onBlur={e => (e.target.style.borderColor = 'var(--db-line2)')}
                                 {...register("avgTime", { required: "Avg time is required", min: { value: 1, message: "At least 1 hour" } })}
                             />
                             {errors.avgTime && <p style={{ margin: '5px 0 0', fontSize: 12.5, color: 'var(--db-red)' }}>{errors.avgTime.message}</p>}
@@ -242,9 +238,8 @@ const AddServices: React.FC = () => {
                             <input
                                 type="number"
                                 placeholder="e.g. 100"
+                                className="asvc-field"
                                 style={fieldBase}
-                                onFocus={e => (e.target.style.borderColor = '#34d97e')}
-                                onBlur={e => (e.target.style.borderColor = 'var(--db-line2)')}
                                 {...register("min", { required: "Min is required", min: { value: 10, message: "At least 10" } })}
                             />
                             {errors.min && <p style={{ margin: '5px 0 0', fontSize: 12.5, color: 'var(--db-red)' }}>{errors.min.message}</p>}
@@ -254,9 +249,8 @@ const AddServices: React.FC = () => {
                             <input
                                 type="number"
                                 placeholder="e.g. 10000"
+                                className="asvc-field"
                                 style={fieldBase}
-                                onFocus={e => (e.target.style.borderColor = '#34d97e')}
-                                onBlur={e => (e.target.style.borderColor = 'var(--db-line2)')}
                                 {...register("max", { required: "Max is required", validate: v => Number(v) > 10 || "Must be greater than 10" })}
                             />
                             {errors.max && <p style={{ margin: '5px 0 0', fontSize: 12.5, color: 'var(--db-red)' }}>{errors.max.message}</p>}

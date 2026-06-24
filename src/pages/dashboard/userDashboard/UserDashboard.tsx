@@ -133,7 +133,7 @@ const UserDashboard = () => {
 
   const navItems = isAdmin ? ADMIN_NAV_ITEMS : USER_NAV_ITEMS;
 
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const theme = isDark ? 'dark' : 'light';
 
   const { data: ordersData }    = useGetPendingServiceByUserIdQuery(undefined, { skip: isAdmin });

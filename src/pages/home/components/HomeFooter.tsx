@@ -170,8 +170,7 @@ const HomeFooter = () => (
     </div>
 
     {/* Copyright bar */}
-    <div className="px-8 py-[18px] border-t border-[#1a2e1f] flex items-center justify-between max-sm:flex-col max-sm:gap-3 max-sm:text-center" style={{ background: 'var(--site-bg2)' }}
-      style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="px-8 py-[18px] border-t border-[#1a2e1f] flex items-center justify-between max-sm:flex-col max-sm:gap-3 max-sm:text-center" style={{ background: 'var(--site-bg2)', fontFamily: "'Inter', sans-serif" }}>
       <p className="text-[12.5px] text-[#74877b] m-0">© 2026 Li Service 24. All rights reserved.</p>
       <div className="flex gap-6">
         <a href="#" className={footLinkCls}>Terms</a>

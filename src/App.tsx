@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
-import Nav from "./components/Nav";
+import HomeNav from "./pages/home/components/HomeNav";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <div>
-      {!hideNav && <Nav />}
+      {!hideNav && <HomeNav />}
       <div>
         {!isHome && !isService && (
           <div id="whatsapp-widget">
