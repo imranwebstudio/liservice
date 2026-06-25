@@ -190,13 +190,7 @@ const ManageUser = () => {
                                                 >
                                                     Recharge
                                                 </button>
-                                                <button
-                                                    className="d-btn d-btn-sm"
-                                                    style={{ background: 'rgba(45,212,207,0.1)', color: '#2dd4cf', border: '1px solid rgba(45,212,207,0.2)' }}
-                                                    onClick={() => handleRoleChange(user)}
-                                                >
-                                                    {user.role === 'admin' ? 'Make User' : 'Make Admin'}
-                                                </button>
+                                                
                                                 <button
                                                     className={`d-btn d-btn-sm ${user.isDeleted ? 'd-btn-ghost' : 'd-btn-amber'}`}
                                                     onClick={() => handleBlockUser(user)}
@@ -253,13 +247,13 @@ const ManageUser = () => {
                                     >
                                         Recharge
                                     </button>
-                                    <button
+                                    {/* <button
                                         className="d-btn d-btn-sm"
                                         style={{ flex: 1, background: 'rgba(45,212,207,0.1)', color: '#2dd4cf', border: '1px solid rgba(45,212,207,0.2)' }}
                                         onClick={() => handleRoleChange(user)}
                                     >
                                         {user.role === 'admin' ? 'Make User' : 'Make Admin'}
-                                    </button>
+                                    </button> */}
                                     <button
                                         className={`d-btn d-btn-sm ${user.isDeleted ? 'd-btn-ghost' : 'd-btn-amber'}`}
                                         style={{ flex: 1 }}

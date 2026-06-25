@@ -4,6 +4,7 @@ import HomeNav from "./components/HomeNav";
 import HomeFooter from "./components/HomeFooter";
 import HeroSection from "./sections/HeroSection";
 import TickerSection from "./sections/TickerSection";
+import ServicesPreviewSection from "./sections/ServicesPreviewSection";
 import WhyUsSection from "./sections/WhyUsSection";
 import HowItWorksSection from "./sections/HowItWorksSection";
 import FaqSection from "./sections/FaqSection";
@@ -32,6 +33,7 @@ const HomePage = () => {
       <HomeNav />
       <HeroSection />
       <TickerSection />
+      <ServicesPreviewSection />
       <WhyUsSection />
       <HowItWorksSection />
       <FaqSection />

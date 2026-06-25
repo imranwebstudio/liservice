@@ -16,11 +16,7 @@
 }
 
 /* ── Hero ── */
-.svc-hero {
-  position: relative;
-  padding: 160px 0 90px;
-  overflow: hidden;
-}
+
 
 /* Blob float animations */
 .svc-blob-a { animation: svcFloatA 9s ease-in-out infinite; }
@@ -73,7 +69,7 @@
   transition: border-color 0.2s;
 }
 .svc-search input:focus { border-color: rgba(31,191,108,0.35); }
-.svc-search input::placeholder { color: #3a5040; }
+.svc-search input::placeholder { color: #74877b; }
 .svc-search-icon {
   position: absolute;
   left: 16px;
@@ -568,7 +564,6 @@ html:not(.dark) .svc-modal-btn-cancel:hover { background: rgba(0,0,0,0.09); colo
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .svc-hero { padding: 130px 0 60px; }
   .svc-wrap { padding: 0 20px; }
   .svc-grid { grid-template-columns: 1fr; }
 }

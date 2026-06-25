@@ -41,6 +41,23 @@ html, body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* ── Shared blob float animations (used across pages) ── */
+.blob-a { animation: blob-float1 16s ease-in-out infinite; }
+.blob-b { animation: blob-float2 19s ease-in-out infinite; }
+.blob-c { animation: blob-float3 14s ease-in-out infinite; }
+@keyframes blob-float1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(40px, 30px) scale(1.08); }
+}
+@keyframes blob-float2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(-50px, 20px) scale(0.95); }
+}
+@keyframes blob-float3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(20px, -40px) scale(1.05); }
+}
+
 #whatsapp-widget {
   position: fixed;
   bottom: 20px;
