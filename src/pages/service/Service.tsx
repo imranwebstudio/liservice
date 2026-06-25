@@ -175,7 +175,7 @@ const ServiceCards = () => {
     if (!selectedService) return 0;
     return parseFloat((quantity * (selectedService.price / 1000)).toFixed(4));
   }, [quantity, selectedService]);
-  console.log( data)
+  // console.log( data)
 
   const filtered = useMemo<IService[]>(() => {
     if (!data?.data?.services) return [];
