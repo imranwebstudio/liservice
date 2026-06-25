@@ -132,6 +132,16 @@ const HomeNav = () => {
 
         {/* Desktop right actions */}
         <div className="hidden md:flex items-center gap-3.5">
+          {user && (
+            <div
+              className="flex items-center gap-1.5 border border-(--site-green) rounded-full px-3 py-1.5 text-[13px] font-medium text-[var(--site-t1)] cursor-pointer max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
+              onClick={() =>
+                navigate("/dashboard", { state: { view: "addBalance" } })
+              }
+            >
+              $ {data?.data?.balance ?? "0.00"}
+            </div>
+          )}
           <ThemeToggle />
 
           {user ? (
@@ -141,36 +151,20 @@ const HomeNav = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex  md:hidden items-center gap-2 shrink-0">
           {user && (
             <div
-              className="home-balance"
+              className="flex items-center gap-1.5 border border-(--site-green) rounded-full px-3 py-1.5 text-[13px] font-medium text-[var(--site-t1)] cursor-pointer max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
               onClick={() =>
                 navigate("/dashboard", { state: { view: "addBalance" } })
               }
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                border: "1px solid var(--site-green)",
-                borderRadius: 999,
-                padding: "6px 12px",
-                fontSize: 13,
-                fontWeight: 500,
-                color: "var(--site-t1)",
-                cursor: "pointer",
-                maxWidth: 120,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
             >
               $ {data?.data?.balance ?? "0.00"}
             </div>
           )}
           {/* Hamburger — mobile only */}
           <button
-            className="flex md:hidden flex-col justify-center items-center gap-1.25 w-10 h-10 bg-[rgba(52,217,126,0.08)] border border-[rgba(52,217,126,0.2)] rounded-[10px] cursor-pointer p-0 shrink-0"
+            className="flex flex-col justify-center items-center gap-1.25 w-10 h-10 bg-[rgba(52,217,126,0.08)] border border-[rgba(52,217,126,0.2)] rounded-[10px] cursor-pointer p-0 shrink-0"
             onClick={() => setMobileOpen((o) => !o)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}

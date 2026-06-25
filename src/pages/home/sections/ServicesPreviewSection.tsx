@@ -77,8 +77,8 @@ const ServicesPreviewSection = () => {
   }, [quantity, selectedService]);
 
   const filtered = useMemo<IService[]>(() => {
-    if (!data?.data) return [];
-    const list = data.data as IService[];
+    if (!data?.data?.services) return [];
+    const list = data.data.services as IService[];
     if (activePlatform === "all") return list;
     return list.filter(s => getPlatformKey(s) === activePlatform);
   }, [data, activePlatform]);

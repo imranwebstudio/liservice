@@ -175,10 +175,11 @@ const ServiceCards = () => {
     if (!selectedService) return 0;
     return parseFloat((quantity * (selectedService.price / 1000)).toFixed(4));
   }, [quantity, selectedService]);
+  console.log( data)
 
   const filtered = useMemo<IService[]>(() => {
-    if (!data?.data) return [];
-    let list = data.data as IService[];
+    if (!data?.data?.services) return [];
+    let list = data.data?.services as IService[];
     if (activePlatform !== "all") {
       list = list.filter((s) => getPlatformKey(s) === activePlatform);
     }
@@ -193,7 +194,8 @@ const ServiceCards = () => {
     return list;
   }, [data, activePlatform, search]);
 
-  const displayed = filtered.slice(0, visibleCount);
+  const displayed = filtered?.slice(0, visibleCount);
+
 
   const openModal = (s: IService) => {
     setSelectedService(s);
@@ -253,7 +255,7 @@ const ServiceCards = () => {
       </div>
     );
   }
-  console.log(data.data, filtered, displayed);
+  // console.log(data.data, filtered, displayed);
   return (
     <div className="svc-page">
       <HomeNav />
@@ -263,7 +265,7 @@ const ServiceCards = () => {
         {/* Animated blobs */}
         <div
           style={{
-            position: "absolute",
+            position: "fixed",
             top: "-20%",
             left: "-10%",
             right: "-10%",
