@@ -19,7 +19,7 @@ const ManageService = () => {
     const [updateService] = useUpdateServiceMutation();
     const [searchQuery, setSearchQuery] = useState("");
 
-    const filteredServices = data?.data?.services?.filter((service: any) => {
+    const filteredServices = data?.data?.filter((service: any) => {
         if (!service) return false;
         const searchLower = searchQuery.toLowerCase();
         return (
