@@ -5,7 +5,7 @@ import { setUser } from "../features/auth/authSlice";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const BaseApi = import.meta.env.VITE_BASE_API_URL;
+const BaseApi = import.meta.env.VITE_BASE_API_URL ||  "https://api.liservice24.com";
 console.log("BaseApi:", BaseApi);
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BaseApi}/api/v1`,
