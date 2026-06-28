@@ -14,8 +14,13 @@ import UserProfile from "../pages/user/UserProfile";
 import PrivateRoute from "../privetRoutes/PrivateRoute";
 import ResetPassword from "../pages/user/ResetPassword";
 import UserDashboard from "../pages/dashboard/userDashboard/UserDashboard";
+import TermsAndConditions from "../pages/TermsAndConditions";
 
 const router = createBrowserRouter([
+    {
+        path: "/terms",
+        element: <TermsAndConditions />
+    },
     {
         path: "/",
         element: <App />,

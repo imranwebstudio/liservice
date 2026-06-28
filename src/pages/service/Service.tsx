@@ -177,7 +177,7 @@ const ServiceCards = () => {
   }, [currentPage]);
  
   const categoryParam =
-    !debouncedSearch && activePlatform !== "all" && activePlatform !== "feature"
+    !debouncedSearch && activePlatform !== "all" && activePlatform
       ? activePlatform
       : "";
 

@@ -26,7 +26,7 @@ const PLATFORMS: Record<string, { name: string; icon: string; color: string; glo
   snapchat:  { name: "Snapchat",  icon: "👻", color: "#f3c400", glow: "rgba(243,196,0,0.4)"   },
 };
 
-const PLATFORM_ORDER = ["all","feature","facebook","instagram","youtube","tiktok","telegram","linkedin","twitter","whatsapp","snapchat"];
+const PLATFORM_ORDER = ["feature"];
 
 function getPlatformKey(service: IService): string {
   const text = (service.name + " " + service.category).toLowerCase();
@@ -68,7 +68,7 @@ const ServicesPreviewSection = () => {
   const [quantity, setQuantity] = useState(0);
   const [link, setLink] = useState("");
 
-  const { data, isLoading } = useGetServicesQuery({ category: "" });
+  const { data, isLoading } = useGetServicesQuery({ category: "feature" });
   const [buyService, { isLoading: buyingService }] = useBuyServiceMutation();
 
   const price = useMemo(() => {

@@ -31,11 +31,12 @@ const serviceApi = baseApi.injectEndpoints({
         }),
 
         getPendingServices: build.query({
-            query: () => ({
-                url: "/service/getAllOrders",
-                method: "GET"
-            }),
-
+            query: ({ search = '', page = 1, limit = 20, status = '' } ) => {
+                const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+                if (search) params.set('search', search);
+                if (status) params.set('status', status);
+                return { url: `/service/getAllOrders?${params.toString()}`, method: "GET" };
+            },
             providesTags: ["services"],
         }),
 

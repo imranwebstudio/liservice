@@ -2,9 +2,18 @@
 import { useApproveServiceMutation, useGetPendingServicesQuery } from "../../../redux/features/service/service.api";
 import Loading from "../../../utils/Loading";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import "../dashboard.css";
+
+const PAGE_SIZE = 20;
+
+function getPageNumbers(current: number, total: number): (number | '…')[] {
+    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+    if (current <= 4) return [1, 2, 3, 4, 5, '…', total];
+    if (current >= total - 3) return [1, '…', total - 4, total - 3, total - 2, total - 1, total];
+    return [1, '…', current - 1, current, current + 1, '…', total];
+}
 
 const getStatusBadge = (status: string) => {
     if (status === "done" || status === "approved" || status === "Completed") return "d-badge d-badge-green";
@@ -12,18 +21,39 @@ const getStatusBadge = (status: string) => {
     return "d-badge d-badge-amber";
 };
 
+const STATUS_OPTIONS = [
+    { value: '',         label: 'All statuses' },
+    { value: 'pending',  label: 'Pending' },
+    { value: 'done',     label: 'Done' },
+    { value: 'rejected', label: 'Rejected' },
+];
+
 const ManageOrders = () => {
-    const { data, isLoading } = useGetPendingServicesQuery(undefined);
+    const [searchQuery, setSearchQuery]   = useState('');
+    const [debouncedSearch, setDebounced] = useState('');
+    const [statusFilter, setStatusFilter] = useState('');
+    const [currentPage, setCurrentPage]   = useState(1);
+
     const [updateServiceStatus, { isLoading: isUpdating }] = useApproveServiceMutation();
-    const [searchQuery, setSearchQuery] = useState("");
 
-    const filteredData = data?.data?.filter((service: any) =>
-        service?.userId?.userName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    service?.serviceId?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    service?.link?.toLowerCase().includes(searchQuery.toLowerCase())
-);
+    useEffect(() => {
+        const t = setTimeout(() => setDebounced(searchQuery.trim()), 350);
+        return () => clearTimeout(t);
+    }, [searchQuery]);
 
-console.log("ManageOrders data:", filteredData);
+    useEffect(() => { setCurrentPage(1); }, [debouncedSearch, statusFilter]);
+
+    const { data, isLoading, isFetching } = useGetPendingServicesQuery({
+        search: debouncedSearch,
+        page:   currentPage,
+        limit:  PAGE_SIZE,
+        status: statusFilter,
+    });
+
+    const orders: any[] = data?.data?.orders     ?? [];
+    const total         = data?.data?.total       ?? 0;
+    const totalPages    = data?.data?.totalPages  ?? 1;
+
     const handleStatusUpdate = async (serviceId: string, status: string) => {
         Swal.fire({
             title: 'Processing...',
@@ -33,207 +63,201 @@ console.log("ManageOrders data:", filteredData);
         });
         try {
             await updateServiceStatus({ id: serviceId, status }).unwrap();
-            Swal.fire("Success", "Service status updated successfully", "success");
-        } catch (error) {
-            Swal.fire("Error", "Failed to update service status", "error");
+            Swal.fire("Success", "Order status updated successfully", "success");
+        } catch {
+            Swal.fire("Error", "Failed to update order status", "error");
         }
     };
 
     if (isLoading) return <Loading />;
 
+    const pageNums = getPageNumbers(currentPage, totalPages);
+
     return (
         <div className="d-page" style={{ background: 'transparent' }}>
             <div className="d-card">
+                {/* Header */}
                 <div className="d-card-header">
                     <div>
                         <h2 className="d-card-title">Manage Promotion Orders</h2>
-                        <p className="d-card-sub">{filteredData?.length ?? 0} orders found</p>
+                        <p className="d-card-sub">{total} order{total !== 1 ? 's' : ''} found</p>
                     </div>
-                    <div className="d-search-wrap" style={{ width: 260 }}>
-                        <span className="d-search-icon"><FaSearch size={13} /></span>
-                        <input
-                            type="text"
-                            placeholder="Search orders..."
-                            className="d-search-input"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
+                    <div className="flex gap-2 flex-wrap items-center">
+                        <select
+                            className="d-select"
+                            style={{ width: 150, height: 38, padding: '0 12px' }}
+                            value={statusFilter}
+                            onChange={e => setStatusFilter(e.target.value)}
+                        >
+                            {STATUS_OPTIONS.map(o => (
+                                <option key={o.value} value={o.value}>{o.label}</option>
+                            ))}
+                        </select>
+                        <div className="d-search-wrap" style={{ width: 220 }}>
+                            <span className="d-search-icon"><FaSearch size={13} /></span>
+                            <input
+                                type="text"
+                                placeholder="Search orders..."
+                                className="d-search-input"
+                                value={searchQuery}
+                                onChange={e => setSearchQuery(e.target.value)}
+                            />
+                        </div>
                     </div>
                 </div>
 
-                {filteredData?.length === 0 ? (
-                    <div className="d-empty">
-                        <h3>No orders found</h3>
-                        <p>Try adjusting your search query.</p>
-                    </div>
-                ) : (
-                    <>
-                        {/* Desktop table */}
-                        <div className="mo-table-wrap d-table-wrap" style={{ borderRadius: 0, border: 'none', display: 'none' }}>
-                            <table className="d-table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Customer</th>
-                                        <th>Service</th>
-                                        <th>Link</th>
-                                        <th>Qty</th>
-                                        <th>Cost</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filteredData?.map((service: any, index: number) => (
-                                        <tr key={service._id}>
-                                            <td>{index + 1}</td>
-                                            <td className="d-td-primary">{service?.userId?.userName}</td>
-                                            <td className="d-td-primary">{service?.serviceId?.name}</td>
-                                            <td style={{ maxWidth: 180 }}>
-                                                <a
-                                                    href={service?.link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="d-link"
-                                                    style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 180 }}
-                                                >
-                                                    {service?.link}
-                                                </a>
-                                            </td>
-                                            <td>{service?.quantity}</td>
-                                            <td style={{ color: '#1fbf6c', fontWeight: 600 }}>${service?.price}</td>
-                                            <td>
-                                                <span className={getStatusBadge(service?.status)}>
-                                                    {service?.status}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div style={{ display: 'flex', gap: 6 }}>
-                                                    <ActionButtons
-                                                        status={service?.status}
-                                                        serviceId={service?._id}
-                                                        onStatusUpdate={handleStatusUpdate}
-                                                        isUpdating={isUpdating}
-                                                    />
-                                                </div>
-                                            </td>
+                {/* Content */}
+                <div style={{ opacity: isFetching ? 0.5 : 1, transition: 'opacity 0.2s' }}>
+                    {orders.length === 0 ? (
+                        <div className="d-empty">
+                            <h3>No orders found</h3>
+                            <p>Try adjusting your search or filter.</p>
+                        </div>
+                    ) : (
+                        <>
+                            {/* Desktop table */}
+                            <div className="mo-table-wrap d-table-wrap">
+                                <table className="d-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Customer</th>
+                                            <th>Service</th>
+                                            <th>Link</th>
+                                            <th>Qty</th>
+                                            <th>Cost</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        {orders.map((order: any, index: number) => (
+                                            <tr key={order._id}>
+                                                <td>{(currentPage - 1) * PAGE_SIZE + index + 1}</td>
+                                                <td className="d-td-primary">{order?.userId?.userName}</td>
+                                                <td className="d-td-primary">{order?.serviceId?.name}</td>
+                                                <td style={{ maxWidth: 180 }}>
+                                                    <a href={order?.link} target="_blank" rel="noopener noreferrer"
+                                                        className="d-link"
+                                                        style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 180 }}>
+                                                        {order?.link}
+                                                    </a>
+                                                </td>
+                                                <td>{order?.quantity}</td>
+                                                <td style={{ color: '#1fbf6c', fontWeight: 600 }}>${order?.price}</td>
+                                                <td>
+                                                    <span className={getStatusBadge(order?.status)}>{order?.status}</span>
+                                                </td>
+                                                <td>
+                                                    <div style={{ display: 'flex', gap: 6 }}>
+                                                        <ActionButtons
+                                                            status={order?.status}
+                                                            serviceId={order?._id}
+                                                            onStatusUpdate={handleStatusUpdate}
+                                                            isUpdating={isUpdating}
+                                                        />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
 
-                        {/* Mobile cards */}
-                        <div className="mo-cards" style={{ padding: 16 }}>
-                            {filteredData?.map((service: any, index: number) => (
-                                <div key={service._id} className="d-mobile-card">
-                                    <div className="d-mobile-card-row">
-                                        <span className="d-mobile-card-label">#{index + 1} Customer</span>
-                                        <span className="d-mobile-card-value" style={{ color: '#e8f5ec' }}>{service?.userId?.userName}</span>
+                            {/* Mobile cards */}
+                            <div className="mo-cards" style={{ padding: 16 }}>
+                                {orders.map((order: any, index: number) => (
+                                    <div key={order._id} className="d-mobile-card">
+                                        <div className="d-mobile-card-row">
+                                            <span className="d-mobile-card-label">#{(currentPage - 1) * PAGE_SIZE + index + 1} Customer</span>
+                                            <span className="d-mobile-card-value" style={{ color: '#e8f5ec' }}>{order?.userId?.userName}</span>
+                                        </div>
+                                        <div className="d-mobile-card-row">
+                                            <span className="d-mobile-card-label">Service</span>
+                                            <span className="d-mobile-card-value">{order?.serviceId?.name}</span>
+                                        </div>
+                                        <div className="d-mobile-card-row">
+                                            <span className="d-mobile-card-label">Cost</span>
+                                            <span style={{ color: '#1fbf6c', fontWeight: 600, fontSize: 14 }}>${order?.price}</span>
+                                        </div>
+                                        <div className="d-mobile-card-row">
+                                            <span className="d-mobile-card-label">Status</span>
+                                            <span className={getStatusBadge(order?.status)}>{order?.status}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                                            <ActionButtons
+                                                status={order?.status}
+                                                serviceId={order?._id}
+                                                onStatusUpdate={handleStatusUpdate}
+                                                isUpdating={isUpdating}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="d-mobile-card-row">
-                                        <span className="d-mobile-card-label">Service</span>
-                                        <span className="d-mobile-card-value">{service?.serviceId?.name}</span>
-                                    </div>
-                                    <div className="d-mobile-card-row">
-                                        <span className="d-mobile-card-label">Cost</span>
-                                        <span style={{ color: '#1fbf6c', fontWeight: 600, fontSize: 14 }}>${service?.price}</span>
-                                    </div>
-                                    <div className="d-mobile-card-row">
-                                        <span className="d-mobile-card-label">Status</span>
-                                        <span className={getStatusBadge(service?.status)}>{service?.status}</span>
-                                    </div>
-                                    <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-                                        <ActionButtons
-                                            status={service?.status}
-                                            serviceId={service?._id}
-                                            onStatusUpdate={handleStatusUpdate}
-                                            isUpdating={isUpdating}
-                                        />
-                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Pagination */}
+                            {totalPages > 1 && (
+                                <div className="flex items-center justify-center gap-1.5 py-4 flex-wrap">
+                                    <button
+                                        className="d-btn d-btn-ghost d-btn-sm"
+                                        disabled={currentPage === 1}
+                                        onClick={() => setCurrentPage(p => p - 1)}
+                                    >← Prev</button>
+                                    {pageNums.map((n, i) =>
+                                        n === '…'
+                                            ? <span key={`e${i}`} className="px-2 text-(--db-t2)">…</span>
+                                            : <button key={n}
+                                                className="d-btn d-btn-sm"
+                                                style={currentPage === n
+                                                    ? { background: '#1fbf6c', color: '#fff', border: 'none' }
+                                                    : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#aebcb2' }}
+                                                onClick={() => setCurrentPage(n as number)}
+                                            >{n}</button>
+                                    )}
+                                    <button
+                                        className="d-btn d-btn-ghost d-btn-sm"
+                                        disabled={currentPage === totalPages}
+                                        onClick={() => setCurrentPage(p => p + 1)}
+                                    >Next →</button>
                                 </div>
-                            ))}
-                        </div>
-                    </>
-                )}
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
 
             <style>{`
                 .mo-table-wrap { display: none; }
                 .mo-cards { display: block; }
                 @media (min-width: 768px) {
-                    .mo-table-wrap { display: block; }
-                    .mo-cards { display: none; }
+                    .mo-table-wrap { display: block !important; }
+                    .mo-cards { display: none !important; }
                 }
             `}</style>
         </div>
     );
 };
 
-const TableHeader = () => (
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Customer</th>
-            <th>Service</th>
-            <th>Link</th>
-            <th>Amount</th>
-            <th>Cost</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-);
-
-const TableBody = ({ data, onStatusUpdate, isUpdating }: { data: any[]; onStatusUpdate: (id: string, status: string) => void; isUpdating: boolean }) => (
-    <tbody>
-        {data?.map((service, index) => (
-            <TableRow key={service._id} service={service} index={index} onStatusUpdate={onStatusUpdate} isUpdating={isUpdating} />
-        ))}
-    </tbody>
-);
-
-const TableRow = ({ service, index, onStatusUpdate, isUpdating }: { service: any; index: number; onStatusUpdate: (id: string, status: string) => void; isUpdating: boolean }) => (
-    <tr>
-        <td>{index + 1}</td>
-        <td className="d-td-primary">{service?.userId?.userName}</td>
-        <td className="d-td-primary">{service?.serviceId?.name}</td>
-        <td>
-            <a href={service?.link} target="_blank" rel="noopener noreferrer" className="d-link">
-                {service?.link}
-            </a>
-        </td>
-        <td>{service?.quantity}</td>
-        <td style={{ color: '#1fbf6c', fontWeight: 600 }}>${service?.price}</td>
-        <td>
-            <span className={getStatusBadge(service?.status)}>{service?.status}</span>
-        </td>
-        <td>
-            <div style={{ display: 'flex', gap: 6 }}>
-                <ActionButtons status={service?.status} serviceId={service?._id} onStatusUpdate={onStatusUpdate} isUpdating={isUpdating} />
-            </div>
-        </td>
-    </tr>
-);
-
-const ActionButtons = ({ status, serviceId, onStatusUpdate, isUpdating }: { status: string; serviceId: string; onStatusUpdate: (id: string, status: string) => void; isUpdating: boolean }) => (
+const ActionButtons = ({ status, serviceId, onStatusUpdate, isUpdating }: {
+    status: string;
+    serviceId: string;
+    onStatusUpdate: (id: string, status: string) => void;
+    isUpdating: boolean;
+}) => (
     <>
         <button
             className="d-btn d-btn-primary d-btn-sm"
             onClick={() => onStatusUpdate(serviceId, "done")}
             disabled={isUpdating || status === "done"}
-        >
-            Approve
-        </button>
+        >Approve</button>
         <button
             className="d-btn d-btn-danger d-btn-sm"
             onClick={() => onStatusUpdate(serviceId, "rejected")}
             disabled={isUpdating || status === "done"}
-        >
-            Reject
-        </button>
+        >Reject</button>
     </>
 );
 
-export { TableHeader, TableBody, TableRow, ActionButtons };
+export { ActionButtons };
 export default ManageOrders;

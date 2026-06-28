@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Swal from "sweetalert2";
 import { useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import Loading from "../../../utils/Loading";
+import CloudinaryUpload from "../../../components/CloudinaryUpload";
 import "../dashboard.css";
 import {
     useGetPaymentMethodsAdminQuery,
@@ -68,7 +69,6 @@ const ManagePaymentMethods = () => {
 
     /* live preview values */
     const watchedIconUrl = useWatch({ control, name: 'iconUrl', defaultValue: '' });
-    const watchedQrCode  = useWatch({ control, name: 'qrCode',  defaultValue: '' });
     const watchedColor   = useWatch({ control, name: 'color',   defaultValue: '#1fbf6c' });
     const watchedName    = useWatch({ control, name: 'name',    defaultValue: '' });
 
@@ -275,17 +275,19 @@ const ManagePaymentMethods = () => {
                             </div>
 
                             <div className="d-form-field">
-                                <label className="d-label">QR Code Image URL <span className="text-(--db-t2) font-normal">(optional)</span></label>
-                                <div className="flex gap-3 items-start">
-                                    {watchedQrCode && (watchedQrCode.startsWith('http') || watchedQrCode.startsWith('/') || watchedQrCode.startsWith('data:')) && (
-                                        <img src={watchedQrCode} alt="QR preview"
-                                            className="w-16 h-16 rounded-lg border border-(--db-line2) object-contain bg-white shrink-0" />
+                                <label className="d-label">QR Code <span className="text-(--db-t2) font-normal">(optional)</span></label>
+                                <Controller
+                                    control={control}
+                                    name="qrCode"
+                                    render={({ field }) => (
+                                        <CloudinaryUpload
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            previewSize={140}
+                                            placeholder="Click or drag QR code image here"
+                                        />
                                     )}
-                                    <input className="d-input" type="url"
-                                        placeholder="https://example.com/bkash-qr.png"
-                                        {...register('qrCode')} />
-                                </div>
-                                <p className="text-(--db-t2) text-xs mt-1.5">If provided, a QR code is shown to users on the payment screen.</p>
+                                />
                             </div>
 
                             <div className="d-form-field">
