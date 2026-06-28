@@ -11,7 +11,7 @@ interface Props {
 async function getSignature() {
     const tokenObj  = (store.getState().auth as any)?.tokens as { accessToken: string } | null;
     const token     = tokenObj?.accessToken;
-    const base      = import.meta.env.VITE_BASE_API_URL ?? "http://localhost:5000";
+    const base      = import.meta.env.VITE_BASE_API_URL || "https://api.liservice24.com";
     const res       = await fetch(`${base}/api/v1/upload/sign`, {
         credentials: "include",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
