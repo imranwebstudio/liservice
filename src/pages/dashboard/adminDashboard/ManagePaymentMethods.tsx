@@ -166,46 +166,82 @@ const ManagePaymentMethods = () => {
                         <p className="d-card-sub">No payment methods yet. Click "+ Add Method" to create one.</p>
                     </div>
                 ) : (
-                    <div className="overflow-x-auto">
-                        <table className="d-table w-full">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Icon / Name</th>
-                                    <th>Number</th>
-                                    <th>Steps</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {methods.map((m: any, i: number) => (
-                                    <tr key={m._id}>
-                                        <td className="text-(--db-t2) text-sm">{i + 1}</td>
-                                        <td>
-                                            <div className="flex items-center gap-2.5">
-                                                <MethodIcon iconUrl={m.iconUrl} name={m.name} color={m.color} size={32} />
-                                                <span className="d-td-primary font-semibold">{m.name}</span>
-                                            </div>
-                                        </td>
-                                        <td className="text-sm text-(--db-t1) font-mono">{m.number}</td>
-                                        <td className="text-sm text-(--db-t2)">{m.steps?.length ?? 0} steps</td>
-                                        <td>
-                                            <span className={`d-badge ${m.isActive ? 'd-badge-green' : 'd-badge-red'}`}>
-                                                {m.isActive ? 'Active' : 'Hidden'}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div className="flex gap-2">
-                                                <button className="d-btn d-btn-amber d-btn-sm" onClick={() => openEdit(m)}>Edit</button>
-                                                <button className="d-btn d-btn-danger d-btn-sm" onClick={() => handleDelete(m._id, m.name)}>Delete</button>
-                                            </div>
-                                        </td>
+                    <>
+                        {/* Desktop table */}
+                        <div className="pm-table-wrap d-table-wrap">
+                            <table className="d-table w-full">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Icon / Name</th>
+                                        <th>Number</th>
+                                        <th>Steps</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    {methods.map((m: any, i: number) => (
+                                        <tr key={m._id}>
+                                            <td className="text-(--db-t2) text-sm">{i + 1}</td>
+                                            <td>
+                                                <div className="flex items-center gap-2.5">
+                                                    <MethodIcon iconUrl={m.iconUrl} name={m.name} color={m.color} size={32} />
+                                                    <span className="d-td-primary font-semibold">{m.name}</span>
+                                                </div>
+                                            </td>
+                                            <td className="text-sm text-(--db-t1) font-mono">{m.number}</td>
+                                            <td className="text-sm text-(--db-t2)">{m.steps?.length ?? 0} steps</td>
+                                            <td>
+                                                <span className={`d-badge ${m.isActive ? 'd-badge-green' : 'd-badge-red'}`}>
+                                                    {m.isActive ? 'Active' : 'Hidden'}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div className="flex gap-2">
+                                                    <button className="d-btn d-btn-amber d-btn-sm" onClick={() => openEdit(m)}>Edit</button>
+                                                    <button className="d-btn d-btn-danger d-btn-sm" onClick={() => handleDelete(m._id, m.name)}>Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Mobile cards */}
+                        <div className="pm-cards" style={{ padding: 16 }}>
+                            {methods.map((m: any, i: number) => (
+                                <div key={m._id} className="d-mobile-card">
+                                    <div className="d-mobile-card-row">
+                                        <span className="d-mobile-card-label">#{i + 1} Method</span>
+                                        <div className="flex items-center gap-2">
+                                            <MethodIcon iconUrl={m.iconUrl} name={m.name} color={m.color} size={22} />
+                                            <span className="d-mobile-card-value" style={{ color: '#e8f5ec' }}>{m.name}</span>
+                                        </div>
+                                    </div>
+                                    <div className="d-mobile-card-row">
+                                        <span className="d-mobile-card-label">Number</span>
+                                        <span className="d-mobile-card-value" style={{ fontFamily: 'monospace' }}>{m.number}</span>
+                                    </div>
+                                    <div className="d-mobile-card-row">
+                                        <span className="d-mobile-card-label">Steps</span>
+                                        <span className="d-mobile-card-value">{m.steps?.length ?? 0} steps</span>
+                                    </div>
+                                    <div className="d-mobile-card-row">
+                                        <span className="d-mobile-card-label">Status</span>
+                                        <span className={`d-badge ${m.isActive ? 'd-badge-green' : 'd-badge-red'}`}>
+                                            {m.isActive ? 'Active' : 'Hidden'}
+                                        </span>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                                        <button className="d-btn d-btn-amber d-btn-sm" style={{ flex: 1 }} onClick={() => openEdit(m)}>Edit</button>
+                                        <button className="d-btn d-btn-danger d-btn-sm" style={{ flex: 1 }} onClick={() => handleDelete(m._id, m.name)}>Delete</button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </>
                 )}
             </div>
 
@@ -322,6 +358,15 @@ const ManagePaymentMethods = () => {
                     </div>
                 </div>
             )}
+
+            <style>{`
+                .pm-table-wrap { display: none; }
+                .pm-cards      { display: block; }
+                @media (min-width: 768px) {
+                    .pm-table-wrap { display: block !important; }
+                    .pm-cards      { display: none   !important; }
+                }
+            `}</style>
         </div>
     );
 };
