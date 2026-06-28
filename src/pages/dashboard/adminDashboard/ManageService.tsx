@@ -10,28 +10,40 @@ import { CgClose } from "react-icons/cg";
 import "../dashboard.css";
 
 const categories = ["feature", "facebook", "instagram", "youtube", "tiktok", "telegram", "linkedin"];
+const PAGE_SIZE = 20;
+
+function getPageNumbers(current: number, total: number): (number | "…")[] {
+    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+    if (current <= 4) return [1, 2, 3, 4, 5, "…", total];
+    if (current >= total - 3) return [1, "…", total - 4, total - 3, total - 2, total - 1, total];
+    return [1, "…", current - 1, current, current + 1, "…", total];
+}
 
 const ManageService = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>();
-    const { data, isLoading } = useGetServicesQuery({});
     const [deleteService] = useDeleteServiceMutation();
     const [selectedForUpdate, setSelectedForUpdate] = useState<any>(null);
     const [updateService] = useUpdateServiceMutation();
     const [searchQuery, setSearchQuery] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
 
-    const filteredServices = data?.data?.services?.filter((service: any) => {
-        if (!service) return false;
-        const searchLower = searchQuery.toLowerCase();
-        return (
-            (service.name?.toLowerCase() || '').includes(searchLower) ||
-            (service.price?.toString() || '').includes(searchLower) ||
-            (service.category?.toLowerCase() || '').includes(searchLower) ||
-            (service.description?.toLowerCase() || '').includes(searchLower) ||
-            (service.avgTime?.toLowerCase() || '').includes(searchLower) ||
-            (service.min?.toString() || '').includes(searchLower) ||
-            (service.max?.toString() || '').includes(searchLower)
-        );
+    useEffect(() => {
+        const t = setTimeout(() => setDebouncedSearch(searchQuery.trim()), 350);
+        return () => clearTimeout(t);
+    }, [searchQuery]);
+
+    useEffect(() => { setCurrentPage(1); }, [debouncedSearch]);
+
+    const { data, isLoading, isFetching } = useGetServicesQuery({
+        search: debouncedSearch,
+        page: currentPage,
+        limit: PAGE_SIZE,
     });
+
+    const services: any[] = data?.data?.services ?? [];
+    const totalPages = data?.data?.totalPages ?? 1;
+    const total      = data?.data?.total      ?? 0;
 
     useEffect(() => {
         if (selectedForUpdate) {
@@ -130,7 +142,7 @@ const ManageService = () => {
             </div>
 
             {/* Desktop Table */}
-            <div className="ms-table-wrap d-table-wrap">
+            <div className="ms-table-wrap d-table-wrap" style={{ opacity: isFetching ? 0.5 : 1, transition: 'opacity 0.2s' }}>
                 <table className="d-table">
                     <thead>
                         <tr>
@@ -145,7 +157,7 @@ const ManageService = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredServices?.map((service: any, index: number) => (
+                        {services.map((service: any, index: number) => (
                             <tr key={service._id}>
                                 <td>{index + 1}</td>
                                 <td className="d-td-primary">{service.name}</td>
@@ -179,8 +191,8 @@ const ManageService = () => {
             </div>
 
             {/* Mobile Card View */}
-            <div className="ms-cards">
-                {filteredServices?.map((service: any, index: number) => (
+            <div className="ms-cards" style={{ opacity: isFetching ? 0.5 : 1, transition: 'opacity 0.2s' }}>
+                {services.map((service: any, index: number) => (
                     <div key={service._id} className="d-mobile-card">
                         <div className="d-mobile-card-row">
                             <span className="d-mobile-card-label">#{index + 1}</span>
@@ -212,10 +224,46 @@ const ManageService = () => {
                 ))}
             </div>
 
-            {(!filteredServices || filteredServices.length === 0) && (
+            {!isFetching && services.length === 0 && (
                 <div className="d-empty">
                     <h3>No services found</h3>
                     <p>Try adjusting your search.</p>
+                </div>
+            )}
+
+            {/* Result count + Pagination */}
+            {total > 0 && (
+                <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+                    <p style={{ fontSize: 12, color: 'var(--db-t2, #74877b)', fontFamily: "'Inter', sans-serif" }}>
+                        Showing {(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, total)} of {total} services
+                    </p>
+                    {totalPages > 1 && (
+                        <div className="ms-pagination">
+                            <button
+                                className="ms-page-nav"
+                                disabled={currentPage === 1}
+                                onClick={() => setCurrentPage(p => p - 1)}
+                            >← Prev</button>
+
+                            {getPageNumbers(currentPage, totalPages).map((n, idx) =>
+                                n === '…' ? (
+                                    <span key={`e-${idx}`} className="ms-page-ellipsis">…</span>
+                                ) : (
+                                    <button
+                                        key={n}
+                                        className={`ms-page-btn${currentPage === n ? ' active' : ''}`}
+                                        onClick={() => setCurrentPage(n as number)}
+                                    >{n}</button>
+                                )
+                            )}
+
+                            <button
+                                className="ms-page-nav"
+                                disabled={currentPage === totalPages}
+                                onClick={() => setCurrentPage(p => p + 1)}
+                            >Next →</button>
+                        </div>
+                    )}
                 </div>
             )}
 
@@ -289,10 +337,40 @@ const ManageService = () => {
 
             <style>{`
                 .ms-table-wrap { display: none; }
-                .ms-cards { display: block; }
+                .ms-cards {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 10px;
+                }
+                .ms-cards .d-mobile-card { margin-bottom: 0; }
+                @media (max-width: 380px) {
+                    .ms-cards { grid-template-columns: 1fr; }
+                }
                 @media (min-width: 768px) {
                     .ms-table-wrap { display: block; }
                     .ms-cards { display: none; }
+                }
+                .ms-pagination {
+                    display: flex; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: center;
+                    font-family: 'Inter', sans-serif;
+                }
+                .ms-page-btn, .ms-page-nav {
+                    min-width: 34px; height: 34px; padding: 0 10px;
+                    border-radius: 8px; border: 1px solid var(--db-line2, rgba(255,255,255,0.08));
+                    background: var(--db-input, rgba(255,255,255,0.04));
+                    color: var(--db-t1, #aebcb2); font-size: 13px; font-weight: 500;
+                    cursor: pointer; transition: all 0.2s;
+                }
+                .ms-page-btn:hover, .ms-page-nav:hover:not(:disabled) {
+                    border-color: rgba(255,255,255,0.18); color: var(--db-t0, #f3fbf5);
+                }
+                .ms-page-btn.active {
+                    background: #1fbf6c; border-color: #1fbf6c; color: #fff; font-weight: 700;
+                }
+                .ms-page-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+                .ms-page-ellipsis {
+                    min-width: 28px; height: 34px; display: flex; align-items: center;
+                    justify-content: center; color: var(--db-t2, #74877b); font-size: 13px;
                 }
             `}</style>
         </div>

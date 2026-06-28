@@ -24,9 +24,9 @@ const UDBRecharge = () => {
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       <div className="db-table-wrap rounded-[20px] overflow-hidden border border-[var(--db-line)] [background:linear-gradient(165deg,rgba(255,255,255,0.03),rgba(255,255,255,0.008))]">
         {isLoading ? (
-          <div className="py-16 text-center text-[var(--db-t2)] text-sm">Loading history…</div>
+          <div className="py-16 text-center text-(--db-t2) text-sm">Loading history…</div>
         ) : recharges.length === 0 ? (
-          <div className="py-[72px] text-center text-[var(--db-t2)]">
+          <div className="py-[72px] text-center text-(--db-t2)">
             <b className="block text-[19px] text-[var(--db-t1)] mb-2" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>No recharges yet</b>
             Add balance to start ordering services.
           </div>
@@ -35,7 +35,7 @@ const UDBRecharge = () => {
             <thead>
               <tr>
                 {COLS.map((h, i) => (
-                  <th key={h} className="text-[11px] tracking-[0.1em] uppercase font-semibold text-[var(--db-t2)] px-[22px] py-4 bg-white/[0.02] border-b border-[var(--db-line)]"
+                  <th key={h} className="text-[11px] tracking-[0.1em] uppercase font-semibold text-(--db-t2) px-[22px] py-4 bg-white/[0.02] border-b border-[var(--db-line)]"
                     style={{ textAlign: i >= 2 ? 'right' : 'left' }}>
                     {h}
                   </th>
@@ -50,7 +50,7 @@ const UDBRecharge = () => {
                 const border = i < recharges.length - 1 ? '1px solid var(--db-line)' : 'none';
                 return (
                   <tr key={r._id ?? i} className="hover:bg-white/[0.022] transition-colors">
-                    <td className="px-[22px] py-4 text-sm text-[var(--db-t2)]" style={{ borderBottom: border, fontFamily: "'Space Grotesk',sans-serif" }}>
+                    <td className="px-[22px] py-4 text-sm text-(--db-t2)" style={{ borderBottom: border, fontFamily: "'Space Grotesk',sans-serif" }}>
                       #{r._id?.slice(-4) ?? String(i + 1).padStart(4, '0')}
                     </td>
                     <td className="px-[22px] py-4" style={{ borderBottom: border }}>

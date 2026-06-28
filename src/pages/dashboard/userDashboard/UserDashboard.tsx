@@ -14,14 +14,15 @@ import UDBBalance     from './UDBBalance';
 import ManageOrders   from '../adminDashboard/ManageOrders';
 import ManageRecharge from '../adminDashboard/ManageRecharge';
 import ManageUser     from '../adminDashboard/ManageUser';
-import ManageService  from '../adminDashboard/ManageService';
-import AddServices    from '../adminDashboard/AddServices';
+import ManageService         from '../adminDashboard/ManageService';
+import AddServices           from '../adminDashboard/AddServices';
+import ManagePaymentMethods  from '../adminDashboard/ManagePaymentMethods';
 import './user-dashboard.css';
 import ThemeToggle from '../../../components/ThemeToggle';
 
 /* ── types ─────────────────────────────────────────────── */
 type UserView  = 'overview' | 'services' | 'orders' | 'recharge' | 'addBalance';
-type AdminView = 'manageOrders' | 'manageRecharges' | 'manageUsers' | 'manageServices' | 'addService';
+type AdminView = 'manageOrders' | 'manageRecharges' | 'manageUsers' | 'manageServices' | 'addService' | 'managePayments';
 type View = UserView | AdminView;
 
 /* ── Toast ─────────────────────────────────────────────── */
@@ -90,6 +91,11 @@ const IcManageService = () => (
     <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
   </svg>
 );
+const IcPayment = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+  </svg>
+);
 
 const USER_NAV_ITEMS: { id: View; label: string; Icon: React.FC }[] = [
   { id: 'overview',   label: 'Overview',    Icon: IcOverview },
@@ -105,6 +111,7 @@ const ADMIN_NAV_ITEMS: { id: View; label: string; Icon: React.FC }[] = [
   { id: 'manageUsers',     label: 'Manage Users',     Icon: IcUsers },
   { id: 'manageServices',  label: 'Manage Services',  Icon: IcManageService },
   { id: 'addService',      label: 'Add Service',      Icon: IcAdd },
+  { id: 'managePayments',  label: 'Payment Methods',  Icon: IcPayment },
 ];
 
 const PAGE_TITLES: Record<View, string> = {
@@ -118,6 +125,7 @@ const PAGE_TITLES: Record<View, string> = {
   manageUsers:     'Manage Users',
   manageServices:  'Manage Services',
   addService:      'Add Service',
+  managePayments:  'Payment Methods',
 };
 
 /* ── Main shell ─────────────────────────────────────────── */
@@ -282,6 +290,7 @@ const UserDashboard = () => {
               {view === 'manageUsers'     && <ManageUser />}
               {view === 'manageServices'  && <ManageService />}
               {view === 'addService'      && <AddServices />}
+              {view === 'managePayments'  && <ManagePaymentMethods />}
             </motion.div>
           </AnimatePresence>
         </main>

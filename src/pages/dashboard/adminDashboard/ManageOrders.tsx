@@ -19,10 +19,11 @@ const ManageOrders = () => {
 
     const filteredData = data?.data?.filter((service: any) =>
         service?.userId?.userName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        service?.serviceId?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        service?.link?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    service?.serviceId?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    service?.link?.toLowerCase().includes(searchQuery.toLowerCase())
+);
 
+console.log("ManageOrders data:", filteredData);
     const handleStatusUpdate = async (serviceId: string, status: string) => {
         Swal.fire({
             title: 'Processing...',

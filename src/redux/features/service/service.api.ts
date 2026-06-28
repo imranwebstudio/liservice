@@ -10,10 +10,12 @@ const serviceApi = baseApi.injectEndpoints({
             })
         }),
         getServices: build.query({
-            query: ({ category, page = 1, limit = 20 }) => ({
-                url: `/service/getAll?category=${category ?? ''}&page=${page}&limit=${limit}`,
-                method: "GET"
-            }),
+            query: ({ category = '', search = '', page = 1, limit = 20 }) => {
+                const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+                if (category) params.set('category', category);
+                if (search)   params.set('search',   search);
+                return { url: `/service/getAll?${params.toString()}`, method: 'GET' };
+            },
             providesTags: ["services"],
         }),
 

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
 import RangeSlider from "react-range-slider-input";
@@ -144,57 +144,60 @@ const modalVar = {
   exit: { opacity: 0, scale: 0.93, y: 12, transition: { duration: 0.2 } },
 };
 
-const lineVar = (delay: number) => ({
-  hidden: { opacity: 0, y: "100%" },
-  visible: {
-    opacity: 1,
-    y: "0%",
-    transition: { duration: 0.9, delay, ease: [0.2, 0.8, 0.2, 1] as const },
-  },
-});
-
 const PAGE_SIZE = 24;
+
+function getPageNumbers(current: number, total: number): (number | "…")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  if (current <= 4) return [1, 2, 3, 4, 5, "…", total];
+  if (current >= total - 3) return [1, "…", total - 4, total - 3, total - 2, total - 1, total];
+  return [1, "…", current - 1, current, current + 1, "…", total];
+}
 
 /* ── Component ── */
 const ServiceCards = () => {
   const [activePlatform, setActivePlatform] = useState("all");
   const [search, setSearch] = useState("");
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedService, setSelectedService] = useState<IService | null>(null);
   const [quantity, setQuantity] = useState(0);
   const [link, setLink] = useState("");
 
-  const { data, isLoading } = useGetServicesQuery({ category: "" });
-  const [buyService, { isLoading: buyingService }] = useBuyServiceMutation();
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(search.trim()), 350);
+    return () => clearTimeout(t);
+  }, [search]);
 
   useEffect(() => {
-    setVisibleCount(PAGE_SIZE);
-  }, [activePlatform, search]);
+    setCurrentPage(1);
+  }, [activePlatform, debouncedSearch]);
 
-  const price = useMemo(() => {
-    if (!selectedService) return 0;
-    return parseFloat((quantity * (selectedService.price / 1000)).toFixed(4));
-  }, [quantity, selectedService]);
-  // console.log( data)
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+ 
+  const categoryParam =
+    !debouncedSearch && activePlatform !== "all" && activePlatform !== "feature"
+      ? activePlatform
+      : "";
 
-  const filtered = useMemo<IService[]>(() => {
-    if (!data?.data?.services) return [];
-    let list = data.data?.services as IService[];
-    if (activePlatform !== "all") {
-      list = list.filter((s) => getPlatformKey(s) === activePlatform);
-    }
-    if (search.trim()) {
-      const q = search.toLowerCase().trim();
-      list = list.filter(
-        (s) =>
-          s.name.toLowerCase().includes(q) ||
-          s.category.toLowerCase().includes(q),
-      );
-    }
-    return list;
-  }, [data, activePlatform, search]);
+  const { data, isLoading, isFetching } = useGetServicesQuery({
+    category: categoryParam,
+    search: debouncedSearch,
+    page: currentPage,
+    limit: PAGE_SIZE,
+  });
+  const [buyService, { isLoading: buyingService }] = useBuyServiceMutation();
 
-  const displayed = filtered?.slice(0, visibleCount);
+  const services = (data?.data?.services ?? []) as IService[];
+  const totalPages = data?.data?.totalPages ?? 1;
+  const total      = data?.data?.total      ?? 0;
+  const pageStart  = total === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
+  const pageEnd    = Math.min(currentPage * PAGE_SIZE, total);
+
+  const price = selectedService
+    ? parseFloat((quantity * (selectedService.price / 1000)).toFixed(4))
+    : 0;
 
 
   const openModal = (s: IService) => {
@@ -255,7 +258,6 @@ const ServiceCards = () => {
       </div>
     );
   }
-  // console.log(data.data, filtered, displayed);
   return (
     <div className="svc-page">
       <HomeNav />
@@ -349,7 +351,7 @@ const ServiceCards = () => {
           }}
         />
 
-        <div className="svc-wrap">
+        <div className="svc-wrap  max-w-295 mx-auto px-2 sm:px-6 md:px-8 relative z-10">
           {/* Search */}
           <motion.div
             className="svc-search"
@@ -414,7 +416,7 @@ const ServiceCards = () => {
           </motion.div>
 
           {/* Result count */}
-          {filtered.length > 0 && (
+          {total > 0 && (
             <p
               style={{
                 color: "#4d6455",
@@ -423,14 +425,13 @@ const ServiceCards = () => {
                 fontFamily: "'Inter', sans-serif",
               }}
             >
-              Showing {Math.min(visibleCount, filtered.length)} of{" "}
-              {filtered.length} services
+              Showing {pageStart}–{pageEnd} of {total} services
             </p>
           )}
 
           {/* Cards grid */}
-          <div className="svc-grid">
-            {displayed.length === 0 ? (
+          <div className="svc-grid" style={{ opacity: isFetching ? 0.5 : 1, transition: "opacity 0.2s" }}>
+            {!isFetching && services.length === 0 ? (
               <div className="svc-empty">
                 <h3>No services found</h3>
                 <p>Try a different category or clear your search.</p>
@@ -455,7 +456,7 @@ const ServiceCards = () => {
                 </button>
               </div>
             ) : (
-              displayed.map((service, i) => {
+              services.map((service, i) => {
                 const platformKey = getPlatformKey(service);
                 const platform = PLATFORMS[platformKey];
                 return (
@@ -537,14 +538,37 @@ const ServiceCards = () => {
             )}
           </div>
 
-          {/* Load more */}
-          {visibleCount < filtered.length && (
-            <div style={{ textAlign: "center", marginTop: 44 }}>
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="svc-pagination flex items-center justify-center gap-1 my-2 flex-wrap">
               <button
-                className="svc-load-more"
-                onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+                className="svc-page-nav"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => p - 1)}
               >
-                Load more ({filtered.length - visibleCount} remaining)
+                ← Prev
+              </button>
+
+              {getPageNumbers(currentPage, totalPages).map((n, idx) =>
+                n === "…" ? (
+                  <span key={`ellipsis-${idx}`} className="svc-page-ellipsis">…</span>
+                ) : (
+                  <button
+                    key={n}
+                    className={`svc-page-btn${currentPage === n ? " active" : ""}`}
+                    onClick={() => setCurrentPage(n as number)}
+                  >
+                    {n}
+                  </button>
+                ),
+              )}
+
+              <button
+                className="svc-page-nav"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => p + 1)}
+              >
+                Next →
               </button>
             </div>
           )}

@@ -83,27 +83,27 @@ const ManageUser = () => {
         setSelectedUser(null);
     };
 
-    const handleRoleChange = async (user: User) => {
-        const newRole = user.role === 'admin' ? 'user' : 'admin';
-        const result = await Swal.fire({
-            title: `Make ${user.name} an ${newRole}?`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#149656',
-            cancelButtonColor: '#ef4444',
-            confirmButtonText: `Yes, make ${newRole}`,
-            background: '#0c1310',
-            color: '#f3fbf5',
-        });
-        if (!result.isConfirmed) return;
-        try {
-            await blockUser({ id: user._id, ...user, role: newRole }).unwrap();
-            refetch();
-            Swal.fire({ icon: 'success', title: 'Role updated!', text: `${user.name} is now ${newRole}.`, background: '#0c1310', color: '#f3fbf5', iconColor: '#34d97e', confirmButtonColor: '#34d97e' });
-        } catch {
-            Swal.fire({ icon: 'error', title: 'Failed', text: 'Could not update role.', background: '#0c1310', color: '#f3fbf5' });
-        }
-    };
+    // const handleRoleChange = async (user: User) => {
+    //     const newRole = user.role === 'admin' ? 'user' : 'admin';
+    //     const result = await Swal.fire({
+    //         title: `Make ${user.name} an ${newRole}?`,
+    //         icon: 'question',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#149656',
+    //         cancelButtonColor: '#ef4444',
+    //         confirmButtonText: `Yes, make ${newRole}`,
+    //         background: '#0c1310',
+    //         color: '#f3fbf5',
+    //     });
+    //     if (!result.isConfirmed) return;
+    //     try {
+    //         await blockUser({ id: user._id, ...user, role: newRole }).unwrap();
+    //         refetch();
+    //         Swal.fire({ icon: 'success', title: 'Role updated!', text: `${user.name} is now ${newRole}.`, background: '#0c1310', color: '#f3fbf5', iconColor: '#34d97e', confirmButtonColor: '#34d97e' });
+    //     } catch {
+    //         Swal.fire({ icon: 'error', title: 'Failed', text: 'Could not update role.', background: '#0c1310', color: '#f3fbf5' });
+    //     }
+    // };
 
     const filteredUsers = data?.data?.filter((user: User) =>
         Object.keys(user).some((key) =>
